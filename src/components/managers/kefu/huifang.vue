@@ -13,104 +13,142 @@
     <!-- 中间内容 -->
     <div style=" padding-top: 1.3rem;">
       <van-dropdown-menu active-color="#eab617" :overlay="show">
-        <van-dropdown-item title-class="down" title="统计" />
-        <van-dropdown-item v-model="value2" :options="option2"/>
+        <van-dropdown-item v-model="value1" @open="tongji" title-class="down" title="统计"/>
+        <van-dropdown-item v-model="value2" @open="fatongji" :options="option2"/>
       </van-dropdown-menu>
     </div>
     <section>
-      <p class="timer">
-        <span>今天 13:45</span>
-      </p>
-      <!-- 审批的样式 -->
-      <div class="sheng">
-        <p>审批</p>
-        <p>审批人 ：张杰</p>
-        <p>审批类型 ：回访日志</p>
-        <p>处理意见 ：请及时处理好</p>
-      </div>
-      <p class="timer">
-        <span>今天 13:45</span>
-      </p>
-      <!-- 客服报修 -->
-      <div class="xiu">
-        <p>客服保修</p>
-        <p>上报人员: 丽丽</p>
-        <p>业主：和谐小区五单元308室</p>
-        <p>手机号：15644566788</p>
-        <p>报修类型：水电</p>
-        <p>备注：水管漏水</p>
-        <p>
-          <span>图片：</span>
-          <img src="../../../assets/img/baojie.png" alt>
-          <img src="../../../assets/img/baojie.png" alt>
-          <img src="../../../assets/img/baojie.png" alt>
+      <div v-if="bool == 0" v-for="(index) in 3" :key="index">
+        <p class="timer">
+          <span>今天 13:45</span>
         </p>
-      </div>
-      <p class="timer">
-        <span>今天 13:45</span>
-      </p>
-      <div class="yezhu">
-        <p>业主投诉</p>
-        <p>业主：和谐小区</p>
-        <p>手机号：18888888888</p>
-        <p>投诉会员ID：3456</p>
-        <p>投诉类型：水电</p>
-        <p>投诉内容：水管漏水</p>
-        <p>投诉时间：2019/2/19 10：56</p>
-        <p>
-          <span>图片：</span>
-          <img src="../../../assets/img/baojie.png" alt>
+        <!-- 审批的样式 -->
+        <div class="sheng">
+          <p>回访人员：丽丽</p>
+          <div v-for="(index) in 3" :key="index">
+            <p>回访业主1：和谐小区3幢309室</p>
+            <p>物业费金额 ：600元</p>
+          </div>
+          <p @click="shenpi">已审批</p>
+        </div>
+        <p class="timer">
+          <span>今天 13:45</span>
         </p>
+        <!-- 审批的样式 -->
+        <div class="sheng">
+          <p>回访人员：丽丽</p>
+          <div v-for="(index) in 3" :key="index">
+            <p>回访业主1：和谐小区3幢309室</p>
+            <p>物业费金额 ：600元</p>
+          </div>
+          <p style="color:#eab617" @click="shenpi">审批</p>
+        </div>
       </div>
-      <p class="timer">
-        <span>今天 13:45</span>
-      </p>
-      <div class="louguan">
-        <p>楼管报修</p>
-        <p>上报员工：安安</p>
-        <p>报修小区：和谐小区四单元306室</p>
-        <p>报修类型：消防</p>
-        <p>备注：设备不合适</p>
-        <p>
-          <span>图片：</span>
-          <img src="../../../assets/img/baojie.png" alt>
-        </p>
+      <div v-if="bool == 1" >
+        <van-collapse v-model="activeNames" @change="change">
+          <van-collapse-item :title="valuey" name="1">
+            <p class="cnetes">
+              <span>丽丽</span>
+              <span>515151</span>
+            </p>
+          </van-collapse-item>
+        </van-collapse>
       </div>
     </section>
+    <!-- 时间的选择 -->
+     <van-popup v-model="timer" position="bottom">
+      <van-datetime-picker
+        v-model="currentDate"
+        type="date"
+        :min-date="minDate"
+        :formatter="formatter"
+        :max-date="maxDate"
+        @cancel="timerg"
+        @confirm="timerok"
+      />
+    </van-popup>
   </div>
 </template>
 <script>
 import { DropdownMenu, DropdownItem } from "vant";
+import { Collapse, CollapseItem } from "vant";
+import { DatetimePicker } from 'vant';
 // Vue.use(DropdownMenu).use(DropdownItem);
 export default {
   data() {
     return {
       msg: "回访日志",
       value1: 0,
-      show:false,
+      show: false,
       value2: "a",
       option1: [{ text: "统计", value: 0 }],
       option2: [
         { text: "全部消息", value: "a" },
         { text: "未审批", value: "b" },
         { text: "已审批", value: "c" }
-      ]
+      ],
+      bool: 0,
+      activeNames: ['1'],
+      valuey:"12121212",
+      minDate: new Date(2000, 1, 1),
+      maxDate: new Date(),
+      timer:false,
+      currentDate: "",
     };
   },
   methods: {
     fanhui() {
       this.$router.go(-1);
+    },
+    // 页面的统计
+    tongji() {
+      this.bool = 1;
+      console.log("23434");
+    },
+    // 审批
+    fatongji() {
+      this.bool = 0;
+    },
+    // 消息的审批
+    shenpi() {
+      this.$router.push("/shenpi");
+    },
+    // 时间的选择
+    change(){
+      this.timer = true
+    },
+    formatter(type, value) {
+      if (type === 'year') {
+        return `${value}年`;
+      } else if (type === 'month') {
+        return `${value}月`
+      } else if (type === 'day') {
+        return `${value}日`
+      }
+      return value;
+    },
+    // 时间的关闭
+    timerg(){
+      this.timer = false
+    },
+    // 时间的开始
+    timerok(){
+      this.timer = false;
+      this.activeNames = ['1']
     }
   },
-  watch:{
-    value2(a,b){
-      console.log(a,b)
-      if(a == "a"){
-        console.log("全部消息")
-      }else if(a == "b"){
-        console.log("未审批")
-      }else if(a == "c"){
-        console.log("已审批")
+  watch: {
+    value2(a, b) {
+      console.log(a, b);
+      if (a == "a") {
+        this.bool = 0;
+        console.log("全部消息");
+      } else if (a == "b") {
+        this.bool = 0;
+        console.log("未审批");
+      } else if (a == "c") {
+        this.bool = 0;
+        console.log("已审批");
       }
     }
   }
@@ -120,19 +158,25 @@ export default {
 .workorder {
   height: 100%;
   width: 100%;
-  background: red;
+  /* background: red; */
   overflow: hidden;
 }
+.workorder >>> .van-picker__cancel {
+  color: #eab617
+}
+.workorder >>> .van-picker__confirm {
+  color: #eab617
+}
 .workorder >>> .down::after {
-  display: none
+  display: none;
 }
 .workorder >>> .van-dropdown-menu {
   position: fixed;
   width: 100%;
-  top: 1.3rem
+  top: 1.3rem;
 }
 .workorder >>> .van-icon-success {
-  color: #eab617 !important
+  color: #eab617 !important;
 }
 header {
   height: 1.3rem;
@@ -181,112 +225,32 @@ section {
   border-radius: 0.1rem;
 }
 .sheng {
-  height: 2.3rem;
+  min-height: 2.3rem;
   width: 6.2rem;
   background: #ffffff;
   border-radius: 0.1rem;
   margin: 0 auto;
   border: 1px solid #dddddd;
+  padding: 0.3rem 0.3rem 0 0.3rem;
+}
+.sheng > :last-child {
+  height: 0.86rem;
+  width: 100%;
+  line-height: 0.86rem;
+  text-align: center;
+  margin-top: 0.3rem;
+  border-top: 1px solid #dddddd;
 }
 .sheng > p {
-  font-size: 0.26rem;
-  padding-left: 0.34rem;
-  font-size: 0.28rem;
+  font-size: 0.34rem;
   font-weight: 500;
-  margin-bottom: 0.16rem;
 }
-.sheng > :first-child {
-  font-size: 0.32rem;
-  font-weight: 550;
-  color: #eab617;
-  padding: 0.3rem 0.34rem;
-  margin: 0;
+.sheng > div {
+  margin-top: 0.26rem;
 }
-.xiu {
-  width: 6.2rem;
-  height: 4.26rem;
-  background: #fff;
-  border-radius: 0.1rem;
-  margin: 0 auto;
-  border: 1px solid #dddddd;
-}
-.xiu > p {
-  padding-left: 0.3rem;
-  margin-bottom: 0.1rem;
-}
-.xiu > :first-child {
-  font-size: 0.32rem;
-  font-weight: 550;
-  color: #eab617;
-  padding: 0.3rem 0.34rem;
-  margin: 0;
-}
-.xiu > :last-child > span {
-  float: left;
-}
-.xiu > :last-child > img {
-  height: 1rem;
-  width: 1rem;
-  float: left;
-  margin-right: 0.2rem;
-}
-.yezhu {
-  min-height: 4rem;
-  width: 6.2rem;
-  background: #fff;
-  border-radius: 0.1rem;
-  border: 1px solid #dddddd;
-  margin: 0 auto;
-  overflow: hidden;
-}
-.yezhu > p {
-  padding-left: 0.3rem;
-  margin-bottom: 0.2rem;
-}
-.yezhu > :first-child {
-  font-size: 0.32rem;
-  font-weight: 550;
-  color: #eab617;
-  padding: 0.3rem 0.34rem;
-  margin: 0;
-}
-.yezhu > :last-child > span {
-  float: left;
-}
-.yezhu > :last-child > img {
-  height: 1rem;
-  width: 1rem;
-  float: left;
-  margin-bottom: 0.2rem;
-}
-.louguan {
-  min-height: 3.9rem;
-  width: 6.2rem;
-  margin: 0 auto;
-  background: #fff;
-  border: 1px solid #dddddd;
-  border-radius: 0.1rem;
-  overflow: hidden;
-}
-.louguan > :first-child {
-  font-size: 0.32rem;
-  font-weight: 550;
-  color: #eab617;
-  padding: 0.3rem 0.34rem;
-  margin: 0;
-}
-.louguan > p {
-  padding-left: 0.3rem;
-  margin-bottom: 0.1rem;
-}
-.louguan > :last-child > span {
-  float: left;
-}
-.louguan > :last-child > img {
-  float: left;
-  height: 1rem;
-  width: 1rem;
-  margin-right: 0.2rem;
+.sheng > div > p {
+  margin-top: 0.04rem;
+  font-size: 0.28rem;
 }
 section > :last-child {
   margin-bottom: 1.4rem;
@@ -294,6 +258,19 @@ section > :last-child {
 section {
   height: 90%;
   overflow: auto;
+}
+/* 统计的样式开始 */
+.workorder >>> .van-collapse-item__content {
+  padding: 0
+}
+.cnetes {
+  height: 1.12rem;
+  line-height: 1.12rem;
+  padding: 0 0.3rem;
+  display: flex;
+  justify-content: space-between;
+  color: #000;
+  font-size: 0.3rem;
 }
 
 </style>

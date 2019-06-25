@@ -350,6 +350,17 @@ let router = new Router({
         show: true
       }
     },
+    // 经理岗的客服回访日志的审批
+    {
+      path: '/shenpi',
+      name: 'shenpi',
+      component: () =>
+        import(/* webpackChunkName: "service" */ './components/managers/kefu/shengpi'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
   ]
 })
 

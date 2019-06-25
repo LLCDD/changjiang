@@ -78,8 +78,8 @@ function plusReady() {
   plus.key.addEventListener('backbutton', function () {
     // 如果是首页则执行退出操作
     if (
-      router.currentRoute.path === '/home' ||
-      router.currentRoute.path === '/my-center'
+      router.currentRoute.path === '/index' ||
+      router.currentRoute.path === '/login'
     ) {
       time = null
       if (now) {

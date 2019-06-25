@@ -6,7 +6,7 @@
     </div>
     <div class="landing">
       <img class="img" src="../../../assets/images/pass.png" alt>
-      <input type="password" placeholder="请输入验证码" v-model="password">
+      <input type="text" placeholder="请输入验证码" v-model="password">
       <button :class="{ 'a' : a == 1}" class="code" @click="countdown">{{ code }}</button>
     </div>
     <div class="login" @click="login">登录</div>
@@ -30,60 +30,76 @@ export default {
   },
   methods: {
     // 获取验证码的倒计时
-    countdown() {
-      if (this.phone!="") {
-        this.http.post("/api/sendsms", { phone: this.phone }).then(res => {
-          console.log(res);
-        });
-      }else {
-        console.log(111)
-      }
-      // if (this.a == 0) {
-      //   this.a = 1;
-      //   var count = 60;
-      //   var timer = null;
-      //   clearInterval(timer);
-      //   timer = setInterval(() => {
-      //     if (count > 0) {
-      //       console.log(count);
-      //       this.code = count-- + "s";
-      //     } else {
-      //       clearInterval(timer);
-      //       this.code = "获取验证码";
-      //       this.a = 0;
-      //       count = 60;
-      //     }
-      //   }, 1000);
-      // } else {
-      //   this.$toasted.error("已经发送验证码", { icon: "error" }).goAway(1000);
-      // }
-    },
-    async login() {
-      this.$router.replace({ name: "index" });
-
-      // if (!this.phone || !this.password) {
-      //   this.$toasted.error("请输入完善信息", { icon: "error" }).goAway(2000);
+    async countdown() {
+      // if (this.phone != "") {
+      //   this.$toasted.error("请输入手机号").goAway(1000);
       //   return;
       // }
-      // try {
-      //   // await等待一个异步返回的结果 如果没有await 会报user is undefined 获取不到
-      //   let res = await this.http.post("/api/login", {
-      //     mobile: this.phone,
-      //     password: this.password
-      //     // did:
-      //   });
-      //   if (res.code == 200) {
-      //     console.log(res);
-      //     localStorage.setItem("token", res.data.token);
-      //     this.$toasted.success("登录成功").goAway(1500);
-      //     this.$router.replace({ name: "index" });
-      //     // 通过后台给的数值来判断要显示的工作岗位
-      //   } else {
-      //     this.$toasted.error(res.message, { icon: "error" }).goAway(2000);
-      //   }
-      // } catch (error) {
-      //   this.$toasted.error(error.message, { icon: "error" }).goAway(2000);
-      // }
+      if (this.code == "获取验证码") {
+        try {
+          // await等待一个异步返回的结果 如果没有await 会报user is undefined 获取不到
+          let res = await this.http.post("/api/sendsms", {
+            mobile: this.phone
+          });
+          if (res.code == 200) {
+            if (this.a == 0) {
+              this.a = 1;
+              var count = 60;
+              var timer = null;
+              clearInterval(timer);
+              timer = setInterval(() => {
+                if (count > 0) {
+                  // console.log(count);
+                  this.code = count-- + "s";
+                } else {
+                  clearInterval(timer);
+                  this.code = "获取验证码";
+                  this.a = 0;
+                  count = 60;
+                }
+              }, 1000);
+            } else {
+              this.$toasted
+                .error("已经发送验证码", { icon: "error" })
+                .goAway(1000);
+            }
+          } else {
+            this.$toasted.error(res.message, { icon: "error" }).goAway(2000);
+          }
+        } catch (error) {
+          this.$toasted.error(error.message, { icon: "error" }).goAway(2000);
+        }
+      }else {
+        this.$toasted.error("验证码已经发送").goAway(1000);
+      }
+    },
+    async login() {
+      // this.$router.replace({ name: "index" });
+
+      if (!this.phone || !this.password) {
+        this.$toasted.error("请输入完善信息", { icon: "error" }).goAway(2000);
+        return;
+      }
+      try {
+        // await等待一个异步返回的结果 如果没有await 会报user is undefined 获取不到
+        let res = await this.http.post("/api/login", {
+          mobile: this.phone,
+          password:this.password,
+          did:"151515"
+          // smscode: this.password
+        });
+        if (res.code == 200) {
+          console.log(res);
+          localStorage.setItem("token", res.data.Authorization);
+          this.$toasted.success("登录成功").goAway(1500);
+          this.$router.replace({ name: "index" });
+          // 通过后台给的数值来判断要显示的工作岗位
+        } else {
+          this.$toasted.error(res.message, { icon: "error" }).goAway(2000);
+        }
+      } catch (error) {
+        this.$toasted.error(error.message, { icon: "error" }).goAway(2000);
+      }
     }
   }
 };
