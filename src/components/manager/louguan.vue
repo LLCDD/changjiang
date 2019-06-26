@@ -90,34 +90,42 @@ export default {
     // 保洁考勤
     baojie(){
         console.log("保洁考勤")
+        this.$router.push('/baojiekao')
     },
     // 消防巡查
     xiaofang(){
         console.log("消防巡查")
+        this.$router.push('/xiaofangcha')
     },
     // 供水巡查
     gongshui(){
         console.log("供水巡查")
+        this.$router.push('/gongshuicha')
     },
     // 电梯巡查
     dianti(){
+      this.$router.push('/dianticha')
         console.log("电梯巡查")
     },
     // 管网巡查
     guangwang(){
         console.log("官网巡查")
+        this.$router.push('/wangguancha')
     },
     // 卫生绿化
     weisheng(){
         console.log("卫生绿化")
+        this.$router.push('/weishenglv')
     },
     // 装修违建
     zhuangxiu(){
         console.log("装修违建")
+        this.$router.push('/zhuangxiujian')
     },
     // 其他设备
     qita(){
         console.log("其他设备")
+        this.$router.push('/qitaa')
     }    
   }
 };

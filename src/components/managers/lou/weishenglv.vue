@@ -1,6 +1,6 @@
 <template>
   <div class="workorder">
-    <!-- 经理岗的工程岗的维修日志 -->
+    <!-- 经理岗的楼管岗的卫生绿化 -->
     <header>
       <p></p>
       <div>
@@ -26,10 +26,7 @@
         <div class="sheng">
           <p>上报员工：丽丽</p>
           <div v-for="(index) in 1" :key="index">
-            <p>任务类型：业主投诉</p>
-            <p>报修类型：水管</p>
-            <p>是否解决：是</p>
-            <p>花费明细：新水管50元，安装费50元</p>
+            <p>是否故障：是</p>
             <p>备注：无</p>
             <p>
               <strong>图片：</strong>
@@ -45,10 +42,7 @@
         <div class="sheng">
           <p>上报员工：丽丽</p>
           <div v-for="(index) in 1" :key="index">
-            <p>任务类型：业主投诉</p>
-            <p>报修类型：水管</p>
-            <p>是否解决：是</p>
-            <p>花费明细：新水管50元，安装费50元</p>
+             <p>是否故障：是</p>
             <p>备注：无</p>
             <p>
               <strong>图片：</strong>
@@ -91,7 +85,7 @@ import { DatetimePicker } from "vant";
 export default {
   data() {
     return {
-      msg: "维修日志",
+      msg: "卫生绿化",
       value1: 0,
       show: false,
       value2: "a",
@@ -125,7 +119,7 @@ export default {
     },
     // 消息的审批
     shenpi() {
-      this.$router.push("/shengong");
+      this.$router.push("/weishengsheng");
     },
     // 时间的选择
     change() {

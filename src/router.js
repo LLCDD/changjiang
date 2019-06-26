@@ -449,6 +449,182 @@ let router = new Router({
         show: true
       }
     },
+    // 经理岗的楼管岗的保洁考勤
+    {
+      path: '/baojiekao',
+      name: 'baojiekao',
+      component: () =>
+        import(/* webpackChunkName: "guanggaoshen" */ './components/managers/lou/baojiekao'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的楼管岗的保洁考勤审批
+    {
+      path: '/baojiesheng',
+      name: 'baojiesheng',
+      component: () =>
+        import(/* webpackChunkName: "guanggaoshen" */ './components/managers/lou/baojiesheng'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的楼管岗的消防巡查
+    {
+      path: '/xiaofangcha',
+      name: 'xiaofangcha',
+      component: () =>
+        import(/* webpackChunkName: "xiaofangcha" */ './components/managers/lou/xiaofangcha'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的楼管岗的消防巡查审批
+    {
+      path: '/xiaofangsheng',
+      name: 'xiaofangsheng',
+      component: () =>
+        import(/* webpackChunkName: "guanggaoshen" */ './components/managers/lou/xiaofangsheng'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的楼管岗的供水巡查
+    {
+      path: '/gongshuicha',
+      name: 'gongshuicha',
+      component: () =>
+        import(/* webpackChunkName: "gongshuicha" */ './components/managers/lou/gongshuicha'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的楼管岗的供水巡查审批
+    {
+      path: '/gongshuisheng',
+      name: 'gongshuisheng',
+      component: () =>
+        import(/* webpackChunkName: "guanggaoshen" */ './components/managers/lou/gongshuisheng'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的楼管岗的电梯巡查
+    {
+      path: '/dianticha',
+      name: 'dianticha',
+      component: () =>
+        import(/* webpackChunkName: "gongshuicha" */ './components/managers/lou/dianticha'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的楼管岗的电梯巡查审批
+    {
+      path: '/diantisheng',
+      name: 'diantisheng',
+      component: () =>
+        import(/* webpackChunkName: "diantisheng" */ './components/managers/lou/diantisheng'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的楼管岗的官网巡查
+    {
+      path: '/wangguancha',
+      name: 'wangguancha',
+      component: () =>
+        import(/* webpackChunkName: "gongshuicha" */ './components/managers/lou/wangguancha'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的楼管岗的官网巡查审批
+    {
+      path: '/wangguansheng',
+      name: 'wangguansheng',
+      component: () =>
+        import(/* webpackChunkName: "diantisheng" */ './components/managers/lou/wangguansheng'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的楼管岗的官网巡查
+    {
+      path: '/weishenglv',
+      name: 'weishenglv',
+      component: () =>
+        import(/* webpackChunkName: "weishenglv" */ './components/managers/lou/weishenglv'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的楼管岗的官网巡查审批
+    {
+      path: '/weishengsheng',
+      name: 'weishengsheng',
+      component: () =>
+        import(/* webpackChunkName: "diantisheng" */ './components/managers/lou/weishengsheng'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的楼管岗的装修违建
+    {
+      path: '/zhuangxiujian',
+      name: 'zhuangxiujian',
+      component: () =>
+        import(/* webpackChunkName: "weishenglv" */ './components/managers/lou/zhuangxiujian'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的楼管岗的装修违建审批
+    {
+      path: '/zhuangxiusheng',
+      name: 'zhuangxiusheng',
+      component: () =>
+        import(/* webpackChunkName: "diantisheng" */ './components/managers/lou/zhuangxiusheng'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的楼管岗的其他设施
+    {
+      path: '/qitaa',
+      name: 'qita',
+      component: () =>
+        import(/* webpackChunkName: "weishenglv" */ './components/managers/lou/qita'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的楼管岗的装修违建审批
+    {
+      path: '/qitasheng',
+      name: 'qitasheng',
+      component: () =>
+        import(/* webpackChunkName: "diantisheng" */ './components/managers/lou/qitasheng'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
   ]
 })
 

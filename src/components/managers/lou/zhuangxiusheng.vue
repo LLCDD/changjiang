@@ -1,6 +1,6 @@
 <template>
   <div class="workorder">
-    <!-- 经理岗的里的客服岗的来访日志的审批 -->
+    <!-- 经理岗的里的楼管岗的消防巡查审批 -->
     <header>
       <p></p>
       <div>
@@ -19,24 +19,24 @@
     </div>-->
     <section class="section">
       <div>
-        <p>登记员工：丽丽</p>
+        <p>上报员工：丽丽</p>
         <div v-for="(index) in 1" :key="index">
-          <p>访客姓名：张芳</p>
-          <p>访客电话：16666666666</p>
-          <p>被访业主：和谐小区3幢309室</p>
-          <p>备注：亲戚拜访</p>
-          <p>
-            <strong>图片：</strong>
-            <span v-for="(index) in 3" :key="index"></span>
-          </p>
+            <p>是否故障：好好</p>
+            <p>备注：无</p>
+            <p>
+                <strong>图片：</strong>
+                <span v-for="(index) in 3" :key="index"></span>
+            </p>
         </div>
       </div>
       <div class="tet">
-        <p>处理意见：</p>
-        <textarea :value="value" cols="30" rows="10" placeholder="请输入您的处理意见"></textarea>
+          <p>处理意见：</p>
+          <textarea :value="value" cols="30" rows="10" placeholder="请输入您的处理意见"></textarea>
       </div>
     </section>
-    <div class="fa" v-if="value =='' ">发送</div>
+    <div class="fa" v-if="value =='' ">
+        发送
+    </div>
   </div>
 </template>
 <script>
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       msg: "审批",
-      value: "世界i年底发的"
+      value:""
     };
   },
   methods: {
@@ -133,11 +133,11 @@ header > div > p > img {
   width: 100%;
 }
 .section > div > div {
-  padding: 0 0.3rem;
-  padding-bottom: 0.2rem;
+    padding: 0 0.3rem;
+    padding-bottom: 0.2rem;
 }
 .section > div > div > p {
-  margin-bottom: 0.04rem;
+    margin-bottom: 0.04rem;
 }
 .section > div > div > p > strong {
     float: left
@@ -162,24 +162,24 @@ header > div > p > img {
   overflow: auto;
 }
 .section > .tet {
-  margin-top: 0.2rem;
-  height: 2rem;
+    margin-top: 0.2rem;
+    height: 2rem;
 }
 .section > .tet > textarea {
-  height: 1rem;
-  margin-left: 0.3rem;
-  width: 80%;
+    height: 1rem;
+    margin-left: 0.3rem;
+    width: 80%;
 }
 .fa {
-  height: 1rem;
-  width: 100%;
-  background: #eab617;
-  position: fixed;
-  bottom: 0;
-  text-align: center;
-  line-height: 1rem;
-  font-size: 0.34rem;
-  color: #fff;
+    height: 1rem;
+    width: 100%;
+    background: #eab617;
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    line-height: 1rem;
+    font-size: 0.34rem;
+    color: #fff
 }
 </style>
 
