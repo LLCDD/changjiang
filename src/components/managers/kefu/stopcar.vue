@@ -1,6 +1,6 @@
 <template>
   <div class="workorder">
-    <!-- 经理岗的里的客服岗的回访日志 -->
+    <!-- 经理岗的里的客服岗的停车日志 -->
     <header>
       <p></p>
       <div>
@@ -18,16 +18,18 @@
       </van-dropdown-menu>
     </div>
     <section>
-      <div v-if="bool == 0" v-for="(index) in 3" :key="index">
+      <div v-if="bool == 0" v-for="(index) in 1" :key="index">
         <p class="timer">
           <span>今天 13:45</span>
         </p>
         <!-- 审批的样式 -->
         <div class="sheng">
-          <p>回访人员：丽丽</p>
-          <div v-for="(index) in 3" :key="index">
-            <p>回访业主1：和谐小区3幢309室</p>
-            <p>物业费金额 ：600元</p>
+          <p>登记员工：丽丽</p>
+          <div v-for="(index) in 1" :key="index">
+            <p>车牌号：豫S73058</p>
+            <p>停车时长：3小时</p>
+            <p>支付金额：15元</p>
+            <p>备注：停车</p>
           </div>
           <p @click="shenpi">已审批</p>
         </div>
@@ -37,9 +39,11 @@
         <!-- 审批的样式 -->
         <div class="sheng">
           <p>回访人员：丽丽</p>
-          <div v-for="(index) in 3" :key="index">
-            <p>回访业主1：和谐小区3幢309室</p>
-            <p>物业费金额 ：600元</p>
+          <div v-for="(index) in 1" :key="index">
+            <p>车牌号：豫S73058</p>
+            <p>停车时长：3小时</p>
+            <p>支付金额：15元</p>
+            <p>备注：停车</p>
           </div>
           <p style="color:#eab617" @click="shenpi">审批</p>
         </div>
@@ -77,7 +81,7 @@ import { DatetimePicker } from 'vant';
 export default {
   data() {
     return {
-      msg: "回访日志",
+      msg: "停车日志",
       value1: 0,
       show: false,
       value2: "a",
@@ -111,7 +115,7 @@ export default {
     },
     // 消息的审批
     shenpi() {
-      this.$router.push("/shenpi");
+      this.$router.push("/stoppi");
     },
     // 时间的选择
     change(){

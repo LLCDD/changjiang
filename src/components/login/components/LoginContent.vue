@@ -74,7 +74,7 @@ export default {
       }
     },
     async login() {
-      // this.$router.replace({ name: "index" });
+      this.$router.replace({ name: "index" });
 
       if (!this.phone || !this.password) {
         this.$toasted.error("请输入完善信息", { icon: "error" }).goAway(2000);

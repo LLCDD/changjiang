@@ -361,6 +361,94 @@ let router = new Router({
         show: true
       }
     },
+    // 经理岗的客服来访日志的 visiting
+    {
+      path: '/visiting',
+      name: 'visiting',
+      component: () =>
+        import(/* webpackChunkName: "service" */ './components/managers/kefu/laifang'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的客服来访日志的审批
+    {
+      path: '/laifangshen',
+      name: 'laifangshen',
+      component: () =>
+        import(/* webpackChunkName: "service" */ './components/managers/kefu/laifangshen'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的客服来访日志的停车日志 stopcar
+    {
+      path: '/stopcar',
+      name: 'stopcar',
+      component: () =>
+        import(/* webpackChunkName: "stopcar" */ './components/managers/kefu/stopcar'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗客服来访日志的审批
+    {
+      path: '/stoppi',
+      name: 'stoppi',
+      component: () =>
+        import(/* webpackChunkName: "stoppi" */ './components/managers/kefu/stoppi'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 经理岗的客服广告日志 guangao
+    {
+      path: '/guangao1',
+      name: 'guangao',
+      component: () =>
+        import(/* webpackChunkName: "guangao" */ './components/managers/kefu/guangao'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // guanggaoshen  经理岗的客服广告日志的审批
+    {
+      path: '/guanggaoshen',
+      name: 'guanggaoshen',
+      component: () =>
+        import(/* webpackChunkName: "guanggaoshen" */ './components/managers/kefu/guanggaoshen'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // gongcheng  经理岗的工程岗维修日志
+    {
+      path: '/gongvheng',
+      name: 'gongvheng',
+      component: () =>
+        import(/* webpackChunkName: "guanggaoshen" */ './components/managers/gongcheng/gongcheng'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // shengong 经理岗的工程维修审批
+    {
+      path: '/shengong',
+      name: 'shengong',
+      component: () =>
+        import(/* webpackChunkName: "guanggaoshen" */ './components/managers/gongcheng/shenggong'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
   ]
 })
 

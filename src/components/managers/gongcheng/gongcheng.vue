@@ -1,6 +1,6 @@
 <template>
   <div class="workorder">
-    <!-- 经理岗的里的客服岗的回访日志 -->
+    <!-- 经理岗的工程岗的维修日志 -->
     <header>
       <p></p>
       <div>
@@ -24,10 +24,14 @@
         </p>
         <!-- 审批的样式 -->
         <div class="sheng">
-          <p>回访人员：丽丽</p>
-          <div v-for="(index) in 3" :key="index">
-            <p>回访业主1：和谐小区3幢309室</p>
-            <p>物业费金额 ：600元</p>
+          <p>上报员工：丽丽</p>
+          <div v-for="(index) in 1" :key="index">
+            <p>任务类型：业主投诉</p>
+            <p>报修类型：水管</p>
+            <p>是否解决：是</p>
+            <p>花费明细：新水管50元，安装费50元</p>
+            <p>备注：无</p>
+            <p>图片：</p>
           </div>
           <p @click="shenpi">已审批</p>
         </div>
@@ -36,15 +40,19 @@
         </p>
         <!-- 审批的样式 -->
         <div class="sheng">
-          <p>回访人员：丽丽</p>
-          <div v-for="(index) in 3" :key="index">
-            <p>回访业主1：和谐小区3幢309室</p>
-            <p>物业费金额 ：600元</p>
+          <p>上报员工：丽丽</p>
+          <div v-for="(index) in 1" :key="index">
+            <p>任务类型：业主投诉</p>
+            <p>报修类型：水管</p>
+            <p>是否解决：是</p>
+            <p>花费明细：新水管50元，安装费50元</p>
+            <p>备注：无</p>
+            <p>图片：</p>
           </div>
           <p style="color:#eab617" @click="shenpi">审批</p>
         </div>
       </div>
-      <div v-if="bool == 1" >
+      <div v-if="bool == 1">
         <van-collapse v-model="activeNames" @change="change">
           <van-collapse-item :title="valuey" name="1">
             <p class="cnetes">
@@ -56,7 +64,7 @@
       </div>
     </section>
     <!-- 时间的选择 -->
-     <van-popup v-model="timer" position="bottom">
+    <van-popup v-model="timer" position="bottom">
       <van-datetime-picker
         v-model="currentDate"
         type="date"
@@ -72,12 +80,12 @@
 <script>
 import { DropdownMenu, DropdownItem } from "vant";
 import { Collapse, CollapseItem } from "vant";
-import { DatetimePicker } from 'vant';
+import { DatetimePicker } from "vant";
 // Vue.use(DropdownMenu).use(DropdownItem);
 export default {
   data() {
     return {
-      msg: "回访日志",
+      msg: "维修日志",
       value1: 0,
       show: false,
       value2: "a",
@@ -88,12 +96,12 @@ export default {
         { text: "已审批", value: "c" }
       ],
       bool: 0,
-      activeNames: ['1'],
-      valuey:"12121212",
+      activeNames: ["1"],
+      valuey: "12121212",
       minDate: new Date(2000, 1, 1),
       maxDate: new Date(),
-      timer:false,
-      currentDate: "",
+      timer: false,
+      currentDate: ""
     };
   },
   methods: {
@@ -111,33 +119,39 @@ export default {
     },
     // 消息的审批
     shenpi() {
-      this.$router.push("/shenpi");
+      this.$router.push("/shengong");
     },
     // 时间的选择
-    change(){
-      this.timer = true
+    change() {
+      this.timer = true;
     },
     formatter(type, value) {
-      if (type === 'year') {
+      if (type === "year") {
         return `${value}年`;
-      } else if (type === 'month') {
-        return `${value}月`
-      } else if (type === 'day') {
-        return `${value}日`
+      } else if (type === "month") {
+        return `${value}月`;
+      } else if (type === "day") {
+        return `${value}日`;
       }
       return value;
     },
     // 时间的关闭
-    timerg(){
-      this.timer = false
+    timerg() {
+      this.timer = false;
     },
     // 时间的开始
-    timerok(value){
-      var date = new Date(value);  
-      var date_value=date.getFullYear() + '年' +(date.getMonth() + 1) + '月' + date.getDate() + '日';  
-      this.valuey = date_value
-      this.timer = false
-      this.activeNames = ['1']
+    timerok(value) {
+      var date = new Date(value);
+      var date_value =
+        date.getFullYear() +
+        "年" +
+        (date.getMonth() + 1) +
+        "月" +
+        date.getDate() +
+        "日";
+      this.valuey = date_value;
+      this.timer = false;
+      this.activeNames = ["1"];
     }
   },
   watch: {
@@ -165,10 +179,10 @@ export default {
   overflow: hidden;
 }
 .workorder >>> .van-picker__cancel {
-  color: #eab617
+  color: #eab617;
 }
 .workorder >>> .van-picker__confirm {
-  color: #eab617
+  color: #eab617;
 }
 .workorder >>> .down::after {
   display: none;
@@ -264,7 +278,7 @@ section {
 }
 /* 统计的样式开始 */
 .workorder >>> .van-collapse-item__content {
-  padding: 0
+  padding: 0;
 }
 .cnetes {
   height: 1.12rem;
@@ -275,7 +289,6 @@ section {
   color: #000;
   font-size: 0.3rem;
 }
-
 </style>
 
 

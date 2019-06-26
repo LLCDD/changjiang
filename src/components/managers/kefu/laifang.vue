@@ -1,6 +1,6 @@
 <template>
   <div class="workorder">
-    <!-- 经理岗的里的客服岗的回访日志 -->
+    <!-- 经理岗的里的客服岗的来访日志 -->
     <header>
       <p></p>
       <div>
@@ -77,7 +77,7 @@ import { DatetimePicker } from 'vant';
 export default {
   data() {
     return {
-      msg: "回访日志",
+      msg: "来访日志",
       value1: 0,
       show: false,
       value2: "a",
@@ -111,7 +111,7 @@ export default {
     },
     // 消息的审批
     shenpi() {
-      this.$router.push("/shenpi");
+      this.$router.push("/laifangshen");
     },
     // 时间的选择
     change(){

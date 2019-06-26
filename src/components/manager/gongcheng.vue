@@ -15,7 +15,7 @@
 
     <!-- 中间的内容开始 -->
     <div class="center">
-      <!-- 客服岗 -->
+      <!-- 工程岗 -->
       <div class="weixiu" @click="xuirizhi">
           <p>
             <img src="../../assets/img/xiuday.png" alt>
@@ -44,6 +44,7 @@ export default {
     },
     // 维修日志
     xuirizhi(){
+      this.$router.push('/gongvheng')
         console.log("维修日志")
     }
     

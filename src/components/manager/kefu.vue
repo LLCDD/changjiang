@@ -72,14 +72,17 @@ export default {
     // 来访日志
     laifang(){
         console.log("来访日志")
+        this.$router.push('/visiting')
     },
     // 停车日志
     stopmoney(){
         console.log("停车日志")
+        this.$router.push('/stopcar')
     },
     // 广告日志
     guangao(){
         console.log("广告日志")
+        this.$router.push('/guangao1')
     }
     
   }

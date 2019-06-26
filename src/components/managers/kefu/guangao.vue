@@ -1,6 +1,6 @@
 <template>
   <div class="workorder">
-    <!-- 经理岗的里的客服岗的回访日志 -->
+    <!-- 经理岗的里的客服岗的来访日志 -->
     <header>
       <p></p>
       <div>
@@ -24,10 +24,13 @@
         </p>
         <!-- 审批的样式 -->
         <div class="sheng">
-          <p>回访人员：丽丽</p>
-          <div v-for="(index) in 3" :key="index">
-            <p>回访业主1：和谐小区3幢309室</p>
-            <p>物业费金额 ：600元</p>
+          <p>上报员工：丽丽</p>
+          <div v-for="(index) in 1" :key="index">
+            <p>商家信息：好又多超市</p>
+            <p>广告位置：电梯</p>
+            <p>广告金额：100元</p>
+            <p>开始时间：2019-1-1</p>
+            <p>结束时间：2019-1-1</p>
           </div>
           <p @click="shenpi">已审批</p>
         </div>
@@ -36,10 +39,13 @@
         </p>
         <!-- 审批的样式 -->
         <div class="sheng">
-          <p>回访人员：丽丽</p>
-          <div v-for="(index) in 3" :key="index">
-            <p>回访业主1：和谐小区3幢309室</p>
-            <p>物业费金额 ：600元</p>
+          <p>上报员工：丽丽</p>
+          <div v-for="(index) in 1" :key="index">
+            <p>商家信息：好又多超市</p>
+            <p>广告位置：电梯</p>
+            <p>广告金额：100元</p>
+            <p>开始时间：2019-1-1</p>
+            <p>结束时间：2019-1-1</p>
           </div>
           <p style="color:#eab617" @click="shenpi">审批</p>
         </div>
@@ -77,7 +83,7 @@ import { DatetimePicker } from 'vant';
 export default {
   data() {
     return {
-      msg: "回访日志",
+      msg: "广告日志",
       value1: 0,
       show: false,
       value2: "a",
@@ -111,7 +117,7 @@ export default {
     },
     // 消息的审批
     shenpi() {
-      this.$router.push("/shenpi");
+      this.$router.push("/guanggaoshen");
     },
     // 时间的选择
     change(){

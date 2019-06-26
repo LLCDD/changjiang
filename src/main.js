@@ -59,7 +59,7 @@ console.log(process.env.NODE_ENV)
 function plusReady() {
   checkUpdate()
   // 字体颜色
-  window.plus.navigator.setStatusBarStyle('light');
+  window.plus.navigator.setStatusBarStyle('dart');
   // 头部背景颜色
   window.plus.navigator.setStatusBarBackground('#000000');
   // 设置一个全局plusready状态
