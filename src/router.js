@@ -625,6 +625,28 @@ let router = new Router({
         show: true
       }
     },
+    // 便利岗的订单通知
+    {
+      path: '/dingdantong',
+      name: 'dingdantong',
+      component: () =>
+        import(/* webpackChunkName: "diantisheng" */ './components/bianligang/Commodity/dingdan.vue'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 便利岗的订单详情
+    {
+      path: '/dingdanxq',
+      name: 'dingdanxq',
+      component: () =>
+        import(/* webpackChunkName: "diantisheng" */ './components/bianligang/Commodity/danxiangqin.vue'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
   ]
 })
 

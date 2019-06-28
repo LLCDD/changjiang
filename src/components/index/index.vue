@@ -41,7 +41,7 @@
           </p>
           <span>商品管理</span>
         </div>
-        <div>
+        <div @click="tongzhidian">
           <p>
             <img src="../../assets/img/tongzhi.png" alt>
           </p>
@@ -221,7 +221,7 @@ export default {
     return {
       msg: "经理岗",
       //   通过改变一个变量来改变工作岗位
-      biaoshi: 1,
+      biaoshi: 4,
       bool: true,
       // 控制侧边栏的显示和隐藏
       popupVisible: false,
@@ -366,6 +366,11 @@ export default {
     // 3.工程岗的日志
     gongchenggang(){
       this.$router.push('/managergongcheng')
+    },
+    // 4.便利岗的开始
+    // 4.1 便利岗的订单通知
+    tongzhidian(){
+      this.$router.push('/dingdantong')
     }
   }
 };
