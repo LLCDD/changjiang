@@ -221,7 +221,7 @@ export default {
     return {
       msg: "经理岗",
       //   通过改变一个变量来改变工作岗位
-      biaoshi: 4,
+      biaoshi: 1,
       bool: true,
       // 控制侧边栏的显示和隐藏
       popupVisible: false,
