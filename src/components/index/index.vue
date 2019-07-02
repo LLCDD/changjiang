@@ -34,8 +34,8 @@
         </div>
       </div>
       <!-- 便利岗 -->
-      <div class="guanli" v-if="!bool">
-        <div>
+      <div class="guanli" v-if="!bool" >
+        <div @click="pin">
           <p>
             <img src="../../assets/img/guanli.png" alt>
           </p>
@@ -221,7 +221,7 @@ export default {
     return {
       msg: "经理岗",
       //   通过改变一个变量来改变工作岗位
-      biaoshi: 1,
+      biaoshi: 4,
       bool: true,
       // 控制侧边栏的显示和隐藏
       popupVisible: false,
@@ -371,6 +371,10 @@ export default {
     // 4.1 便利岗的订单通知
     tongzhidian(){
       this.$router.push('/dingdantong')
+    },
+    // 便利岗的商品管理
+    pin(){
+      this.$router.push('/guanshang')
     }
   }
 };

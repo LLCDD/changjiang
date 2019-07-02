@@ -1,33 +1,70 @@
 <template>
-  <!-- 便利岗的订单通知 的商品管理 -->
+  <!-- 便利岗的订单通知 -->
   <div class="MoreSettings">
     <header class="header">
       <p></p>
       <div>
         <p @click="fanhui">
-          <img class="fanhui" src="../../../assets/img/left0.png" alt>
+          <img class="fanhui" src="../../../assets/img/left0.png" alt />
+        </p>
+        <p  @click="tianjia">
+          <img  class="rihgt" src="../../../assets/img/tian.png" alt />
         </p>
         <p>{{ msg }}</p>
+        
       </div>
     </header>
+    <p class="text">
+      <input type="text" placeholder="请输入商品信息" />
+    </p>
+    <van-dropdown-menu>
+      <van-dropdown-item v-model="value1" :options="option1" />
+      <van-dropdown-item v-model="value2" :options="option2" />
+    </van-dropdown-menu>
     <div class="senter">
-      <van-swipe-cell :right-width="60" :left-width="60">
-        <van-button square slot="left" type="danger" text="选择"/>
-        <van-cell :border="false" title="单元格" value="内容"/>
-        <van-button @click="aa" square slot="right" type="danger" text="删除"/>
-      </van-swipe-cell>
+      <!-- @click="daxq" -->
+      <div v-for="(index) in 20" :key="index" @click="xq">
+        <van-swipe-cell :right-width="60" :left-width="60">
+          <van-button square slot="left" type="danger" text="选择" />
+          <van-cell :border="false" title="单元格" value="内容" />
+          <img class="img" src="../../../assets/img/rightf.png" alt="">
+          <van-button @click="aa" square slot="right" type="danger" text="删除" />
+        </van-swipe-cell>
+        <!-- <div>
+              <p>往来于</p>
+              <p>阿道夫看到了付款的看法得分</p>
+          </div>
+          <p v-if="status == 0" style="font-size:0.2rem;color:#a3a5a8">4月24日</p>
+        <p v-else style="font-size:0.2rem;color:#eab617">4月24日</p>-->
+      </div>
     </div>
   </div>
 </template>
 <script>
+import { Tab, Tabs } from "vant";
 import { SwipeCell } from "vant";
-
+import { DropdownMenu, DropdownItem } from "vant";
 export default {
   data() {
     return {
-      msg: "订单详情",
+      msg: "商品管理",
       active: 0,
-      status: 0
+      status: 0,
+      value1: 0,
+      value2: 'a',
+      option1: [
+        { text: '全部', value: 0 },
+        { text: '精品', value: 1 },
+        { text: '新品', value: 2 },
+        { text: '热销', value: 3 },
+        { text: '特价', value: 4 },
+        { text: '全部推荐', value: 5 }
+      ],
+      option2: [
+        { text: '下架', value: 'a' },
+        { text: '上架', value: 'b' },
+        { text: '全部', value: 'c' },
+      ]
     };
   },
   methods: {
@@ -36,12 +73,31 @@ export default {
       this.$router.go(-1);
     },
     // 待发货
-    aa(){
-        console.log("44115")
+    daifa(e) {
+      console.log(e);
+      // 代发货
+      if (e == 0) {
+        console.log("代发货");
+      } else if (e == 1) {
+        console.log("已发货");
+      } else {
+        console.log("退款申请");
+      }
     },
     // 订单详情
     daxq() {
-      console.log(1);
+      this.$router.push("/dingdanxq");
+    },
+    // 删除
+    aa() {
+      console.log("232");
+    },
+    // 去添加商品的页面
+    tianjia(){
+      this.$router.push('/shanpingjia')
+    },
+    xq(){
+      this.$router.push('/shangpxq')
     }
   }
 };
@@ -50,18 +106,44 @@ export default {
 .MoreSettings {
   height: 100%;
   width: 100%;
-  background: #ddd;
+  background: #fff;
 }
-
+.MoreSettings >>> .van-dropdown-menu {
+  background: #eee;
+  height: 0.9rem;
+  font-size: 0.26rem;
+}
+.MoreSettings >>> .van-cell {
+  border-bottom: 1px solid #ccc;
+}
+.MoreSettings >>> .van-tabs__wrap {
+  height: 0.9rem;
+  background: #eee;
+}
+.MoreSettings >>> .van-dropdown-menu__title {
+  color: #eab617
+}
+.MoreSettings >>> .van-tab {
+  background: #eee;
+}
+.MoreSettings >>> .van-tab--active {
+  color: #eab617;
+}
+.MoreSettings >>> .van-tabs__line {
+  background: #eab617;
+}
+.MoreSettings >>> .van-cell__value {
+  padding-right: 0.3rem;
+}
 .header {
   height: 1.3rem;
   width: 100%;
-  background: #fff;
+  background: #eeeeee;
 }
 .header > p {
   height: 0.42rem;
   width: 100%;
-  background: #fff;
+  background: #eeeeee;
 }
 .header > div {
   height: 0.88rem;
@@ -76,6 +158,12 @@ export default {
   float: left;
   position: absolute;
 }
+.rihgt {
+  position: absolute;
+  right: 0rem;
+  height: 0.8rem;
+  width: 0.8rem
+}
 .fanhui {
   float: left;
   height: 0.8rem;
@@ -85,9 +173,30 @@ export default {
   top: 0.04rem;
 }
 .senter {
-  background: #eeeeee;
+  background: #fff;
   /* padding: 0 0.3rem; */
-  /* height: 78%; */
+  height: 78%;
   overflow-y: auto;
+}
+.senter > div {
+  position: relative;
+}
+ .img {
+  position: absolute;
+  right: 0rem;
+  height: 0.7rem;
+  width: 0.5rem;
+  top: 0.1rem
+}
+
+.text {
+  background: #eeeeee;
+}
+.text > input {
+  width: 94%;
+  margin-left: 3%;
+  height: 0.7rem;
+  padding-left: 0.2rem;
+  border-radius: 0.1rem;
 }
 </style>

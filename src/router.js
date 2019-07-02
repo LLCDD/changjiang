@@ -647,6 +647,39 @@ let router = new Router({
         show: true
       }
     },
+    // 便利岗的商品管理
+    {
+      path: '/guanshang',
+      name: 'guanshang',
+      component: () =>
+        import(/* webpackChunkName: "diantisheng" */ './components/bianligang/Commoditymanagement/shangpin.vue'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 便利岗的商品管理的商品添加 shanpingjia
+    {
+      path: '/shanpingjia',
+      name: 'shanpingjia',
+      component: () =>
+        import(/* webpackChunkName: "diantisheng" */ './components/bianligang/Commoditymanagement/shanpingjia.vue'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
+    // 便利岗的商品管理的商品详情 shangpxq
+    {
+      path: '/shangpxq',
+      name: 'shangpxq',
+      component: () =>
+        import(/* webpackChunkName: "diantisheng" */ './components/bianligang/Commoditymanagement/shangpxq.vue'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
   ]
 })
 
