@@ -34,7 +34,7 @@
         </div>
       </div>
       <!-- 便利岗 -->
-      <div class="guanli" v-if="!bool" >
+      <div class="guanli" v-if="!bool" style="margin-bottom:20px" >
         <div @click="pin">
           <p>
             <img src="../../assets/img/guanli.png" alt>
@@ -53,7 +53,7 @@
       <p class="p" v-if="bool">工作日志</p>
 
       <!-- 经理岗 -->
-      <div v-if="biaoshi == 1">
+      <div v-if="biaoshi == 'manager'">
         <div class="weixiu" @click="kefugang">
           <p>
             <img src="../../assets/img/kefu.png" alt>
@@ -75,7 +75,7 @@
       </div>
 
       <!-- 工程岗 -->
-      <div v-if="biaoshi == 0">
+      <div v-if="biaoshi == 'engineer'">
         <div class="weixiu" @click="xuirizhi">
           <p>
             <img src="../../assets/img/xiuday.png" alt>
@@ -85,7 +85,7 @@
       </div>
 
       <!-- 客服岗 -->
-      <div v-if="biaoshi == 2">
+      <div v-if="biaoshi == 'kefu'">
         <div class="weixiu" @click="huifang">
           <p>
             <img src="../../assets/img/hunfang.png" alt>
@@ -125,7 +125,7 @@
       </div>
 
       <!-- 楼管岗 -->
-      <div v-if="biaoshi == 3">
+      <div v-if="biaoshi == 'security'">
         <div class="weixiu" @click="baojie">
           <p>
             <img src="../../assets/img/baojie.png" alt>
@@ -210,6 +210,7 @@
         <p @click="colse">取消</p>
       </div>
     </mt-popup>
+    <!-- <input style="border:1px solid #ccc" type="text" value="" v-model="biaoshi"> -->
   </div>
 </template>
 
@@ -221,7 +222,7 @@ export default {
     return {
       msg: "经理岗",
       //   通过改变一个变量来改变工作岗位
-      biaoshi: 4,
+      biaoshi: localStorage.getItem('role'),
       bool: true,
       // 控制侧边栏的显示和隐藏
       popupVisible: false,
@@ -231,15 +232,19 @@ export default {
   },
   mounted() {
     // 通过后台返回的值来判断要显示的用户权限
-    if (this.biaoshi == 1) {
+    if (this.biaoshi == 'manager') {
+      this.bool = true;
       this.msg = "经理岗";
-    } else if (this.biaoshi == 0) {
+    } else if (this.biaoshi == 'engineer') {
+       this.bool = true;
       this.msg = "工程岗";
-    } else if (this.biaoshi == 2) {
+    } else if (this.biaoshi == 'kefu') {
       this.msg = "客服岗";
-    } else if (this.biaoshi == 3) {
+       this.bool = true;
+    } else if (this.biaoshi == 'security') {
       this.msg = "楼管岗";
-    } else if (this.biaoshi == 4) {
+       this.bool = true;
+    } else if (this.biaoshi == 'salesclerk') {
       this.bool = false;
       this.msg = "便利岗";
     }
@@ -278,16 +283,16 @@ export default {
     },
     // 通过判断biaoshi的变化来  判断工程岗位跳转的路径
     Workorder() {
-      if (this.biaoshi == 0) {
+      if (this.biaoshi == 'engineer') {
         // 工程岗的工作通知
         this.$router.push("/workorder");
-      } else if (this.biaoshi == 2) {
+      } else if (this.biaoshi == 'kefu') {
             // 客服岗的工作通知
         this.$router.push("/worktong");
-      } else if(this.biaoshi == 3){
+      } else if(this.biaoshi == 'security'){
         // 楼管岗的工作通知
         this.$router.push('/workzhi')
-      }else if(this.biaoshi == 1){
+      }else if(this.biaoshi == 'manager'){
         // 经理岗的工作通知
         this.$router.push('/jinglitongzhi')
       }

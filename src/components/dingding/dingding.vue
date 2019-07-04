@@ -129,7 +129,13 @@ export default {
       showy:false
     };
   },
-  mounted() {},
+  mounted() {
+    this.http.get('/api/sign').then(res =>{
+      console.log(res)
+      this.shang = res.data.sign_in_date
+      this.xia = res.data.sign_out_date
+    })
+  },
   methods: {
     //   返回的事件
     fanhui() {

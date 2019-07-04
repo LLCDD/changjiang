@@ -5,7 +5,7 @@
       <p></p>
       <div>
         <p @click="fanhui">
-          <img class="fanhui" src="../../assets/img/left0.png" alt>
+          <img class="fanhui" src="../../assets/img/left0.png" alt />
         </p>
         <p>{{ msg }}</p>
       </div>
@@ -13,37 +13,40 @@
     <div class="senter">
       <p>
         <span>报修业主：</span>
-        <input type="text" placeholder="请输入业主信息">
+        <input v-model="name" type="text" placeholder="请输入业主信息" />
       </p>
       <p>
         <span>业主电话：</span>
-        <input type="text" placeholder="请输入业主电话">
+        <input v-model="phone" type="text" placeholder="请输入业主电话" />
       </p>
       <div @click="py">
         <p>报修类型</p>
         <p>
           <span>{{ msg1 }}</span>
-          <img src="../../assets/img/rightf.png" alt>
+          <img src="../../assets/img/rightf.png" alt />
         </p>
       </div>
       <p class="last">
         <span>备注：</span>
-        <textarea name placeholder="请输入相关备注" id cols="30" rows="10"></textarea>
+        <textarea v-model="text" placeholder="请输入相关备注" id cols="30" rows="10"></textarea>
       </p>
     </div>
     <!-- 图片的上传 -->
     <div class="updata">
       <p>图片</p>
       <div>
+        <p v-for="(item,index) in url" :key="index">
+          <img :src="item" alt />
+        </p>
         <p>
-          <van-uploader style="height:1rem;width:1rem;background" :after-read="afterRead"/>
+          <van-uploader style="height:1rem;width:1rem;background" :after-read="afterRead" />
         </p>
       </div>
     </div>
     <van-popup v-model="show" position="bottom">
-      <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm"/>
+      <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" />
     </van-popup>
-    <button>提交</button>
+    <button @click="tijiao">提交</button>
   </div>
 </template>
 <script>
@@ -54,10 +57,31 @@ export default {
   data() {
     return {
       msg: "业主报修",
-      columns: ["支付宝", "微信"],
+      columns: [],
       show: false,
-      msg1: "请选择"
+      msg1: "请选择",
+      columns1: [],
+      // 报修id
+      id: "",
+      url: [],
+      // 报修业主
+      name: "",
+      // 业主电话
+      phone: "",
+      // 保修的备注
+      text: ""
     };
+  },
+  mounted() {
+    this.http.get("/api/maintenance/cate").then(res => {
+      console.log(res);
+      this.columns1 = res.data.cate;
+      var arr = [];
+      for (var i = 0; i < res.data.cate.length; i++) {
+        arr.push(res.data.cate[i].position_name);
+      }
+      this.columns = arr;
+    });
   },
   methods: {
     // 返回按钮
@@ -76,12 +100,33 @@ export default {
       // 选择认为类型的确认事件
       console.log(e);
       this.msg1 = e;
+      console.log(this.columns.indexOf(e));
+      this.id = this.columns1[this.columns.indexOf(e)].position_id;
       this.show = false;
     },
     // 图片上传
     afterRead(file) {
       // 此时可以自行将文件上传至服务器
-      console.log(file);
+      console.log(file.content);
+      var arr = this.url;
+      arr.push(file.content);
+      this.url = arr;
+    },
+    // 最后的提交事件
+    tijiao() {
+      this.http.post("/api/maintenance", {
+        yezhu_id: this.name,
+        yezhu_tel: this.phone,
+        remark: this.text,
+        cate_name:this.id,
+        images:this.url
+      }).then(res =>{
+        this.$toasted.success(res.message).goAway(1000)
+       this.$router.go(-1);
+      }).catch(res =>{
+        this.$toasted.error(res.message).goAway(1000)
+
+      });
     }
   }
 };
@@ -92,8 +137,14 @@ export default {
   width: 100%;
   background: #eeeeee;
 }
+.MoreSettings >>> .van-uploader__upload {
+  height: 1rem;
+  width: 1rem;
+  overflow: hidden;
+  margin: 0;
+}
 input {
-  background: none
+  background: none;
 }
 .MoreSettings >>> .van-picker__cancel {
   color: #eab617;
@@ -204,6 +255,16 @@ button {
   margin-top: 0.2rem;
 }
 .updata > div > p {
+  height: 1rem;
+  width: 1rem;
+  float: left;
+  margin-right: 0.2rem;
+}
+.updata > div > p > img {
+  height: 100%;
+  width: 100%;
+}
+.updata > div > :last-child {
   height: 1rem;
   width: 1rem;
   background: url("../../assets/img/updata.png") no-repeat;

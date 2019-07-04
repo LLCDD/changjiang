@@ -74,7 +74,7 @@ export default {
       }
     },
     async login() {
-      this.$router.replace({ name: "index" });
+      // this.$router.replace({ name: "index" });
 
       if (!this.phone || !this.password) {
         this.$toasted.error("请输入完善信息", { icon: "error" }).goAway(2000);
@@ -85,12 +85,13 @@ export default {
         let res = await this.http.post("/api/login", {
           mobile: this.phone,
           password:this.password,
-          did:"151515"
+          did:""
           // smscode: this.password
         });
         if (res.code == 200) {
           console.log(res);
           localStorage.setItem("token", res.data.Authorization);
+          localStorage.setItem("role",res.data.role[0])
           this.$toasted.success("登录成功").goAway(1500);
           this.$router.replace({ name: "index" });
           // 通过后台给的数值来判断要显示的工作岗位

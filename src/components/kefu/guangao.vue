@@ -13,19 +13,19 @@
     <div class="senter">
       <p>
         <span>商家名称：</span>
-        <input type="text" placeholder="请输入商家信息">
+        <input v-model="shangname" type="text" placeholder="请输入商家信息">
       </p>
       <p>
         <span>商家电话：</span>
-        <input type="text" placeholder="请输入商家电话">
+        <input v-model="shangphone" type="text" placeholder="请输入商家电话">
       </p>
       <p>
         <span>广告位置：</span>
-        <input type="text" placeholder="请输入广告位置">
+        <input v-model="weizhi" type="text" placeholder="请输入广告位置">
       </p>
       <p>
         <span>广告金额：</span>
-        <input type="text" placeholder="请输入广告金额">
+        <input v-model="money" type="text" placeholder="请输入广告金额">
       </p>
       <div @click="start">
         <p>开始时间</p>
@@ -77,7 +77,7 @@
         @confirm="timerover"
       />
     </van-popup>
-    <button>提交</button>
+    <button @click="tijiao">提交</button>
   </div>
 </template>
 <script>
@@ -88,10 +88,13 @@ export default {
   data() {
     return {
       msg: "广告费",
-      columns: ["支付宝", "微信"],
+      columns: ["支付宝", "微信","现金"],
       show: false,
+      // 支付方式
       msg1: "请选择",
+      // 结束时间
       msg2: "请选择",
+      // 开始时间
       msg3: "请选择",
       currentDate: "",
       minDate: new Date(2000, 1, 1),
@@ -99,7 +102,15 @@ export default {
       //   开始时间
       show1: false,
       //   结束时间
-      show2: false
+      show2: false,
+      // 商家名称
+      shangname:"",
+      // 商家电话
+      shangphone:"",
+      // 广告位置
+      weizhi:"",
+      // 广告金额
+      money:''
     };
   },
   methods: {
@@ -173,6 +184,26 @@ export default {
     // 结束时间的开启
     jiehsu() {
       this.show2 = true;
+    },
+    // 最后的提交
+    tijiao(){
+      this.http
+        .post("/api/ad", {
+          shop_name: this.shangname,
+          shop_tel: this.shangphone,
+          pay: this.msg1,
+          start_at:this.msg3,
+          end_at:this.msg2,
+          ad_money:this.money,
+          ad_position:this.weizhi
+        })
+        .then(res => {
+          this.$toasted.error(res.message).goAway(1000);
+          this.$router.go(-1);
+        })
+        .catch(res => {
+          this.$toasted.error(res.message).goAway(1000);
+        });
     }
   }
 };

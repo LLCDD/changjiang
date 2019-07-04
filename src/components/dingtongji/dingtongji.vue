@@ -59,11 +59,11 @@
     <!-- 底部 -->
     <footer>
       <p>
-        <img @click="daka" src="../../assets/img/tongji.png" alt>
+        <img @click="daka" src="../../assets/img/nonn.png" alt>
         <span>打卡</span>
       </p>
       <p>
-        <img src="../../assets/img/daka_s.png" alt>
+        <img src="../../assets/img/yell.png" alt>
         <span>统计</span>
       </p>
     </footer>
@@ -210,7 +210,8 @@ footer > p {
   text-align: center;
 }
 footer > p > img {
-  height: 0.6rem;
+  height: 0.5rem;
+  margin-top: 0.1rem
 }
 footer > p > span {
   display: block;

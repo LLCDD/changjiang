@@ -83,6 +83,12 @@ export default {
   width: 100%;
   background: #eeeeee;
 }
+.MoreSettings >>> .van-uploader__upload {
+  height: 1rem;
+  width: 1rem;
+  overflow: hidden;
+  margin: 0
+}
 .MoreSettings >>> .van-picker__cancel {
   color: #eab617;
 }

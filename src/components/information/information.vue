@@ -6,7 +6,7 @@
       <p></p>
       <div>
         <p @click="fanhui">
-          <img src="../../assets/img/left0.png" alt>
+          <img src="../../assets/img/left0.png" alt />
         </p>
         {{msg}}
       </div>
@@ -18,15 +18,15 @@
         <p>头像</p>
         <div>
           <div @click="toux">
-            <img :src="imgurl" alt>
-            <img class="right" src="../../assets/img/rightf.png" alt>
+            <img :src="imgurl" alt />
+            <img class="right" src="../../assets/img/rightf.png" alt />
           </div>
         </div>
       </div>
       <!-- 用户姓名 -->
       <div>
         <span>名字</span>
-        <span>{{ username }}</span>
+        <span>{{ user.name }}</span>
       </div>
       <!-- 岗位 -->
       <div>
@@ -38,8 +38,8 @@
         <span>选择小区</span>
         <p>
           {{qu}}
-          <img v-if="qu" @click="shan" class="right1" src="../../assets/img/cuo.png" alt>
-          <img v-if="!qu" @click="xiqou" class="right" src="../../assets/img/rightf.png" alt>
+          <img v-if="qu" @click="shan" class="right1" src="../../assets/img/cuo.png" alt />
+          <img v-if="!qu" @click="xiqou" class="right" src="../../assets/img/rightf.png" alt />
         </p>
       </div>
       <!-- 性别 -->
@@ -47,8 +47,8 @@
         <span>性别</span>
         <p>
           {{ bie }}
-          <img v-if="bie" @click="shan1" class="right1" src="../../assets/img/cuo.png" alt>
-          <img v-if="!bie"  @click="xinbk" class="right" src="../../assets/img/rightf.png" alt>
+          <img v-if="bie" @click="shan1" class="right1" src="../../assets/img/cuo.png" alt />
+          <img v-if="!bie" @click="xinbk" class="right" src="../../assets/img/rightf.png" alt />
         </p>
       </div>
       <!-- 生日 -->
@@ -56,21 +56,27 @@
         <span>生日</span>
         <p>
           {{ mode }}
-          <img v-if="!mode" @click="shan2" class="right" src="../../assets/img/rightf.png" alt>
-          <img v-if="mode" @click="tiemry" class="right1" src="../../assets/img/cuo.png" alt>
+          <img
+            v-if="!mode"
+            @click="shan2"
+            class="right"
+            src="../../assets/img/rightf.png"
+            alt
+          />
+          <img v-if="mode" @click="tiemry" class="right1" src="../../assets/img/cuo.png" alt />
         </p>
       </div>
     </div>
     <!-- 头像 -->
     <van-popup v-model="show" position="bottom">
-      <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm"/>
+      <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" />
     </van-popup>
     <!-- 小区的选择 -->
     <van-popup v-model="xiaoqus" position="bottom">
-      <van-picker show-toolbar :columns="xiaoqu" @cancel="onCancel1" @confirm="onConfirm1"/>
+      <van-picker show-toolbar :columns="xiaoqu" @cancel="onCancel1" @confirm="onConfirm1" />
     </van-popup>
     <van-popup v-model="xinbie" position="bottom">
-      <van-picker show-toolbar :columns="xinb" @cancel="onCancelx" @confirm="onConfirmx"/>
+      <van-picker show-toolbar :columns="xinb" @cancel="onCancelx" @confirm="onConfirmx" />
     </van-popup>
     <van-popup v-model="timer" position="bottom">
       <van-datetime-picker
@@ -86,9 +92,7 @@
     <button @click="ok" class="baocun">保存</button>
     <van-popup v-model="popupVisible1" position="bottom">
       <div class="tui">
-        <p @click="nobao"
-          style="color:#000"
-        >不保存</p>
+        <p @click="nobao" style="color:#000">不保存</p>
         <p style="color:#f0cb72" @click="tuiok">保存</p>
         <p @click="colse">取消</p>
       </div>
@@ -99,7 +103,7 @@
 <script>
 import { Picker } from "vant";
 import { Popup } from "vant";
-import { DatetimePicker } from 'vant';
+import { DatetimePicker } from "vant";
 export default {
   data() {
     return {
@@ -120,20 +124,37 @@ export default {
       // 小区的选择
       qu: "",
       // 年月日的选择
-      timer:false,
+      timer: false,
       minDate: new Date(1900, 1, 1),
       maxDate: new Date(),
       currentDate: "",
-      mode:"",
+      mode: "",
       // 头像的路径
-      imgurl:"http://img1.imgtn.bdimg.com/it/u=1758339456,1627480969&fm=214&gp=0.jpg",
-      popupVisible1:false
+      imgurl:
+        "http://img1.imgtn.bdimg.com/it/u=1758339456,1627480969&fm=214&gp=0.jpg",
+      popupVisible1: false,
+      // 用户的个人信息
+      user: {}
     };
+  },
+  mounted() {
+    this.http.get("/api/me").then(res => {
+      console.log(res);
+      this.user = res.data.me;
+      this.qu = res.data.me.xiaoqu_name;
+      this.bie = res.data.me.sex;
+      this.mode = res.data.me.birthday;
+      if (res.data.me.avatar) {
+        this.imgurl = res.data.me.avatar;
+      } else {
+        this.imgurl = res.data.me.avatar_format;
+      }
+    });
   },
   methods: {
     fanhui() {
       // this.$router.go(-1);
-      this.popupVisible1 = true
+      this.popupVisible1 = true;
     },
     // 头像打开选择器
     toux() {
@@ -146,11 +167,11 @@ export default {
     // 头像的确认
     onConfirm(value, index) {
       console.log(value, index);
-       if (index == 0) {    
-            this.galleryImgs();
-        } else if (index == 1) {    
-          this.getImage();      
-        }    
+      if (index == 0) {
+        this.galleryImgs();
+      } else if (index == 1) {
+        this.getImage();
+      }
     },
     // 小区选择的操作
     // 打开小区的选择器
@@ -182,127 +203,159 @@ export default {
       this.xinbie = false;
     },
     // 时间选择的开关
-    tiemry(){
-      this.timer = false 
-      this.mode = ""
+    tiemry() {
+      this.timer = false;
+      this.mode = "";
     },
-    timerg(){
+    timerg() {
       this.timer = false;
     },
-    timerok(value){
-      var date = new Date(value);  
-      var date_value=date.getFullYear() + '年' +(date.getMonth() + 1) + '月' + date.getDate() + '日';  
-      this.mode = date_value
-      this.timer = false
+    timerok(value) {
+      var date = new Date(value);
+      var date_value =
+        date.getFullYear() +
+        "年" +
+        (date.getMonth() + 1) +
+        "月" +
+        date.getDate() +
+        "日";
+      this.mode = date_value;
+      this.timer = false;
     },
     formatter(type, value) {
-      if (type === 'year') {
+      if (type === "year") {
         return `${value}年`;
-      } else if (type === 'month') {
-        return `${value}月`
-      } else if (type === 'day') {
-        return `${value}日`
+      } else if (type === "month") {
+        return `${value}月`;
+      } else if (type === "day") {
+        return `${value}日`;
       }
       return value;
     },
     // 小区的删除
-    shan(){
-      this.qu = ""
+    shan() {
+      this.qu = "";
     },
     // 性别的删除
-    shan1(){
-      this.bie = ""
+    shan1() {
+      this.bie = "";
     },
     // 生日的删除
-    shan2(){
-      this.timer = true
-      this.mode = ""
+    shan2() {
+      this.timer = true;
+      this.mode = "";
     },
     // 头像拍照的测试
-    //图片显示  
-     showPics(url,name){       
-       var _this = this;   
-         //根据路径读取到文件   
-           plus.io.resolveLocalFileSystemURL(url,function(entry){  
-               entry.file( function(file){  
-                   var fileReader = new plus.io.FileReader();  
-                   fileReader.readAsDataURL(file);  
-                  //  alert(fileReader)
-                  //  alert(this)
-                     fileReader.onloadend = function(e) { 
-                      //  alert(e) 
-                      var picUrl = e.target.result.toString();
-                      // alert(picUrl)
-                      _this.imgurl = picUrl    
-                      // alert(_this.imgurl)
-
-                   }  
-               });  
-               _this.show = false;
-          });   
-       }  ,
-        //压缩图片    
-       compressImage(url,filename){
-         var _this = this;    
-           var name="_doc/upload/"+filename;  
-           plus.zip.compressImage({    
-                   src:url,//src: (String 类型 )压缩转换原始图片的路径    
-                   dst:name,//压缩转换目标图片的路径    
-                   quality:40,//quality: (Number 类型 )压缩图片的质量.取值范围为1-100    
-                   overwrite:true//overwrite: (Boolean 类型 )覆盖生成新文件    
-               },    
-               function(zip) {  
-                   //页面显示图片  
-                   _this.showPics(zip.target,name);  
-               },function(error) {    
-                   plus.nativeUI.toast("压缩图片失败，请稍候再试");    
-           });    
-       }   ,
-        
-        //调用手机摄像头并拍照  
-      getImage() {    
-        var _this = this
-           var cmr = plus.camera.getCamera();    
-           cmr.captureImage(function(p) {    
-               plus.io.resolveLocalFileSystemURL(p, function(entry) {    
-                   _this.compressImage(entry.toLocalURL(),entry.name);    
-               }, function(e) {    
-                   plus.nativeUI.toast("读取拍照文件错误：" + e.message);    
-               });    
-           }, function(e) {    
-           }, {    
-               filter: 'image'   
-           });    
-       }  
-       //从相册选择照片  
-       , galleryImgs() {
-         var _this = this    
-            plus.gallery.pick(function(e) {    
-                var name = e.substr(e.lastIndexOf('/') + 1);  
-               _this.compressImage(e,name);  
-            }, function(e) {    
-            }, {    
-                filter: "image"    
-            });    
+    //图片显示
+    showPics(url, name) {
+      var _this = this;
+      //根据路径读取到文件
+      plus.io.resolveLocalFileSystemURL(url, function(entry) {
+        entry.file(function(file) {
+          var fileReader = new plus.io.FileReader();
+          fileReader.readAsDataURL(file);
+          //  alert(fileReader)
+          //  alert(this)
+          fileReader.onloadend = function(e) {
+            //  alert(e)
+            var picUrl = e.target.result.toString();
+            // alert(picUrl)
+            _this.imgurl = picUrl;
+            // alert(_this.imgurl)
+          };
+        });
+        _this.show = false;
+      });
+    },
+    //压缩图片
+    compressImage(url, filename) {
+      var _this = this;
+      var name = "_doc/upload/" + filename;
+      plus.zip.compressImage(
+        {
+          src: url, //src: (String 类型 )压缩转换原始图片的路径
+          dst: name, //压缩转换目标图片的路径
+          quality: 40, //quality: (Number 类型 )压缩图片的质量.取值范围为1-100
+          overwrite: true //overwrite: (Boolean 类型 )覆盖生成新文件
         },
-        // 最后的保存按钮
-        ok(){
-          this.popupVisible1 = true
+        function(zip) {
+          //页面显示图片
+          _this.showPics(zip.target, name);
         },
-        // 最后的取消的事件处理
-        colse(){
-          this.popupVisible1 = false
-        },
-        // 最后的保存事件
-        tuiok(){
-          alert("保存成功")
-          this.$router.replace({name:"index"})
-        },
-        // 最后的不保存事件
-        nobao(){
-          alert("不保存成功")
-           this.$router.replace({name:"index"})
+        function(error) {
+          plus.nativeUI.toast("压缩图片失败，请稍候再试");
         }
+      );
+    },
+
+    //调用手机摄像头并拍照
+    getImage() {
+      var _this = this;
+      var cmr = plus.camera.getCamera();
+      cmr.captureImage(
+        function(p) {
+          plus.io.resolveLocalFileSystemURL(
+            p,
+            function(entry) {
+              _this.compressImage(entry.toLocalURL(), entry.name);
+            },
+            function(e) {
+              plus.nativeUI.toast("读取拍照文件错误：" + e.message);
+            }
+          );
+        },
+        function(e) {},
+        {
+          filter: "image"
+        }
+      );
+    },
+    //从相册选择照片
+    galleryImgs() {
+      var _this = this;
+      plus.gallery.pick(
+        function(e) {
+          var name = e.substr(e.lastIndexOf("/") + 1);
+          _this.compressImage(e, name);
+        },
+        function(e) {},
+        {
+          filter: "image"
+        }
+      );
+    },
+    // 最后的保存按钮
+    ok() {
+      this.popupVisible1 = true;
+    },
+    // 最后的取消的事件处理
+    colse() {
+      this.popupVisible1 = false;
+    },
+    // 最后的保存事件
+    tuiok() {
+      alert("保存成功");
+      this.http.post("/api/avatar", { avatar: this.imgurl }).then(res => {
+        console.log(res);
+      });
+      this.http
+        .post("/api/update", {
+          sex: this.bie,
+          birthday: this.mode,
+          xiaoqu_id: 1
+        })
+        .then(res => {
+          this.$toasted.error(res.message).goAway(1000);
+        })
+        .catch(res => {
+          this.$toasted.error(res.message).goAway(1000);
+        });
+      this.$router.replace({ name: "index" });
+    },
+    // 最后的不保存事件
+    nobao() {
+      this.$router.replace({ name: "index" });
+    }
   }
 };
 </script>
@@ -362,7 +415,7 @@ header > div > p > img {
 }
 .right1 {
   height: 0.3rem;
-  width: 0.3rem
+  width: 0.3rem;
 }
 .section > :first-child {
   height: 2rem;
@@ -388,7 +441,7 @@ header > div > p > img {
 .section > div > div > div > :last-child {
   position: absolute;
   top: 0.3rem;
-  right: -0.7rem
+  right: -0.7rem;
 }
 .baocun {
   position: fixed;

@@ -1,56 +1,64 @@
 <template>
-<!-- 客服岗的停车费 -->
+  <!-- 客服岗的停车费 -->
   <div class="MoreSettings">
     <header class="header">
       <p></p>
       <div>
         <p @click="fanhui">
-          <img class="fanhui" src="../../assets/img/left0.png" alt>
+          <img class="fanhui" src="../../assets/img/left0.png" alt />
         </p>
         <p>{{ msg }}</p>
       </div>
     </header>
     <div class="senter">
+      <p>
+        <span>车牌号：</span>
+        <input v-model="chepai" type="text" placeholder="请输入车牌号" />
+      </p>
+      <p>
+        <span>停车时长：</span>
+        <input v-model="timer" type="text" placeholder="请输入停车时长" />
+      </p>
+      <p>
+        <span>支付金额：</span>
+        <input v-model="money" type="text" placeholder="请输入支付金额" />
+      </p>
+      <div @click="py">
+        <p>支付方式</p>
         <p>
-            <span>车牌号：</span>
-            <input type="text" placeholder="请输入车牌号">
+          <span>{{ msg1 }}</span>
+          <img src="../../assets/img/rightf.png" alt />
         </p>
-        <p>
-            <span>停车时长：</span>
-            <input type="text" placeholder="请输入车牌号">
-        </p>
-        <p>
-            <span>支付金额：</span>
-            <input type="text" placeholder="请输入车牌号">
-        </p>
-        <div @click="py">
-          <p>支付方式</p>
-          <p>
-            <span> {{ msg1 }} </span>
-            <img src="../../assets/img/rightf.png" alt>
-          </p>
-        </div>
-        <p class="last">
-            <span>备注：</span>
-            <textarea name="" placeholder="请输入相关备注" id="" cols="30" rows="10"></textarea>
-        </p>
+      </div>
+      <p class="last">
+        <span>备注：</span>
+        <textarea v-model="text" name placeholder="请输入相关备注" id cols="30" rows="10"></textarea>
+      </p>
     </div>
     <van-popup v-model="show" position="bottom">
       <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" />
     </van-popup>
-    <button>提交</button>
+    <button @click="tijiao">提交</button>
   </div>
 </template>
 <script>
-import { Picker } from 'vant';
+import { Picker } from "vant";
 import { Popup } from "vant";
 export default {
   data() {
     return {
       msg: "停车费",
-      columns: ['支付宝','微信'],
-      show:false,
-      msg1:"请选择",
+      columns: ["支付宝", "微信"],
+      show: false,
+      msg1: "请选择",
+      // 车牌号
+      chepai: "",
+      // 备注
+      text: "",
+      // 停车时长
+      timer: "",
+      // 停车飞金额
+      money: ""
     };
   },
   methods: {
@@ -59,19 +67,36 @@ export default {
       this.$router.go(-1);
     },
     // 支付方式的选择
-    py(){
-        this.show = true
+    py() {
+      this.show = true;
     },
-     onCancel(){
+    onCancel() {
       // 选择认为类型的取消事件
-      this.show = false
+      this.show = false;
     },
-    onConfirm(e){
+    onConfirm(e) {
       // 选择认为类型的确认事件
-      console.log(e)
-      this.msg1 = e
-      this.show = false
+      console.log(e);
+      this.msg1 = e;
+      this.show = false;
     },
+    // 最后的提交事件
+    tijiao() {
+      this.http
+        .post("/api/park", {
+          car_id: this.chepai,
+          remark: this.text,
+          pay: this.msg1,
+          park_time: this.timer
+        })
+        .then(res => {
+          this.$toasted.success(res.message).goAway(1000)
+           this.$router.go(-1);
+        }).catch(res =>{
+        this.$toasted.error(res.message).goAway(1000)
+
+      });
+    }
   }
 };
 </script>
@@ -81,6 +106,12 @@ export default {
   width: 100%;
   background: #eeeeee;
 }
+.MoreSettings >>> .van-uploader__upload {
+  height: 1rem;
+  width: 1rem;
+  overflow: hidden;
+  margin: 0
+}
 .MoreSettings >>> .van-picker__cancel {
   color: #eab617;
 }
@@ -88,9 +119,9 @@ export default {
   color: #eab617;
 }
 .MoreSettings >>> .van-switch {
-    position: absolute;
-    right: 0.3rem;
-    top: 0.3rem
+  position: absolute;
+  right: 0.3rem;
+  top: 0.3rem;
 }
 .header {
   height: 1.3rem;
@@ -124,19 +155,19 @@ export default {
   top: 0.04rem;
 }
 .senter {
-    background: #fff;
-    padding: 0 0.3rem;
-    margin-top: 0.2rem;
+  background: #fff;
+  padding: 0 0.3rem;
+  margin-top: 0.2rem;
 }
 .senter > p {
-    height: 0.98rem;
-    background: #fff;
-    line-height: 0.98rem;
-    font-size: 0.32rem;
-    border-bottom: 1px solid #ddd
+  height: 0.98rem;
+  background: #fff;
+  line-height: 0.98rem;
+  font-size: 0.32rem;
+  border-bottom: 1px solid #ddd;
 }
 .senter > p > input {
-    height: 0.6rem;
+  height: 0.6rem;
 }
 .senter > div {
   height: 1rem;
@@ -158,23 +189,23 @@ export default {
   width: 0.6rem;
 }
 .senter > .last {
-    height: 2rem;
-    line-height: 1;
-    border: 0
+  height: 2rem;
+  line-height: 1;
+  border: 0;
 }
 .senter > .last > textarea {
-    height: 1rem;
-    line-height: 1;
-    margin-top: 0.6rem;
-    width: 4rem;
+  height: 1rem;
+  line-height: 1;
+  margin-top: 0.6rem;
+  width: 4rem;
 }
 button {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 1rem;
-    font-size: 0.3rem;
-    color: #fff;
-    background: #eab617
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 1rem;
+  font-size: 0.3rem;
+  color: #fff;
+  background: #eab617;
 }
 </style>
