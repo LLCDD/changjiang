@@ -18,10 +18,10 @@
         <van-button @click="aa" square slot="right" type="danger" text="删除"/>
       </van-swipe-cell>-->
       <div>
-        <p>商品名称：<input placeholder="请输入名称" type="text"></p>
-        <p>商品数量：<input placeholder="请输入数量" type="text"></p>
-        <p>商品售价：<input type="text" placeholder="请输入售价"></p>
-        <p>赠送积分：<input type="text" placeholder="根据价格自动填入"></p>
+        <p>商品名称：<input v-model="goods_name" placeholder="请输入名称" type="text"></p>
+        <p>商品数量：<input v-model="goods_number" placeholder="请输入数量" type="text"></p>
+        <p>商品售价：<input v-model="shop_price" type="text" placeholder="请输入售价"></p>
+        <p>赠送积分：<input v-model="give_integral" type="text" placeholder="根据价格自动填入"></p>
         <p class="pyy"><span>是否加入精品</span> <span>请选择 <img src="../../../assets/img/rightf.png" alt="" srcset=""> </span>  </p>
       </div>
       <div class="div">
@@ -29,16 +29,19 @@
           <span>图片</span>
           <span></span>
         </p>
+        <p class="imga" v-for="(item,index) in image" :key="index">
+          <img :src="item" alt="">
+        </p>
         <van-uploader :after-read="afterRead" />
       </div>
       <div class="div">
         <p style="float:left;font-size:0.34rem;height:0.9rem;line-height:0.9rem;">
           <span>详情描述：</span>
         </p>
-        <textarea placeholder="请输入商品详情描述" name="" id="" cols="30" rows="10"></textarea>
+        <textarea v-model="goods_desc" placeholder="请输入商品详情描述" name="" id="" cols="30" rows="10"></textarea>
       </div>
     </div>
-    <p class="fahuo" v-if="status == 2">添加</p>
+    <p class="fahuo" v-if="status == 2" @click="tianjia">添加</p>
     <!-- <p class="tuikuanok" v-if="status == 2">已发货</p>
     <p class="tuikuanok" v-if="status == 3">同意退款</p>
     <p class="fahuo" v-if="status == 4">已退款</p> -->
@@ -52,7 +55,19 @@ export default {
     return {
       msg: "商品添加",
       active: 0,
-      status: 2
+      status: 2,
+      // 商品名称
+      goods_name:"",
+      // 商品数量
+      goods_number:"",
+      // 商品价格
+      shop_price:"",
+      // 赠送积分
+      give_integral:"",
+      // 图片
+      image:[],
+      // 商品描述
+      goods_desc:''
     };
   },
   methods: {
@@ -71,7 +86,27 @@ export default {
     daifa() {},
     afterRead(file) {
       // 此时可以自行将文件上传至服务器
+      var arr = this.image
+      arr.push(file.content)
+      this.image = arr
       console.log(file);
+    },
+    // 最后的添加
+    tianjia(){
+      this.http.post('/api/goods',{
+        goods_name:this.goods_name,
+        goods_number:this.goods_number,
+        shop_price:this.shop_price,
+        is_best:this.is_best,
+        image:this.image,
+        give_integral:this.give_integral,
+        goods_desc:this.goods_desc
+      }).then(res =>{
+        console.log(res)
+       this.$router.go(-1);
+      }).catch(res =>{
+        this.$toasted.error(res.message).goAway(1000)
+      })
     }
   }
 };
@@ -135,6 +170,16 @@ export default {
 }
 .senter > div > p > input {
     height: 0.6rem
+}
+.imga {
+  height: 1rem !important;
+  width: 1rem !important;
+  float: left;
+  margin-right: 0.1rem
+}
+.imga > img {
+  height: 100%;
+  width: 100%
 }
 /* .senter > .div {
   height: 3rem; 

@@ -7,11 +7,10 @@
         <p @click="fanhui">
           <img class="fanhui" src="../../../assets/img/left0.png" alt />
         </p>
-        <p  @click="tianjia">
-          <img  class="rihgt" src="../../../assets/img/tian.png" alt />
+        <p @click="tianjia">
+          <img class="rihgt" src="../../../assets/img/tian.png" alt />
         </p>
         <p>{{ msg }}</p>
-        
       </div>
     </header>
     <p class="text">
@@ -23,12 +22,12 @@
     </van-dropdown-menu>
     <div class="senter">
       <!-- @click="daxq" -->
-      <div v-for="(index) in 20" :key="index" @click="xq">
+      <div v-for="(item,index) in list" :key="index" @click="xq">
         <van-swipe-cell :right-width="60" :left-width="60">
           <van-button square slot="left" type="danger" text="选择" />
-          <van-cell :border="false" title="单元格" value="内容" />
-          <img class="img" src="../../../assets/img/rightf.png" alt="">
-          <van-button @click="aa" square slot="right" type="danger" text="删除" />
+          <van-cell :border="false" :title="item.goods_name" :value="item.shop_price" />
+          <img class="img" src="../../../assets/img/rightf.png" alt />
+          <van-button @click="aa(item.goods_id)" square slot="right" type="danger" text="删除" />
         </van-swipe-cell>
         <!-- <div>
               <p>往来于</p>
@@ -51,23 +50,54 @@ export default {
       active: 0,
       status: 0,
       value1: 0,
-      value2: 'a',
+      value2: "a",
+      list: [],
       option1: [
-        { text: '全部', value: 0 },
-        { text: '精品', value: 1 },
-        { text: '新品', value: 2 },
-        { text: '热销', value: 3 },
-        { text: '特价', value: 4 },
-        { text: '全部推荐', value: 5 }
+        { text: "全部", value: 0 },
+        { text: "精品", value: 1 },
+        { text: "新品", value: 2 },
+        { text: "热销", value: 3 },
+        { text: "特价", value: 4 },
+        { text: "全部推荐", value: 5 }
       ],
       option2: [
-        { text: '下架', value: 'a' },
-        { text: '上架', value: 'b' },
-        { text: '全部', value: 'c' },
+        { text: "下架", value: "a" },
+        { text: "上架", value: "b" },
+        { text: "全部", value: "c" }
       ]
     };
   },
+  mounted() {
+    this.one()
+  },
   methods: {
+    one() {
+      this.http
+        .get("/api/cates")
+        .then(res => {
+          // console.log()
+          var arr = [];
+          for (var i = 0; i < res.data.cate.length; i++) {
+            if (i == 1) {
+              this.value1 = res.data.cate[0].cat_id;
+            }
+            arr.push({
+              text: res.data.cate[i].cat_name,
+              value: res.data.cate[i].cat_id,
+              subCate: res.data.cate[i].subCate
+            });
+          }
+          console.log(arr);
+          this.option1 = arr;
+        })
+        .catch(res => {
+          this.$toasted.error(res.message).goAway(1000);
+        });
+      this.http.get("/api/goods").then(res => {
+        console.log(res);
+        this.list = res.data.goods.data;
+      });
+    },
     // 返回按钮
     fanhui() {
       this.$router.go(-1);
@@ -89,15 +119,21 @@ export default {
       this.$router.push("/dingdanxq");
     },
     // 删除
-    aa() {
-      console.log("232");
+    aa(id) {
+      console.log(id);
+      this.http.delete('/api/goods/'+id,).then(res =>{
+        this.$toasted.success(res.message).goAway(1000)
+        this.one()
+      }).catch(res =>{
+        this.$toasted.error(res.message).goAway(1000)
+      })
     },
     // 去添加商品的页面
-    tianjia(){
-      this.$router.push('/shanpingjia')
+    tianjia() {
+      this.$router.push("/shanpingjia");
     },
-    xq(){
-      this.$router.push('/shangpxq')
+    xq() {
+      this.$router.push("/shangpxq");
     }
   }
 };
@@ -121,7 +157,7 @@ export default {
   background: #eee;
 }
 .MoreSettings >>> .van-dropdown-menu__title {
-  color: #eab617
+  color: #eab617;
 }
 .MoreSettings >>> .van-tab {
   background: #eee;
@@ -162,7 +198,7 @@ export default {
   position: absolute;
   right: 0rem;
   height: 0.8rem;
-  width: 0.8rem
+  width: 0.8rem;
 }
 .fanhui {
   float: left;
@@ -181,12 +217,12 @@ export default {
 .senter > div {
   position: relative;
 }
- .img {
+.img {
   position: absolute;
   right: 0rem;
   height: 0.7rem;
   width: 0.5rem;
-  top: 0.1rem
+  top: 0.1rem;
 }
 
 .text {

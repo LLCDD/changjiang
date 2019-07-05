@@ -5,7 +5,7 @@
       <p></p>
       <div>
         <p @click="fanhui">
-          <img class="fanhui" src="../../assets/img/left0.png" alt>
+          <img class="fanhui" src="../../assets/img/left0.png" alt />
         </p>
         <p>{{ msg }}</p>
       </div>
@@ -13,30 +13,33 @@
     <div class="senter">
       <p>
         <span>访客姓名：</span>
-        <input type="text" placeholder="请输入访客姓名">
+        <input v-model="name" type="text" placeholder="请输入访客姓名" />
       </p>
       <p>
         <span>访客电话：</span>
-        <input type="text" placeholder="请输入访客电话">
+        <input v-model="phone" type="text" placeholder="请输入访客电话" />
       </p>
       <p>
         <span>被访业主：</span>
-        <input type="text" placeholder="请输入业主信息">
+        <input v-model="beiname" type="text" placeholder="请输入业主信息" />
       </p>
       <p class="last">
         <span>备注：</span>
-        <textarea name placeholder="请输入相关备注" id cols="30" rows="10"></textarea>
+        <textarea v-model="text" name placeholder="请输入相关备注" id cols="30" rows="10"></textarea>
       </p>
     </div>
     <div class="updata">
       <p>图片 (至少三张)</p>
       <div>
+        <p v-for="(item,index) in img" :key="index">
+          <img :src="item" alt />
+        </p>
         <p>
-          <van-uploader style="height:1rem;width:1rem;background" :after-read="afterRead"/>
+          <van-uploader style="height:1rem;width:1rem;background" :after-read="afterRead" />
         </p>
       </div>
     </div>
-    <button>提交</button>
+    <button @click="tijiao">提交</button>
   </div>
 </template>
 <script>
@@ -47,7 +50,16 @@ export default {
       msg: "来访日志",
       columns: ["支付宝", "微信"],
       show: false,
-      msg1: "请选择"
+      msg1: "请选择",
+      img: [],
+      // 访客姓名
+      name: "",
+      // 被访业主
+      beiname: "",
+      // 电话
+      phone: "",
+      // 内容
+      text: ""
     };
   },
   methods: {
@@ -73,6 +85,23 @@ export default {
     afterRead(file) {
       // 此时可以自行将文件上传至服务器
       console.log(file);
+      var arr = this.img;
+      arr.push(file.content);
+      this.img = arr;
+    },
+    tijiao() {
+      this.http.post("/api/visit", {
+        yezhu_id: this.beiname,
+        visitor_name: this.name,
+        visitor_tel:this.phone,
+        remark:this.text,
+        imgs:this.img
+      }).then(res =>{
+        this.$toasted.success(res.message).goAway(1000)
+        this.$router.replace({name:'login'})
+      }).catch(res =>{
+        this.$toasted.error(res.message).goAway(1000)
+      });
     }
   }
 };
@@ -87,7 +116,7 @@ export default {
   height: 1rem;
   width: 1rem;
   overflow: hidden;
-  margin: 0
+  margin: 0;
 }
 .MoreSettings >>> .van-picker__cancel {
   color: #eab617;
@@ -198,6 +227,16 @@ button {
   margin-top: 0.2rem;
 }
 .updata > div > p {
+  height: 1rem;
+  width: 1rem;
+  float: left;
+  margin-right: 0.1rem;
+}
+.updata > div > p > img {
+  height: 100%;
+  width: 100%;
+}
+.updata > div > :last-child {
   height: 1rem;
   width: 1rem;
   background: url("../../assets/img/updata.png") no-repeat;

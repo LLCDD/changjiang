@@ -5,7 +5,7 @@
       <p></p>
       <div>
         <p @click="fanhui">
-          <img class="fanhui" src="../../assets/img/left0.png" alt>
+          <img class="fanhui" src="../../assets/img/left0.png" alt />
         </p>
         <p>{{ msg }}</p>
       </div>
@@ -13,35 +13,31 @@
     <div class="senter">
       <p>
         <span>回访业主1：</span>
-        <input type="text" placeholder="请输入业主信息">
+        <input v-model="yezhu_id" type="text" placeholder="请输入业主信息" />
       </p>
       <p>
         <span>物业费金额：</span>
-        <input type="text" placeholder="请输入物业费金额">
+        <input v-model="total_money" type="text" placeholder="请输入物业费金额" />
       </p>
       <div @click="py">
         <p>支付方式</p>
         <p>
           <span>{{ msg1 }}</span>
-          <img src="../../assets/img/rightf.png" alt>
+          <img src="../../assets/img/rightf.png" alt />
         </p>
       </div>
       <p class="last">
         <span>备注：</span>
-        <textarea name placeholder="请输入相关备注" id cols="30" rows="10"></textarea>
+        <textarea v-model="remark" name placeholder="请输入相关备注" id cols="30" rows="10"></textarea>
       </p>
     </div>
-    <div class="clik">
-        +
-    </div>
+    <div class="clik">+</div>
     <van-popup v-model="show" position="bottom">
-      <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm"/>
+      <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" />
     </van-popup>
     <van-popup v-model="popupVisible1" position="bottom">
       <div class="tui">
-        <p @click="nobao"
-          style="color:#000"
-        >不保存</p>
+        <p @click="nobao" style="color:#000">不保存</p>
         <p style="color:#f0cb72" @click="tuiok">保存</p>
         <p @click="colse">取消</p>
       </div>
@@ -57,17 +53,24 @@ export default {
   data() {
     return {
       msg: "回访日志",
-      columns: ["支付宝", "微信","现金"],
+      columns: ["支付宝", "微信", "现金"],
       show: false,
       msg1: "请选择",
-       popupVisible1:false
+      popupVisible1: false,
+      // 备注
+      remark:"",
+      // 业主id
+      yezhu_id:"",
+      // 缴费金额
+      total_money:""
+
     };
   },
   methods: {
     // 返回按钮
     fanhui() {
-    //   this.$router.go(-1);
-    this.popupVisible1 = true
+        this.$router.go(-1);
+      // this.popupVisible1 = true;
     },
     // 支付方式的选择
     py() {
@@ -89,21 +92,32 @@ export default {
       console.log(file);
     },
     // 最后离开的保存和不保存
-    nobao(){
-        this.$router.go(-1)
+    nobao() {
+      this.$router.go(-1);
     },
     // 离开的保存
-    tuiok(){
-        this.$router.go(-1)
+    tuiok() {
+      this.$router.go(-1);
     },
     // 离开的取消
-    colse(){
-        this.popupVisible1 = false
+    colse() {
+      this.popupVisible1 = false;
     },
     // 最后的 提交
-    tijiao(){
-        alert("提交")
-        this.$router.go(-1)
+    tijiao() {
+      // alert("提交");
+      // this.$router.go(-1);
+      this.http.post("/api/fee", {
+        pay_type: this.msg1,
+        total_money: this.total_money,
+        remark:this.remark,
+        yezhu_id:this.yezhu_id
+      }).then(res =>{
+        this.$router.go(-1);
+        this.$toasted.success(res.message).goAway(1000)
+      }).catch(res =>{
+        this.$toasted.error(res.message).goAway(1000)
+      });
     }
   }
 };
@@ -229,15 +243,15 @@ button {
   background-size: 100% 100%;
 }
 .clik {
-    height: 1rem;
-    width: 3rem;
-    margin: 0 auto;
-    background: #ccc;
-    color: #fff;
-    font-size: 0.5rem;
-    text-align: center;
-    line-height: 1rem;
-    margin-top: 0.3rem;
+  height: 1rem;
+  width: 3rem;
+  margin: 0 auto;
+  background: #ccc;
+  color: #fff;
+  font-size: 0.5rem;
+  text-align: center;
+  line-height: 1rem;
+  margin-top: 0.3rem;
 }
 .tui {
   width: 100%;

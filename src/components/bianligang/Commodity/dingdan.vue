@@ -19,9 +19,9 @@
         <van-tab title="退款申请"></van-tab>
       </van-tabs>
     <div class="senter">
-      <div v-for="(index) in 10" :key="index" @click="daxq">
+      <div v-for="(item,index) in list.data" :key="index" @click="daxq">
           <div>
-              <p>往来于</p>
+              <p>{{ item.goods_name }}</p>
               <p>阿道夫看到了付款的看法得分</p>
           </div>
           <p v-if="status == 0" style="font-size:0.2rem;color:#a3a5a8">4月24日</p>
@@ -37,8 +37,15 @@ export default {
     return {
       msg: "订单通知",
       active:0,
-      status:0
+      status:0,
+      list:[]
     };
+  },
+  mounted(){
+    this.http.get('/api/goods',{shipping_status:0}).then(res =>{
+      console.log(res)
+      this.list = res.data.goods
+    })
   },
   methods: {
     // 返回按钮

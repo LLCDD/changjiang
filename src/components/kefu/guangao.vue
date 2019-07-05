@@ -135,11 +135,11 @@ export default {
     // 时间格式的转换
     formatter(type, value) {
       if (type === "year") {
-        return `${value}年`;
+        return `${value}`;
       } else if (type === "month") {
-        return `${value}月`;
+        return `${value}`;
       } else if (type === "day") {
-        return `${value}日`;
+        return `${value}`;
       }
       return value;
     },
