@@ -84,6 +84,11 @@ export default {
     fanhui() {
       this.$router.go(-1);
     }
+  },
+  mounted(){
+    this.http.get('/api/notices').then(res =>{
+      console.log(res)
+    })
   }
 };
 </script>

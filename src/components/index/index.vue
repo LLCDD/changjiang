@@ -180,8 +180,10 @@
     <mt-popup v-model="popupVisible" position="left">
       <div class="left">
         <div class="top">
-          <p></p>
-          <p>雨天</p>
+          <p>
+            <img style="height:1.5rem;width:1.5rem;border-radius: 50%;" :src="avatar" alt="">
+          </p>
+          <p>{{ name }}</p>
         </div>
         <div class="section">
           <!-- 跳转个人信息页面 -->
@@ -227,7 +229,11 @@ export default {
       // 控制侧边栏的显示和隐藏
       popupVisible: false,
       // 底部的退出
-      popupVisible1: false
+      popupVisible1: false,
+      // 用户的头像
+      avatar:"",
+      // 用户的名称
+      name:""
     };
   },
   mounted() {
@@ -248,6 +254,18 @@ export default {
       this.bool = false;
       this.msg = "便利岗";
     }
+    this.http.get('/api/me').then(res =>{
+      console.log(res)
+      localStorage.setItem('username',res.data.me.name)
+      if(res.data.me.avatar){
+        this.avatar = res.data.me.avatar
+      }else {
+        this.avatar = res.data.me.avatar_format
+        this.name = res.data.me.name
+      }
+    }).catch(res => {
+      this.$toasted.error(res.message).goAway(1000)
+    })
   },
   methods: {
     // methods 里面是自己的自定义的事件
@@ -496,8 +514,8 @@ header > div > p > img {
   height: 1.5rem;
   width: 1.5rem;
   border-radius: 50%;
-  background: pink;
-  margin-top: 1rem;
+  /* background: pink; */
+  /* margin-top: 1rem; */
 }
 .left > .top > :last-child {
   margin-left: 0.3rem;

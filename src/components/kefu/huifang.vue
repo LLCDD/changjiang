@@ -12,7 +12,7 @@
     </header>
     <div class="senter">
       <p>
-        <span>回访业主1：</span>
+        <span>回访业主：</span>
         <input v-model="yezhu_id" type="text" placeholder="请输入业主信息" />
       </p>
       <p>

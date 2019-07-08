@@ -66,7 +66,7 @@
     <van-popup v-model="show2" position="bottom">
       <van-picker show-toolbar :columns="columns2" @cancel="onCancel2" @confirm="onConfirm2" />
     </van-popup>
-    <button>提交</button>
+    <button @click="tijiao">提交</button>
   </div>
 </template>
 <script>
@@ -145,6 +145,10 @@ export default {
       console.log(e)
       this.msg3 = e
       this.show2 = false
+    },
+    // 最后的提交事件
+    tijiao(){
+      this.http.post('/api/fix')
     }
   }
 };
@@ -160,6 +164,12 @@ export default {
 }
 .MoreSettings >>> .van-picker__confirm {
   color: #eab617;
+}
+.MoreSettings >>> .van-uploader__upload {
+  height: 1rem;
+  width: 1rem;
+  overflow: hidden;
+  margin: 0;
 }
 .MoreSettings >>> .van-switch {
   position: absolute;

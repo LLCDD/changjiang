@@ -32,23 +32,27 @@
     <!-- 中间内容 -->
     <section class="section">
       <van-collapse v-model="activeNames">
-        <van-collapse-item title="出勤天数" name="1" value="5151">
-          <p v-for="(item,index) in 10" :key="index">2019-04-03(星期三)</p>
+        <van-collapse-item title="出勤天数" name="1" :value="counts.count.days+ '次'">
+          <p v-for="(item,index) in counts.days" :key="index">
+            {{ item }}
+          </p>
         </van-collapse-item>
-        <van-collapse-item title="休息天数" name="2" value="5151">
-          <p v-for="(item,index) in 3" :key="index">2019-04-03(星期三)</p>
+        <van-collapse-item title="休息天数" name="2" :value="counts.count.rest+ '次'">
+          <p v-for="(item,index) in counts.rest" :key="index">2019-04-03(星期三)</p>
         </van-collapse-item>
-        <van-collapse-item title="早退" name="3" value="5151">
-          <p v-for="(item,index) in 3" :key="index">       
+        <van-collapse-item title="早退" name="3" :value="counts.count.early+ '次'">
+          <p v-for="(item,index) in counts.early" :key="index">       
             <span>2019-04-03(星期三)</span>
             <span>上班早退6分钟</span>
           </p>
         </van-collapse-item>
-        <van-collapse-item title="迟到" name="4" value="5151">
-          <p v-for="(item,index) in 3" :key="index">2019-04-03(星期三)</p>
+        <van-collapse-item title="迟到" name="4" :value="counts.count.late+ '次'">
+          <p v-for="(item,index) in counts.late" :key="index">2019-04-03(星期三)</p>
         </van-collapse-item>
-        <van-collapse-item title="矿工" :value-class="{ color1 : show == 1 }" name="5" value="5151">
-          <p v-for="(item,index) in 3" :key="index">2019-04-03(星期三)</p>
+        <van-collapse-item title="矿工" :value-class="{ color1 : counts.count.absence > 1 }" name="5" :value="counts.count.absence+ '次'">
+          <p v-for="(item,index) in counts.absence" :key="index">
+            {{ item }}
+          </p>
         </van-collapse-item>
       </van-collapse>
     </section>
@@ -96,10 +100,18 @@ export default {
       //   选择的显示和隐藏
       xiaoqus: false,
       // 考勤规则
-      gui:false
+      gui:false,
+      // 存打卡的次数
+      counts:{}
     };
   },
-  mounted() {},
+  mounted() {
+    this.http.get('/api/sign/count').then(res =>{
+      console.log(res)
+      this.counts = res.data
+      this.time = res.data.count.date
+    })
+  },
   methods: {
     //   返回的事件
     fanhui() {

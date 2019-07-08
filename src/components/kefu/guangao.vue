@@ -5,7 +5,7 @@
       <p></p>
       <div>
         <p @click="fanhui">
-          <img class="fanhui" src="../../assets/img/left0.png" alt>
+          <img class="fanhui" src="../../assets/img/left0.png" alt />
         </p>
         <p>{{ msg }}</p>
       </div>
@@ -13,45 +13,45 @@
     <div class="senter">
       <p>
         <span>商家名称：</span>
-        <input v-model="shangname" type="text" placeholder="请输入商家信息">
+        <input v-model="shangname" type="text" placeholder="请输入商家信息" />
       </p>
       <p>
         <span>商家电话：</span>
-        <input v-model="shangphone" type="text" placeholder="请输入商家电话">
+        <input v-model="shangphone" type="text" placeholder="请输入商家电话" />
       </p>
       <p>
         <span>广告位置：</span>
-        <input v-model="weizhi" type="text" placeholder="请输入广告位置">
+        <input v-model="weizhi" type="text" placeholder="请输入广告位置" />
       </p>
       <p>
         <span>广告金额：</span>
-        <input v-model="money" type="text" placeholder="请输入广告金额">
+        <input v-model="money" type="text" placeholder="请输入广告金额" />
       </p>
       <div @click="start">
         <p>开始时间</p>
         <p>
           <span>{{ msg3 }}</span>
-          <img src="../../assets/img/rightf.png" alt>
+          <img src="../../assets/img/rightf.png" alt />
         </p>
       </div>
       <div @click="jiehsu">
         <p>结束时间</p>
         <p>
           <span>{{ msg2 }}</span>
-          <img src="../../assets/img/rightf.png" alt>
+          <img src="../../assets/img/rightf.png" alt />
         </p>
       </div>
       <div @click="py">
         <p>支付方式</p>
         <p>
           <span>{{ msg1 }}</span>
-          <img src="../../assets/img/rightf.png" alt>
+          <img src="../../assets/img/rightf.png" alt />
         </p>
       </div>
     </div>
     <!-- 支付 -->
     <van-popup v-model="show" position="bottom">
-      <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm"/>
+      <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" />
     </van-popup>
     <!-- 开始时间 -->
     <van-popup v-model="show1" position="bottom">
@@ -88,7 +88,7 @@ export default {
   data() {
     return {
       msg: "广告费",
-      columns: ["支付宝", "微信","现金"],
+      columns: ["支付宝", "微信", "现金"],
       show: false,
       // 支付方式
       msg1: "请选择",
@@ -104,13 +104,13 @@ export default {
       //   结束时间
       show2: false,
       // 商家名称
-      shangname:"",
+      shangname: "",
       // 商家电话
-      shangphone:"",
+      shangphone: "",
       // 广告位置
-      weizhi:"",
+      weizhi: "",
       // 广告金额
-      money:''
+      money: ""
     };
   },
   methods: {
@@ -153,7 +153,13 @@ export default {
         "月" +
         date.getDate() +
         "日";
-      this.msg3 = date_value;
+      this.msg3 =
+        date.getFullYear() +
+        "-" +
+        (date.getMonth() + 1) +
+        "-" +
+        date.getDate() +
+        "";
       this.show1 = false;
     },
     // 结束时间的选着确认
@@ -166,7 +172,13 @@ export default {
         "月" +
         date.getDate() +
         "日";
-      this.msg2 = date_value;
+      this.msg2 =
+        date.getFullYear() +
+        "-" +
+        (date.getMonth() + 1) +
+        "-" +
+        date.getDate() +
+        "";
       this.show2 = false;
     },
     // 开始时间的关闭
@@ -186,16 +198,16 @@ export default {
       this.show2 = true;
     },
     // 最后的提交
-    tijiao(){
+    tijiao() {
       this.http
         .post("/api/ad", {
           shop_name: this.shangname,
           shop_tel: this.shangphone,
           pay: this.msg1,
-          start_at:this.msg3,
-          end_at:this.msg2,
-          ad_money:this.money,
-          ad_position:this.weizhi
+          start_at: this.msg3,
+          end_at: this.msg2,
+          ad_money: this.money,
+          ad_position: this.weizhi
         })
         .then(res => {
           this.$toasted.error(res.message).goAway(1000);

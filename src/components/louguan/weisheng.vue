@@ -1,41 +1,44 @@
 <template>
-  <!-- 楼管岗的卫生绿化 -->
+  <!-- 楼管岗的消防巡查 -->
   <div class="MoreSettings">
     <header class="header">
       <p></p>
       <div>
         <p @click="fanhui">
-          <img class="fanhui" src="../../assets/img/left0.png" alt>
+          <img class="fanhui" src="../../assets/img/left0.png" alt />
         </p>
         <p>{{ msg }}</p>
       </div>
     </header>
     <div class="senter">
-        <div @click="py">
+      <div @click="py">
         <p>是否故障</p>
         <p>
           <span>{{ msg1 }}</span>
-          <img src="../../assets/img/rightf.png" alt>
+          <img src="../../assets/img/rightf.png" alt />
         </p>
       </div>
       <p class="last">
         <span>备注：</span>
-        <textarea name placeholder="请输入相关备注" id cols="30" rows="10"></textarea>
+        <textarea v-model="remark" name placeholder="请输入相关备注" id cols="30" rows="10"></textarea>
       </p>
     </div>
     <!-- 图片的上传 -->
     <div class="updata">
       <p>图片</p>
       <div>
+        <p class="imgy" v-for="(item,index) in imgurl" :key="index">
+          <img :src="item" alt />
+        </p>
         <p>
-          <van-uploader style="height:1rem;width:1rem;background" :after-read="afterRead"/>
+          <van-uploader style="height:1rem;width:1rem;background" :after-read="afterRead" />
         </p>
       </div>
     </div>
     <van-popup v-model="show" position="bottom">
-      <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm"/>
+      <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" />
     </van-popup>
-    <button>提交</button>
+    <button @click="tijiao">提交</button>
   </div>
 </template>
 <script>
@@ -45,10 +48,14 @@ import { Uploader } from "vant";
 export default {
   data() {
     return {
-      msg: "卫生绿化",
+      msg: "卫生巡查",
       columns: ["是", "否"],
       show: false,
-      msg1: "请选择"
+      msg1: "请选择",
+      imgurl: [],
+      // 备注
+      remark: "",
+      status: 0
     };
   },
   methods: {
@@ -67,13 +74,43 @@ export default {
     onConfirm(e) {
       // 选择认为类型的确认事件
       console.log(e);
-      this.msg1 = e;
+
+      if (e == "是") {
+        this.msg1 = e;
+        this.status = 0;
+      } else {
+        this.msg1 = e;
+        this.status = 1;
+      }
+
       this.show = false;
     },
     // 图片上传
     afterRead(file) {
       // 此时可以自行将文件上传至服务器
       console.log(file);
+      var img = this.imgurl;
+      img.push(file.content);
+      this.imgurl = img;
+    },
+    // 最后的提交事件
+    tijiao() {
+      this.http
+        .post("/api/check", {
+          type: "green",
+          remark: this.remark,
+          status: this.status,
+          images: this.imgurl
+        })
+        .then(res => {
+          this.$router.go(-1);
+          this.$toasted.success(res.message).goAway(1000);
+
+          console.log(res);
+        })
+        .catch(res => {
+          this.$toasted.error(res.message).goAway(1000);
+        });
     }
   }
 };
@@ -90,6 +127,12 @@ export default {
 .MoreSettings >>> .van-picker__confirm {
   color: #eab617;
 }
+.MoreSettings >>> .van-uploader__upload {
+  height: 1rem;
+  width: 1rem;
+  overflow: hidden;
+  margin: 0;
+}
 .MoreSettings >>> .van-switch {
   position: absolute;
   right: 0.3rem;
@@ -104,6 +147,19 @@ export default {
   height: 0.42rem;
   width: 100%;
   background: #ffff;
+}
+.updata > div > p {
+  float: left;
+  margin-right: 0.1rem;
+}
+.updata > div > .imgy {
+  height: 1rem;
+  width: 1rem;
+  background: #eee;
+}
+.updata > div > .imgy > img {
+  height: 100%;
+  width: 100%;
 }
 .header > div {
   height: 0.88rem;

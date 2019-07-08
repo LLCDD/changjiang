@@ -104,6 +104,7 @@
 import { Picker } from "vant";
 import { Popup } from "vant";
 import { DatetimePicker } from "vant";
+import { constants } from "crypto";
 export default {
   data() {
     return {
@@ -134,10 +135,28 @@ export default {
         "http://img1.imgtn.bdimg.com/it/u=1758339456,1627480969&fm=214&gp=0.jpg",
       popupVisible1: false,
       // 用户的个人信息
-      user: {}
+      user: {},
+      xiaoquid: "",
+      // 最后发送的小区id
+      xqid: ""
     };
   },
   mounted() {
+    this.http.get("/api/xiaoqu").then(res => {
+      console.log(res.data.area);
+      var obj = res.data.area;
+      var arr = [];
+      var arr1 = [];
+      for (var i in obj) {
+        // console.log(i, obj[i])
+        arr1.push(obj[i]);
+        var newobj = { id: i, value: obj[i] };
+        arr.push(newobj);
+      }
+      console.log(arr);
+      this.xiaoqu = arr1;
+      this.xiaoquid = arr;
+    });
     this.http.get("/api/me").then(res => {
       console.log(res);
       this.user = res.data.me;
@@ -186,7 +205,9 @@ export default {
     onConfirm1(value, index) {
       this.qu = value;
       this.xiaoqus = false;
-      console.log(value, index);
+      var arr = this.xiaoquid;
+      console.log(value, arr[index]);
+      this.xqid = arr[index].id;
     },
     // 性别选择的部分
     xinbk() {
@@ -214,11 +235,11 @@ export default {
       var date = new Date(value);
       var date_value =
         date.getFullYear() +
-        "年" +
+        "-" +
         (date.getMonth() + 1) +
-        "月" +
+        "-" +
         date.getDate() +
-        "日";
+        "";
       this.mode = date_value;
       this.timer = false;
     },
@@ -334,7 +355,7 @@ export default {
     },
     // 最后的保存事件
     tuiok() {
-      alert("保存成功");
+      // alert("保存成功");
       this.http.post("/api/avatar", { avatar: this.imgurl }).then(res => {
         console.log(res);
       });
@@ -342,15 +363,15 @@ export default {
         .post("/api/update", {
           sex: this.bie,
           birthday: this.mode,
-          xiaoqu_id: 1
+          xiaoqu_id: this.xqid
         })
         .then(res => {
-          this.$toasted.error(res.message).goAway(1000);
+          this.$router.replace({ name: "index" });
+          this.$toasted.success(res.message).goAway(1000);
         })
         .catch(res => {
           this.$toasted.error(res.message).goAway(1000);
         });
-      this.$router.replace({ name: "index" });
     },
     // 最后的不保存事件
     nobao() {
