@@ -1,5 +1,5 @@
 {
-  "name": "bioyouxi-web",
+  "name": "llc",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
     "axios": "^0.18.0",
     "base64-img": "^1.0.4",
     "dayjs": "^1.7.7",
-    "element-ui": "^2.7.2",
+    "element-ui": "^2.10.0",
     "fastclick": "^1.0.6",
     "js-base64": "^2.4.9",
     "lodash": "^4.17.11",

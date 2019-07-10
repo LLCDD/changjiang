@@ -22,7 +22,7 @@
     </van-dropdown-menu>
     <div class="senter">
       <!-- @click="daxq" -->
-      <div v-for="(item,index) in list" :key="index" @click="xq">
+      <div v-for="(item,index) in list" :key="index" @click="xq(item.goods_id)">
         <van-swipe-cell :right-width="60" :left-width="60">
           <van-button square slot="left" type="danger" text="选择" />
           <van-cell :border="false" :title="item.goods_name" :value="item.shop_price" />
@@ -36,6 +36,7 @@
           <p v-if="status == 0" style="font-size:0.2rem;color:#a3a5a8">4月24日</p>
         <p v-else style="font-size:0.2rem;color:#eab617">4月24日</p>-->
       </div>
+       <van-pagination @change="change" v-model="currentPage" :page-count="count" mode="simple" />
     </div>
   </div>
 </template>
@@ -43,6 +44,8 @@
 import { Tab, Tabs } from "vant";
 import { SwipeCell } from "vant";
 import { DropdownMenu, DropdownItem } from "vant";
+import { constants } from 'crypto';
+import { Pagination } from "vant";
 export default {
   data() {
     return {
@@ -64,7 +67,9 @@ export default {
         { text: "下架", value: "a" },
         { text: "上架", value: "b" },
         { text: "全部", value: "c" }
-      ]
+      ],
+      currentPage:1,
+      count:1
     };
   },
   mounted() {
@@ -96,28 +101,17 @@ export default {
       this.http.get("/api/goods").then(res => {
         console.log(res);
         this.list = res.data.goods.data;
+        this.count = res.data.goods.last_page
       });
     },
     // 返回按钮
     fanhui() {
       this.$router.go(-1);
     },
-    // 待发货
-    daifa(e) {
-      console.log(e);
-      // 代发货
-      if (e == 0) {
-        console.log("代发货");
-      } else if (e == 1) {
-        console.log("已发货");
-      } else {
-        console.log("退款申请");
-      }
-    },
-    // 订单详情
-    daxq() {
-      this.$router.push("/dingdanxq");
-    },
+    // // 订单详情
+    // daxq() {
+    //   this.$router.push("/dingdanxq");
+    // },
     // 删除
     aa(id) {
       console.log(id);
@@ -132,8 +126,17 @@ export default {
     tianjia() {
       this.$router.push("/shanpingjia");
     },
-    xq() {
-      this.$router.push("/shangpxq");
+    xq(goods_id) {
+      console.log(goods_id)
+      this.$router.push("/shangpxq/"+goods_id);
+    },
+    change(e){
+      console.log(e)
+       this.http.get("/api/goods",{page:e}).then(res => {
+        console.log(res);
+        this.list = res.data.goods.data;
+        this.count = res.data.goods.last_page
+      });
     }
   }
 };

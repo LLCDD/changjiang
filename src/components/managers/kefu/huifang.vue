@@ -11,12 +11,13 @@
       </div>
     </header>
     <!-- 中间内容 -->
-    <div style=" padding-top: 1.3rem;">
+    <div style=" padding-top:1.3rem;">
       <van-dropdown-menu active-color="#eab617" :overlay="show">
         <van-dropdown-item v-model="value1" @open="tongji" title-class="down" title="统计"/>
         <van-dropdown-item v-model="value2" @open="fatongji" :options="option2"/>
       </van-dropdown-menu>
     </div>
+    
     <section>
       <div v-if="bool == 0" v-for="(index) in 3" :key="index">
         <p class="timer">
@@ -174,9 +175,12 @@ export default {
   display: none;
 }
 .workorder >>> .van-dropdown-menu {
-  position: fixed;
+  /* position: fixed; */
   width: 100%;
-  top: 1.3rem;
+  height:1rem;
+  /* top: 1.3rem; */
+  /* background: red; */
+  /* display: block */
 }
 .workorder >>> .van-icon-success {
   color: #eab617 !important;
@@ -210,8 +214,9 @@ section {
   min-height: 100%;
   width: 100%;
   background: #eeeeee;
-  padding-top: 1.3rem;
+  /* padding-top: 1.3rem; */
   overflow: hidden;
+  /* margin-bottom: 1rem */
 }
 .timer {
   width: 100%;
@@ -256,11 +261,12 @@ section {
   font-size: 0.28rem;
 }
 section > :last-child {
-  margin-bottom: 1.4rem;
+  margin-bottom: 2.4rem;
 }
 section {
   height: 90%;
   overflow: auto;
+  /* margin-bottom: 2rem */
 }
 /* 统计的样式开始 */
 .workorder >>> .van-collapse-item__content {

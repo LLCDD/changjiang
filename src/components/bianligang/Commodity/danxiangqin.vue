@@ -34,11 +34,11 @@
         </p>
         <p v-for="(item,index) in user.goods" :key="index">
           <span>{{ item.goods_name }}*{{ item.goods_number }}</span>
-          <span> {{ item.goods_price }} 元</span>
+          <span>{{ item.goods_price }} 元</span>
         </p>
       </div>
 
-        <!-- state == 1  已发货的展示 -->
+      <!-- state == 1  已发货的展示 -->
       <div v-if="state == 1">
         <p>收货人：刘贵</p>
         <p>联系方式：16666666666</p>
@@ -91,8 +91,7 @@
         </p>
       </div>
 
-
-              <!-- state == 0  已发货的展示 -->
+      <!-- state == 0  已发货的展示 -->
       <div v-if="state == 0">
         <p>收货人：刘贵</p>
         <p>联系方式：16666666666</p>
@@ -146,10 +145,6 @@
       </div>
     </div>
 
-    
-
-
-
     <p class="fahuo" v-if="status == 1">发货</p>
     <p class="tuikuanok" v-if="status == 2">已发货</p>
     <p class="tuikuanok" v-if="status == 3" @click="tui">同意退款</p>
@@ -177,15 +172,50 @@ export default {
     // 0 是代发货 1  是已发货  2 是退款
     console.log(this.$route.query.id);
     if (this.$route.query.state == 2) {
-      this.http.get("/api/back/" + this.$route.query.id + "/edit").then(res => {
-        console.log(res);
-        this.user = res.data;
-        if(res.data.order.order_status == 1){
-          this.status = 4
-        }else {
-          this.status = 3
-        }
-      });
+      this.http
+        .get("/api/back/" + this.$route.query.id + "/edit")
+        .then(res => {
+          console.log(res);
+          this.user = res.data;
+          if (res.data.order.order_status == 1) {
+            this.status = 4;
+          } else {
+            this.status = 3;
+          }
+        })
+        .catch(res => {
+          this.$toasted.error(res.message).goAway(1000);
+        });
+    } else if (this.$route.query.state == 1) {
+      this.http
+        .get("/api/order/" + this.$route.query.id + "/edit")
+        .then(res => {
+          console.log(res);
+          this.user = res.data;
+          // if(res.data.order.order_status == 1){
+          //   this.status = 4
+          // }else {
+          //   this.status = 3
+          // }
+        })
+        .catch(res => {
+          this.$toasted.error(res.message).goAway(1000);
+        });
+    } else {
+      this.http
+        .get("/api/order/" + this.$route.query.id + "/edit")
+        .then(res => {
+          console.log(res);
+          this.user = res.data;
+          // if(res.data.order.order_status == 1){
+          //   this.status = 4
+          // }else {
+          //   this.status = 3
+          // }
+        })
+        .catch(res => {
+          this.$toasted.error(res.message).goAway(1000);
+        });
     }
   },
   methods: {
@@ -203,12 +233,15 @@ export default {
     },
     daifa() {},
     // 退款
-    tui(){
-      this.http.put('/api/back/'+this.user.back.order_id).then(res =>{
-        console.log(res)
-      }).catch(res =>{
-        this.$toasted.error(res.message).goAway(1000)
-      })
+    tui() {
+      this.http
+        .put("/api/back/" + this.user.back.order_id)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(res => {
+          this.$toasted.error(res.message).goAway(1000);
+        });
     }
   }
 };

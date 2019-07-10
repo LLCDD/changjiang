@@ -671,7 +671,7 @@ let router = new Router({
     },
     // 便利岗的商品管理的商品详情 shangpxq
     {
-      path: '/shangpxq',
+      path: '/shangpxq/:id',
       name: 'shangpxq',
       component: () =>
         import(/* webpackChunkName: "diantisheng" */ './components/bianligang/Commoditymanagement/shangpxq.vue'),

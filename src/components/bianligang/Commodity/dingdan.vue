@@ -19,7 +19,12 @@
       <van-tab title="退款申请"></van-tab>
     </van-tabs>
     <div class="senter">
-      <div v-if="state == '代发货'" v-for="(item,index) in list.data" :key="index" @click="daxq(item.goods_id,0)">
+      <div
+        v-if="state == '代发货'"
+        v-for="(item,index) in list.data"
+        :key="index"
+        @click="daxq(item.goods_id,0)"
+      >
         <div>
           <p>{{ item.goods_name }}</p>
           <p>阿道夫看到了付款的看法得分</p>
@@ -27,7 +32,12 @@
         <p v-if="status == 0" style="font-size:0.2rem;color:#a3a5a8">4月24日</p>
         <p v-else style="font-size:0.2rem;color:#eab617">4月24日</p>
       </div>
-      <div v-if="state == '已发货'" v-for="(item,index) in list.data" :key="index" @click="daxq(item.goods_id,1)">
+      <div
+        v-if="state == '已发货'"
+        v-for="(item,index) in list.data"
+        :key="index"
+        @click="daxq(item.goods_id,1)"
+      >
         <div>
           <p>{{ item.goods_name }}</p>
           <p>阿道夫看到了付款的看法得分</p>
@@ -35,7 +45,12 @@
         <p v-if="status == 0" style="font-size:0.2rem;color:#a3a5a8">4月24日</p>
         <p v-else style="font-size:0.2rem;color:#eab617">4月24日</p>
       </div>
-      <div v-if="state == '退款申请'" v-for="(item,index) in list.data" :key="index" @click="daxq(item.back_id,2)">
+      <div
+        v-if="state == '退款申请'"
+        v-for="(item,index) in list.data"
+        :key="index"
+        @click="daxq(item.back_id,2)"
+      >
         <div>
           <p>{{ item.consignee }}</p>
           <p>{{ item.address }}</p>
@@ -43,11 +58,13 @@
         <p v-if="status == 0" style="font-size:0.2rem;color:#a3a5a8">{{ item.add_time_format }}</p>
         <p v-else style="font-size:0.2rem;color:#eab617">{{ item.add_time_format }}</p>
       </div>
+      <van-pagination @change="change" v-model="currentPage" :page-count="count" mode="simple" />
     </div>
   </div>
 </template>
 <script>
 import { Tab, Tabs } from "vant";
+import { Pagination } from "vant";
 export default {
   data() {
     return {
@@ -56,13 +73,16 @@ export default {
       status: 0,
       list: [],
       // 判断显示的内容
-      state: "代发货"
+      state: "代发货",
+      currentPage: 1,
+      count: 1
     };
   },
   mounted() {
     this.http.get("/api/goods", { shipping_status: 0 }).then(res => {
       console.log(res);
       this.list = res.data.goods;
+      this.count = res.data.goods.last_page;
     });
   },
   methods: {
@@ -75,32 +95,74 @@ export default {
       console.log(this.active);
       // 代发货
       if (this.active == 0) {
+        this.currentPage = 1;
         console.log("代发货");
         this.state = "代发货";
-        this.http.get("/api/goods", { shipping_status: 0 }).then(res => {
-          console.log(res);
-          this.list = res.data.goods;
-        });
+        this.http
+          .get("/api/goods", { shipping_status: 0})
+          .then(res => {
+            console.log(res);
+            this.list = res.data.goods;
+            this.count = res.data.goods.last_page;
+          });
       } else if (this.active == 1) {
+        this.currentPage = 1;
         this.state = "已发货";
         console.log("已发货");
-        this.http.get("/api/goods", { shipping_status: 0 }).then(res => {
-          console.log(res);
-          this.list = res.data.goods;
-        });
+        this.http
+          .get("/api/goods", { shipping_status: 2 })
+          .then(res => {
+            console.log(res);
+            this.list = res.data.goods;
+            this.count = res.data.goods.last_page;
+          });
       } else {
+        this.currentPage = 1;
         console.log("退款申请");
         this.state = "退款申请";
         this.http.get("/api/back").then(res => {
           console.log(res);
           this.list = res.data.order;
+          this.count = res.data.order.last_page;
+        });
+      }
+    },
+    change(e) {
+      console.log(e);
+      if (this.active == 0) {
+        console.log("代发货");
+        this.state = "代发货";
+        this.http
+          .get("/api/goods", { shipping_status: 0, page:e })
+          .then(res => {
+            console.log(res);
+            this.list = res.data.goods;
+            this.count = res.data.goods.last_page;
+          });
+      } else if (this.active == 1) {
+        this.state = "已发货";
+        console.log("已发货");
+        this.http
+          .get("/api/goods", { shipping_status: 2, page:e })
+          .then(res => {
+            console.log(res);
+            this.list = res.data.goods;
+            this.count = res.data.goods.last_page;
+          });
+      } else {
+        console.log("退款申请");
+        this.state = "退款申请";
+        this.http.get("/api/back", { page:e  }).then(res => {
+          console.log(res);
+          this.list = res.data.order;
+          this.count = res.data.order.last_page;
         });
       }
     },
     // 订单详情
-    daxq(id,state) {
-      console.log(id)
-      this.$router.push("/dingdanxq/?id="+ id +"&state="+state);
+    daxq(id, state) {
+      console.log(id);
+      this.$router.push("/dingdanxq/?id=" + id + "&state=" + state);
     }
   }
 };

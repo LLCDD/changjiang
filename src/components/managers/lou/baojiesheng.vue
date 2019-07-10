@@ -86,10 +86,18 @@ export default {
 .workorder >>> .down::after {
   display: none;
 }
-.workorder >>> .van-dropdown-menu {
+/* .workorder >>> .van-dropdown-menu {
   position: fixed;
   width: 100%;
   top: 1.3rem;
+} */
+.workorder >>> .van-dropdown-menu {
+  /* position: fixed; */
+  width: 100%;
+  height:1rem;
+  /* top: 1.3rem; */
+  /* background: red; */
+  /* display: block */
 }
 .workorder >>> .van-icon-success {
   color: #eab617 !important;

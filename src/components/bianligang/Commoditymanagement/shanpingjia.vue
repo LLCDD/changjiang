@@ -22,7 +22,7 @@
         <p>商品数量：<input v-model="goods_number" placeholder="请输入数量" type="text"></p>
         <p>商品售价：<input v-model="shop_price" type="text" placeholder="请输入售价"></p>
         <p>赠送积分：<input v-model="give_integral" type="text" placeholder="根据价格自动填入"></p>
-        <p class="pyy"><span>是否加入精品</span> <span>请选择 <img src="../../../assets/img/rightf.png" alt="" srcset=""> </span>  </p>
+        <p class="pyy"><span>是否加入精品</span> <span> {{ msg1 }} <img @click="xianshi" src="../../../assets/img/rightf.png" alt="" srcset=""> </span>  </p>
       </div>
       <div class="div">
         <p style="font-size:0.34rem;height:0.9rem;line-height:0.9rem;">
@@ -41,6 +41,9 @@
         <textarea v-model="goods_desc" placeholder="请输入商品详情描述" name="" id="" cols="30" rows="10"></textarea>
       </div>
     </div>
+    <van-popup v-model="show" position="bottom">
+      <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" />
+    </van-popup>
     <p class="fahuo" v-if="status == 2" @click="tianjia">添加</p>
     <!-- <p class="tuikuanok" v-if="status == 2">已发货</p>
     <p class="tuikuanok" v-if="status == 3">同意退款</p>
@@ -50,10 +53,11 @@
 <script>
 // import { SwipeCell } from "vant";
 import { Uploader } from 'vant';
+import { truncate } from 'fs';
 export default {
   data() {
     return {
-      msg: "商品添加",
+      msg: "添加商品",
       active: 0,
       status: 2,
       // 商品名称
@@ -67,10 +71,28 @@ export default {
       // 图片
       image:[],
       // 商品描述
-      goods_desc:''
+      goods_desc:'',
+      show:false,
+      columns:['是','否'],
+      msg1:"请选择"
     };
   },
+  mounted(){
+    // 先获取商品的信息
+  },
   methods: {
+    xianshi(){
+      this.show = true
+    },
+    onCancel(){
+      // 下拉框的取消事件
+      this.show = false
+    },
+    onConfirm(e){
+      console.log(e)
+      this.msg1 = e
+      this.show = false
+    },
     // 返回按钮
     fanhui() {
       this.$router.go(-1);

@@ -177,10 +177,18 @@ export default {
 .workorder >>> .down::after {
   display: none;
 }
-.workorder >>> .van-dropdown-menu {
+/* .workorder >>> .van-dropdown-menu {
   position: fixed;
   width: 100%;
   top: 1.3rem;
+} */
+.workorder >>> .van-dropdown-menu {
+  /* position: fixed; */
+  width: 100%;
+  height:1rem;
+  /* top: 1.3rem; */
+  /* background: red; */
+  /* display: block */
 }
 .workorder >>> .van-icon-success {
   color: #eab617 !important;
@@ -214,7 +222,7 @@ section {
   min-height: 100%;
   width: 100%;
   background: #eeeeee;
-  padding-top: 1.3rem;
+  /* padding-top: 1.3rem; */
   overflow: hidden;
 }
 .timer {
@@ -260,7 +268,7 @@ section {
   font-size: 0.28rem;
 }
 section > :last-child {
-  margin-bottom: 1.4rem;
+  margin-bottom: 2.4rem;
 }
 section {
   height: 90%;

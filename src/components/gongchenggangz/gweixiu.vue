@@ -5,7 +5,7 @@
       <p></p>
       <div>
         <p @click="fanhui">
-          <img class="fanhui" src="../../assets/img/left0.png" alt>
+          <img class="fanhui" src="../../assets/img/left0.png" alt />
         </p>
         <p>{{ msg }}</p>
       </div>
@@ -16,40 +16,43 @@
         <div @click="renwu">
           <p>任务类型</p>
           <p>
-            <span> {{ msg1 }} </span>
-            <img src="../../assets/img/rightf.png" alt>
+            <span>{{ msg1 }}</span>
+            <img src="../../assets/img/rightf.png" alt />
           </p>
         </div>
-        <div @click="xiu">
+        <!-- <div @click="xiu">
           <p>报修类型</p>
           <p>
             <span>{{ msg2 }}</span>
             <img src="../../assets/img/rightf.png" alt>
           </p>
-        </div>
+        </div>-->
         <div @click="jiejeu">
           <p>是否解决</p>
           <p>
             <span>{{ msg3 }}</span>
-            <img src="../../assets/img/rightf.png" alt>
+            <img src="../../assets/img/rightf.png" alt />
           </p>
         </div>
       </section>
       <div class="maring">
         <p>花费明细：</p>
-        <textarea name placeholder="请说明费用情况" id cols="30" rows="10"></textarea>
+        <textarea v-model="detail" name placeholder="请说明费用情况" id cols="30" rows="10"></textarea>
       </div>
       <div class="maring">
         <p>备注 ：</p>
-        <textarea name placeholder="请输入相关的备注" id cols="30" rows="10"></textarea>
+        <textarea v-model="remark" name placeholder="请输入相关的备注" id cols="30" rows="10"></textarea>
       </div>
       <div class="maring">
         <p>图片 ：</p>
-        <br>
+        <br />
         <div>
-          <p></p>
+          <p class="py" v-for="(item,index) in imgs" :key="index">
+            <span @click="fa(index)">✖</span>
+            <img style="height:100%;width:100%" :src="item" alt />
+          </p>
           <p>
-            <van-uploader style="height:1rem;width:1rem;background" :after-read="afterRead"/>
+            <van-uploader style="height:1rem;width:1rem;background" :after-read="afterRead" />
           </p>
         </div>
       </div>
@@ -71,7 +74,7 @@
 </template>
 <script>
 import { Uploader } from "vant";
-import { Picker } from 'vant';
+import { Picker } from "vant";
 import { Popup } from "vant";
 export default {
   data() {
@@ -80,17 +83,20 @@ export default {
       checked: true,
       checked1: false,
       // 任务类型的选择
-      columns: ['杭州', '宁波', '温州', '嘉兴', '湖州'],
-      show:false,
-      msg1:"请选择",
+      columns: ["客服维修", "楼管报修", "业主报修"],
+      show: false,
+      msg1: "请选择",
       // 报修类型
-      columns1: ['杭州1', '宁波1', '温州1', '嘉兴1', '湖州1'],
-      show1:false,
-       msg2:"请选择",
+      columns1: ["杭州1", "宁波1", "温州1", "嘉兴1", "湖州1"],
+      show1: false,
+      msg2: "请选择",
       // 是否解决
-      columns2: ['是','否'],
-      show2:false,
-      msg3:"请选择",
+      columns2: ["是", "否"],
+      show2: false,
+      msg3: "请选择",
+      remark: "",
+      detail: "",
+      imgs: []
     };
   },
   methods: {
@@ -98,57 +104,91 @@ export default {
     fanhui() {
       this.$router.go(-1);
     },
+    fa(index) {
+      console.log(index);
+      var arr = this.imgs;
+      arr.splice(index, 1);
+      this.imgs = arr;
+      // console.log(arr)
+    },
     // 图片上传
     afterRead(file) {
       // 此时可以自行将文件上传至服务器
       console.log(file);
+      var arr = this.imgs;
+      arr.push(file.content);
+      this.imgs = arr;
     },
     // 1.选择认为类型
     // 选择任务开始
-    renwu(){
-      this.show = true
+    renwu() {
+      this.show = true;
     },
-    onCancel(){
+    onCancel() {
       // 选择认为类型的取消事件
-      this.show = false
+      this.show = false;
     },
-    onConfirm(e){
+    onConfirm(e) {
       // 选择认为类型的确认事件
-      console.log(e)
-      this.msg1 = e
-      this.show = false
+      console.log(e);
+      this.msg1 = e;
+      this.show = false;
     },
     // 2. 选择报修类型
-    xiu(){
-      this.show1 = true
+    xiu() {
+      this.show1 = true;
     },
-    onCancel1(){
+    onCancel1() {
       // 关闭报修类型
-      this.show1 = false
+      this.show1 = false;
     },
-    onConfirm1(e){
+    onConfirm1(e) {
       // 报修类型的确认
-      console.log(e)
+      console.log(e);
       this.msg2 = e;
-      this.show1 = false
+      this.show1 = false;
     },
     // 3.是否解决的事件
-    jiejeu(){
-      this.show2 = true
+    jiejeu() {
+      this.show2 = true;
     },
-    onCancel2(){
+    onCancel2() {
       // 关闭是否确认
-      this.show2 = false
+      this.show2 = false;
     },
-    onConfirm2(e){
+    onConfirm2(e) {
       // 报修类型的确认
-      console.log(e)
-      this.msg3 = e
-      this.show2 = false
+      console.log(e);
+      this.msg3 = e;
+      this.show2 = false;
     },
     // 最后的提交事件
-    tijiao(){
-      this.http.post('/api/fix')
+    tijiao() {
+      if (this.msg2 == "客服报修") {
+        this.msg2 = "kefu_fix";
+      } else if (this.msg2 == "楼管报修") {
+        this.msg2 = "security_fix";
+      } else {
+        this.msg2 = "yezhu_fix";
+      }
+      if (this.msg3 == "是") {
+        this.msg3 = "1";
+      } else {
+        this.msg3 = "0";
+      }
+      this.http.post("/api/fix", {
+        type: this.msg2,
+        status: this.msg3,
+        remark: this.remark,
+        detail: this.detail,
+        images: this.imgs
+      }).then(res =>{
+        console.log(res)
+         this.$router.go(-1);
+        this.$toasted.success(res.message).goAway(1000)
+      }).catch(res =>{
+        this.$toasted.error(res.message).goAway(1000)
+      });
     }
   }
 };
@@ -263,7 +303,7 @@ export default {
 .nr {
   height: 80%;
   overflow: hidden;
-  overflow-y: auto
+  overflow-y: auto;
 }
 button {
   height: 1rem;
@@ -272,5 +312,12 @@ button {
   color: #fff;
   position: fixed;
   bottom: 0;
+}
+.py {
+  position: relative;
+}
+.py > span {
+  position: absolute;
+  right: 0;
 }
 </style>

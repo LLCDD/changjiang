@@ -88,7 +88,7 @@
       <div class="yichangka">
         <!-- 异常打卡的取消事件 -->
         <img @click="yichangcolse" src="../../assets/img/close.png" alt />
-        <h3>15:20</h3>
+        <h3> {{ hms }} </h3>
         <p>还没到下班时间</p>
         <p>你确定要打卡吗?</p>
         <p @click="yihchangko">确定打卡</p>
@@ -147,7 +147,8 @@ export default {
       this.$toasted.success(res.data.msg).goAway(1000);
       this.shang = res.data.sign_in_date;
       this.xia = res.data.sign_out_date;
-      if ((res.data.title = "上班打卡")) {
+      console.log(res.data.title)
+      if (res.data.title == "上班打卡") {
         this.show = 0;
         this.shangban = 1;
       } else {
@@ -206,6 +207,22 @@ export default {
     );
   },
   methods: {
+    // 打卡的从新刷新
+    once() {
+      this.http.get("/api/sign").then(res => {
+        console.log(res);
+        this.$toasted.success(res.data.msg).goAway(1000);
+        this.shang = res.data.sign_in_date;
+        this.xia = res.data.sign_out_date;
+        if ((res.data.title = "上班打卡")) {
+          this.show = 0;
+          this.shangban = 1;
+        } else {
+          this.show = 1;
+          this.shangban = 0;
+        }
+      });
+    },
     //   返回的事件
     fanhui() {
       this.$router.go(-1);
@@ -217,25 +234,27 @@ export default {
         this.http
           .post("/api/sign", {
             image: "",
-            address:""+ this.weizhi,
+            address: "" + this.weizhi,
             longitude: this.longitude,
-            latitude:this.latitude
+            latitude: this.latitude
           })
           .then(res => {
             this.showf = true;
-            console.log(res)
+            this.once()
+            console.log(res);
           });
-        
       } else {
-        this.http.post("/api/sign", {
+        this.http
+          .post("/api/sign", {
             image: "",
-            address:""+ this.weizhi,
+            address: "" + this.weizhi,
             longitude: this.longitude,
-            latitude:this.latitude
+            latitude: this.latitude
           })
           .then(res => {
             this.showf1 = true;
-            console.log(res)
+            console.log(res);
+            this.once()
           });
         this.showf1 = true;
         console.log("下班时间");
@@ -262,6 +281,20 @@ export default {
       this.showy = false;
       // 下面是 异常打卡的逻辑处理
       // 。。。。。。。
+       this.http
+          .post("/api/sign", {
+            image: "",
+            address: "" + this.weizhi,
+            longitude: this.longitude,
+            latitude: this.latitude
+          })
+          .then(res => {
+            this.showf1 = true;
+            console.log(res);
+            this.once()
+          });
+        this.showf1 = true;
+        console.log("下班时间");
     },
     // 去统计的页面
     tongji() {
