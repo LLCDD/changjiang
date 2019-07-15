@@ -87,7 +87,8 @@ export default {
           car_id: this.chepai,
           remark: this.text,
           pay: this.msg1,
-          park_time: this.timer
+          park_time: this.timer,
+          money:this.money
         })
         .then(res => {
           this.$toasted.success(res.message).goAway(1000)

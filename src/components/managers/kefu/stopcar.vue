@@ -177,6 +177,9 @@ export default {
 .workorder >>> .down::after {
   display: none;
 }
+.workorder >>> .van-dropdown-item--down {
+  display: none
+}
 /* .workorder >>> .van-dropdown-menu {
   position: fixed;
   width: 100%;

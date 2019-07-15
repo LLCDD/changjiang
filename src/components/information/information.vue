@@ -163,11 +163,12 @@ export default {
       this.qu = res.data.me.xiaoqu_name;
       this.bie = res.data.me.sex;
       this.mode = res.data.me.birthday;
-      if (res.data.me.avatar) {
-        this.imgurl = res.data.me.avatar;
-      } else {
-        this.imgurl = res.data.me.avatar_format;
-      }
+      // if (res.data.me.avatar) {
+      //   this.imgurl = res.data.me.avatar;
+      // } else {
+      //   this.imgurl = res.data.me.avatar_format;
+      // }
+      this.imgurl = res.data.me.avatar
     });
   },
   methods: {

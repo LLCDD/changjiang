@@ -38,16 +38,21 @@
           </p>
         </van-collapse-item>
         <van-collapse-item title="休息天数" name="2" :value="counts.count.rest+ '次'">
-          <p v-for="(item,index) in counts.rest" :key="index">2019-04-03(星期三)</p>
+          <p v-for="(item,index) in counts.rest" :key="index">
+            {{ item }}
+          </p>
         </van-collapse-item>
         <van-collapse-item title="早退" name="3" :value="counts.count.early+ '次'">
           <p v-for="(item,index) in counts.early" :key="index">       
-            <span>2019-04-03(星期三)</span>
-            <span>上班早退6分钟</span>
+            <span>{{ item[0] }}</span>
+            <span>{{ item[1] }}</span>
           </p>
         </van-collapse-item>
         <van-collapse-item title="迟到" name="4" :value="counts.count.late+ '次'">
-          <p v-for="(item,index) in counts.late" :key="index">2019-04-03(星期三)</p>
+          <p v-for="(item,index) in counts.late" :key="index">
+            <span>{{ item[0] }}</span>
+            <span>{{ item[1] }}</span>
+          </p>
         </van-collapse-item>
         <van-collapse-item title="矿工" :value-class="{ color1 : counts.count.absence > 1 }" name="5" :value="counts.count.absence+ '次'">
           <p v-for="(item,index) in counts.absence" :key="index">
@@ -82,7 +87,7 @@ export default {
   data() {
     return {
       msg: "考勤打卡",
-      name: "llc",
+      name: localStorage.getItem('username'),
       time: "2019.04.20",
       shang: "8:30",
       xia: "17:30",

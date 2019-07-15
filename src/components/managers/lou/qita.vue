@@ -203,6 +203,9 @@ export default {
 .workorder >>> .van-icon-success {
   color: #eab617 !important;
 }
+.workorder >>> .van-dropdown-item--down {
+  display: none
+}
 header {
   height: 1.3rem;
   background: #fff;

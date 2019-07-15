@@ -5,7 +5,7 @@
       <p></p>
       <div>
         <p @click="fanhui">
-          <img src="../../../assets/img/left0.png" alt>
+          <img src="../../../assets/img/left0.png" alt />
         </p>
         {{msg}}
       </div>
@@ -13,11 +13,11 @@
     <!-- 中间内容 -->
     <div style=" padding-top:1.3rem;">
       <van-dropdown-menu active-color="#eab617" :overlay="show">
-        <van-dropdown-item v-model="value1" @open="tongji" title-class="down" title="统计"/>
-        <van-dropdown-item v-model="value2" @open="fatongji" :options="option2"/>
+        <van-dropdown-item v-model="value1" @open="tongji" title-class="down" title="统计" />
+        <van-dropdown-item v-model="value2" @open="fatongji" :options="option2" />
       </van-dropdown-menu>
     </div>
-    
+
     <section>
       <div v-if="bool == 0" v-for="(index) in 3" :key="index">
         <p class="timer">
@@ -26,7 +26,7 @@
         <!-- 审批的样式 -->
         <div class="sheng">
           <p>回访人员：丽丽</p>
-          <div v-for="(index) in 3" :key="index">
+          <div v-for="(index) in 1" :key="index">
             <p>回访业主1：和谐小区3幢309室</p>
             <p>物业费金额 ：600元</p>
           </div>
@@ -38,15 +38,15 @@
         <!-- 审批的样式 -->
         <div class="sheng">
           <p>回访人员：丽丽</p>
-          <div v-for="(index) in 3" :key="index">
+          <div v-for="(index) in 1" :key="index">
             <p>回访业主1：和谐小区3幢309室</p>
             <p>物业费金额 ：600元</p>
           </div>
           <p style="color:#eab617" @click="shenpi">审批</p>
         </div>
       </div>
-      <div v-if="bool == 1" >
-        <van-collapse v-model="activeNames" @change="change">
+      <div v-if="bool == 1">
+        <van-collapse  v-model="activeNames" @change="change">
           <van-collapse-item :title="valuey" name="1">
             <p class="cnetes">
               <span>丽丽</span>
@@ -57,7 +57,7 @@
       </div>
     </section>
     <!-- 时间的选择 -->
-     <van-popup v-model="timer" position="bottom">
+    <van-popup v-model="timer" position="bottom">
       <van-datetime-picker
         v-model="currentDate"
         type="date"
@@ -73,7 +73,7 @@
 <script>
 import { DropdownMenu, DropdownItem } from "vant";
 import { Collapse, CollapseItem } from "vant";
-import { DatetimePicker } from 'vant';
+import { DatetimePicker } from "vant";
 // Vue.use(DropdownMenu).use(DropdownItem);
 export default {
   data() {
@@ -89,13 +89,18 @@ export default {
         { text: "已审批", value: "c" }
       ],
       bool: 0,
-      activeNames: ['1'],
-      valuey:"12121212",
+      activeNames: ["1"],
+      valuey: "12121212",
       minDate: new Date(2000, 1, 1),
       maxDate: new Date(),
-      timer:false,
-      currentDate: "",
+      timer: false,
+      currentDate: ""
     };
+  },
+  mounted() {
+    this.http.get("/api/notice/count/detail?type=fee").then(res => {
+      console.log(res);
+    });
   },
   methods: {
     fanhui() {
@@ -115,30 +120,36 @@ export default {
       this.$router.push("/shenpi");
     },
     // 时间的选择
-    change(){
-      this.timer = true
+    change() {
+      this.timer = true;
     },
     formatter(type, value) {
-      if (type === 'year') {
+      if (type === "year") {
         return `${value}年`;
-      } else if (type === 'month') {
-        return `${value}月`
-      } else if (type === 'day') {
-        return `${value}日`
+      } else if (type === "month") {
+        return `${value}月`;
+      } else if (type === "day") {
+        return `${value}日`;
       }
       return value;
     },
     // 时间的关闭
-    timerg(){
-      this.timer = false
+    timerg() {
+      this.timer = false;
     },
     // 时间的开始
-    timerok(value){
-      var date = new Date(value);  
-      var date_value=date.getFullYear() + '年' +(date.getMonth() + 1) + '月' + date.getDate() + '日';  
-      this.valuey = date_value
-      this.timer = false
-      this.activeNames = ['1']
+    timerok(value) {
+      var date = new Date(value);
+      var date_value =
+        date.getFullYear() +
+        "年" +
+        (date.getMonth() + 1) +
+        "月" +
+        date.getDate() +
+        "日";
+      this.valuey = date_value;
+      this.timer = false;
+      this.activeNames = ["1"];
     }
   },
   watch: {
@@ -165,19 +176,23 @@ export default {
   /* background: red; */
   overflow: hidden;
 }
+
 .workorder >>> .van-picker__cancel {
-  color: #eab617
+  color: #eab617;
 }
 .workorder >>> .van-picker__confirm {
-  color: #eab617
+  color: #eab617;
 }
 .workorder >>> .down::after {
   display: none;
 }
+.workorder >>> .van-dropdown-item--down {
+  display: none
+}
 .workorder >>> .van-dropdown-menu {
   /* position: fixed; */
   width: 100%;
-  height:1rem;
+  height: 1rem;
   /* top: 1.3rem; */
   /* background: red; */
   /* display: block */
@@ -270,7 +285,7 @@ section {
 }
 /* 统计的样式开始 */
 .workorder >>> .van-collapse-item__content {
-  padding: 0
+  padding: 0;
 }
 .cnetes {
   height: 1.12rem;
@@ -281,7 +296,6 @@ section {
   color: #000;
   font-size: 0.3rem;
 }
-
 </style>
 
 

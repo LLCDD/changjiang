@@ -257,12 +257,14 @@ export default {
     this.http.get('/api/me').then(res =>{
       console.log(res)
       localStorage.setItem('username',res.data.me.name)
-      if(res.data.me.avatar){
-        this.avatar = res.data.me.avatar
-      }else {
-        this.avatar = res.data.me.avatar_format
-        this.name = res.data.me.name
-      }
+      this.avatar = res.data.me.avatar
+      this.name = res.data.me.name
+      // if(res.data.me.avatar){
+      //   this.avatar = res.data.me.avatar
+      // }else {
+      //   this.avatar = res.data.me.avatar_format
+      //   this.name = res.data.me.name
+      // }
     }).catch(res => {
       this.$toasted.error(res.message).goAway(1000)
     })

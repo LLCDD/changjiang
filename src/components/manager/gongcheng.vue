@@ -6,7 +6,7 @@
       <p></p>
       <div>
         <p @click="fanhui">
-          <img src="../../assets/img/left0.png" alt>
+          <img src="../../assets/img/left0.png" alt />
         </p>
         {{msg}}
       </div>
@@ -17,13 +17,14 @@
     <div class="center">
       <!-- 工程岗 -->
       <div class="weixiu" @click="xuirizhi">
-          <p>
-            <img src="../../assets/img/xiuday.png" alt>
-          </p>
-          <span>维修日志</span>
-        </div>
+        <p>
+          <span> {{ count.fix }} </span>
+          <img src="../../assets/img/xiuday.png" alt />
+        </p>
+        <span>维修日志</span>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -33,21 +34,30 @@ export default {
   data() {
     return {
       msg: "工程岗日志",
+      count:{}
     };
   },
   mounted() {
+    this.http
+      .get("/api/notice/count?role=engineer", { role: "kefu" })
+      .then(res => {
+        console.log(res);
+        this.count = res.data.data;
+      })
+      .catch(res => {
+        this.$toasted.error(res.message).goAway(1000);
+      });
   },
   methods: {
     // 返回事件
-    fanhui(){
-        this.$router.go(-1)
+    fanhui() {
+      this.$router.go(-1);
     },
     // 维修日志
-    xuirizhi(){
-      this.$router.push('/gongvheng')
-        console.log("维修日志")
+    xuirizhi() {
+      this.$router.push("/gongvheng");
+      console.log("维修日志");
     }
-    
   }
 };
 </script>
@@ -93,7 +103,7 @@ header > div > p > img {
 .center {
   width: 100%;
   height: 6rem;
-  margin-top: 0.3rem
+  margin-top: 0.3rem;
 }
 .center > p {
   height: 1rem;
@@ -141,7 +151,8 @@ header > div > p > img {
   height: 1.2rem;
   width: 1.2rem;
   border-radius: 0.3rem;
-  background: orange;
+  /* background: orange; */
+  position: relative;
 }
 .weixiu > p > img {
   height: 100%;
@@ -151,6 +162,16 @@ header > div > p > img {
   display: inline-block;
   margin-top: 0.2rem;
   font-size: 0.24rem;
+}
+.weixiu > p > span {
+  height: 0.3rem;
+  width: 0.3rem;
+  background: red;
+  position: absolute;
+  top: -0.05rem;
+  border-radius: 50%;
+  right: -0.05rem;
+  color: #fff;
 }
 .left > .top {
   height: 3.1rem;

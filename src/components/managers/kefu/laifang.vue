@@ -164,6 +164,9 @@ export default {
   /* background: red; */
   overflow: hidden;
 }
+.workorder >>> .van-dropdown-item--down {
+  display: none
+}
 .workorder >>> .van-picker__cancel {
   color: #eab617
 }

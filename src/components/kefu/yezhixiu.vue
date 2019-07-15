@@ -101,7 +101,8 @@ export default {
       console.log(e);
       this.msg1 = e;
       console.log(this.columns.indexOf(e));
-      this.id = this.columns1[this.columns.indexOf(e)].position_id;
+      this.id = e
+      // this.id = this.columns1[this.columns.indexOf(e)].position_id;
       this.show = false;
     },
     // 图片上传

@@ -7,7 +7,7 @@
       <p></p>
       <div>
         <p @click="fanhui">
-          <img src="../../assets/img/left0.png" alt>
+          <img src="../../assets/img/left0.png" alt />
         </p>
         {{msg}}
       </div>
@@ -20,25 +20,35 @@
       <div>
         <div class="weixiu" @click="huifang">
           <p>
-            <img src="../../assets/img/hunfang.png" alt>
+            <span> {{ count.fee }} </span>
+            <img src="../../assets/img/hunfang.png" alt />
           </p>
           <span>回访日志</span>
         </div>
         <div class="weixiu" @click="laifang">
           <p>
-            <img src="../../assets/img/laifang.png" alt>
+            <span>
+              {{ count.visit }}
+            </span>
+            <img src="../../assets/img/laifang.png" alt />
           </p>
           <span>来访日志</span>
         </div>
         <div class="weixiu" @click="stopmoney">
           <p>
-            <img src="../../assets/img/tingche.png" alt>
+            <span>
+              {{ count.park }}
+            </span>
+            <img src="../../assets/img/tingche.png" alt />
           </p>
           <span>停车日志</span>
         </div>
         <div class="weixiu" @click="guangao">
           <p>
-            <img src="../../assets/img/guanggao.png" alt>
+            <span>
+              {{ count.ad }}
+            </span>
+            <img src="../../assets/img/guanggao.png" alt />
           </p>
           <span>广告日志</span>
         </div>
@@ -54,37 +64,42 @@ export default {
   data() {
     return {
       msg: "客服岗日志",
-
+      count:{}
     };
   },
   mounted() {
+    this.http.get('/api/notice/count?role=kefu',{role:'kefu'}).then(res =>{
+      console.log(res)
+      this.count = res.data.data
+    }).catch(res =>{
+      this.$toasted.error(res.message).goAway(1000)
+    })
   },
   methods: {
     // 返回事件
-    fanhui(){
-        this.$router.go(-1)
+    fanhui() {
+      this.$router.go(-1);
     },
     // 回访日志
-    huifang(){
-        console.log("回访日志")
-        this.$router.push('/service')
+    huifang() {
+      console.log("回访日志");
+      this.$router.push("/service");
     },
     // 来访日志
-    laifang(){
-        console.log("来访日志")
-        this.$router.push('/visiting')
+    laifang() {
+      console.log("来访日志");
+      this.$router.push("/visiting");
     },
     // 停车日志
-    stopmoney(){
-        console.log("停车日志")
-        this.$router.push('/stopcar')
+    stopmoney() {
+      console.log("停车日志");
+      this.$router.push("/stopcar");
     },
     // 广告日志
-    guangao(){
-        console.log("广告日志")
-        this.$router.push('/guangao1')
+    guangao() {
+      console.log("广告日志");
+      this.$router.push("/guangao1");
     }
-    
   }
 };
 </script>
@@ -130,7 +145,7 @@ header > div > p > img {
 .center {
   width: 100%;
   height: 6rem;
-  margin-top: 0.3rem
+  margin-top: 0.3rem;
 }
 .center > p {
   height: 1rem;
@@ -178,7 +193,17 @@ header > div > p > img {
   height: 1.2rem;
   width: 1.2rem;
   border-radius: 0.3rem;
-  background: orange;
+  position: relative;
+}
+.weixiu > p > span {
+  height: 0.3rem;
+  width: 0.3rem;
+  background: red;
+  position: absolute;
+  top: -0.05rem;
+  border-radius: 50%;
+  right: -0.05rem;
+  color: #fff
 }
 .weixiu > p > img {
   height: 100%;

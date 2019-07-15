@@ -184,6 +184,9 @@ export default {
 .workorder >>> .van-picker__confirm {
   color: #eab617;
 }
+.workorder >>> .van-dropdown-item--down {
+  display: none
+}
 .workorder >>> .down::after {
   display: none;
 }

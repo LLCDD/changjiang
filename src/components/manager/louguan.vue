@@ -19,48 +19,56 @@
       <div>
         <div class="weixiu" @click="baojie">
           <p>
+            <span> {{ count.cleaning }} </span>
             <img src="../../assets/img/baojie.png" alt>
           </p>
           <span>保洁考勤</span>
         </div>
         <div class="weixiu" @click="xiaofang">
           <p>
+             <span> {{ count.fire }} </span>
             <img src="../../assets/img/xiaofang.png" alt>
           </p>
           <span>消防巡查</span>
         </div>
         <div class="weixiu" @click="gongshui">
           <p>
+             <span> {{ count.water }} </span>
             <img src="../../assets/img/gongshui.png" alt>
           </p>
           <span>供水巡查</span>
         </div>
         <div class="weixiu" @click="dianti">
           <p>
+             <span> {{ count.lift }} </span>
             <img src="../../assets/img/dianti.png" alt>
           </p>
           <span>电梯巡查</span>
         </div>
         <div class="weixiu" @click="guangwang">
           <p>
+             <span>  {{ count.pipeline }}  </span>
             <img src="../../assets/img/guangwang.png" alt>
           </p>
           <span>管网巡查</span>
         </div>
         <div class="weixiu" @click="weisheng">
           <p>
+             <span> {{ count.green }} </span>
             <img src="../../assets/img/lvhua.png" alt>
           </p>
           <span>卫生绿化</span>
         </div>
         <div class="weixiu" @click="zhuangxiu">
           <p>
+             <span> {{ count.decorate }} </span>
             <img src="../../assets/img/weijian.png" alt>
           </p>
           <span>装修违建</span>
         </div>
         <div class="weixiu" @click="qita">
           <p>
+             <span> {{ count.other }} </span>
             <img src="../../assets/img/other.png" alt>
           </p>
           <span>其他设施</span>
@@ -77,10 +85,16 @@ export default {
   data() {
     return {
       msg: "楼管岗日志",
-
+      count:{}
     };
   },
-  mounted() {
+   mounted() {
+    this.http.get('/api/notice/count?role=security',{role:'security'}).then(res =>{
+      console.log(res)
+      this.count = res.data.data
+    }).catch(res =>{
+      this.$toasted.error(res.message).goAway(1000)
+    })
   },
   methods: {
     // 返回事件
@@ -220,7 +234,18 @@ header > div > p > img {
   height: 1.2rem;
   width: 1.2rem;
   border-radius: 0.3rem;
-  background: orange;
+  /* background: orange; */
+  position: relative;
+}
+.weixiu > p > span {
+  height: 0.3rem;
+  width: 0.3rem;
+  background: red;
+  position: absolute;
+  top: -0.05rem;
+  border-radius: 50%;
+  right: -0.05rem;
+  color: #fff
 }
 .weixiu > p > img {
   height: 100%;
