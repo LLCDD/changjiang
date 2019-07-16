@@ -30,7 +30,7 @@
       </div>
       <div class="tet">
         <p>处理意见：</p>
-        <textarea :value="value" cols="30" rows="10" placeholder="请输入您的处理意见"></textarea>
+        <textarea :v-model="value" cols="30" rows="10" placeholder="请输入您的处理意见"></textarea>
       </div>
     </section>
     <div class="fa" v-if="value =='' ">发送</div>
@@ -45,6 +45,11 @@ export default {
       msg: "审批",
       value: "世界i年底发的"
     };
+  },
+  mounted(){
+    this.http.get('/api/notices/'+this.$route.params.id).then(res =>{
+      console.log(res)
+    })
   },
   methods: {
     fanhui() {

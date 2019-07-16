@@ -352,7 +352,7 @@ let router = new Router({
     },
     // 经理岗的客服回访日志的审批
     {
-      path: '/shenpi',
+      path: '/shenpi/:id',
       name: 'shenpi',
       component: () =>
         import(/* webpackChunkName: "service" */ './components/managers/kefu/shengpi'),
@@ -374,7 +374,7 @@ let router = new Router({
     },
     // 经理岗的客服来访日志的审批
     {
-      path: '/laifangshen',
+      path: '/laifangshen/:id',
       name: 'laifangshen',
       component: () =>
         import(/* webpackChunkName: "service" */ './components/managers/kefu/laifangshen'),
@@ -418,7 +418,7 @@ let router = new Router({
     },
     // guanggaoshen  经理岗的客服广告日志的审批
     {
-      path: '/guanggaoshen',
+      path: '/guanggaoshen/:id',
       name: 'guanggaoshen',
       component: () =>
         import(/* webpackChunkName: "guanggaoshen" */ './components/managers/kefu/guanggaoshen'),
@@ -440,7 +440,7 @@ let router = new Router({
     },
     // shengong 经理岗的工程维修审批
     {
-      path: '/shengong',
+      path: '/shengong/:id',
       name: 'shengong',
       component: () =>
         import(/* webpackChunkName: "guanggaoshen" */ './components/managers/gongcheng/shenggong'),
@@ -462,7 +462,7 @@ let router = new Router({
     },
     // 经理岗的楼管岗的保洁考勤审批
     {
-      path: '/baojiesheng',
+      path: '/baojiesheng/:id',
       name: 'baojiesheng',
       component: () =>
         import(/* webpackChunkName: "guanggaoshen" */ './components/managers/lou/baojiesheng'),
@@ -484,7 +484,7 @@ let router = new Router({
     },
     // 经理岗的楼管岗的消防巡查审批
     {
-      path: '/xiaofangsheng',
+      path: '/xiaofangsheng/:id',
       name: 'xiaofangsheng',
       component: () =>
         import(/* webpackChunkName: "guanggaoshen" */ './components/managers/lou/xiaofangsheng'),
@@ -506,7 +506,7 @@ let router = new Router({
     },
     // 经理岗的楼管岗的供水巡查审批
     {
-      path: '/gongshuisheng',
+      path: '/gongshuisheng/:id',
       name: 'gongshuisheng',
       component: () =>
         import(/* webpackChunkName: "guanggaoshen" */ './components/managers/lou/gongshuisheng'),
@@ -528,7 +528,7 @@ let router = new Router({
     },
     // 经理岗的楼管岗的电梯巡查审批
     {
-      path: '/diantisheng',
+      path: '/diantisheng/:id',
       name: 'diantisheng',
       component: () =>
         import(/* webpackChunkName: "diantisheng" */ './components/managers/lou/diantisheng'),
@@ -550,7 +550,7 @@ let router = new Router({
     },
     // 经理岗的楼管岗的官网巡查审批
     {
-      path: '/wangguansheng',
+      path: '/wangguansheng/:id',
       name: 'wangguansheng',
       component: () =>
         import(/* webpackChunkName: "diantisheng" */ './components/managers/lou/wangguansheng'),
@@ -572,7 +572,7 @@ let router = new Router({
     },
     // 经理岗的楼管岗的官网巡查审批
     {
-      path: '/weishengsheng',
+      path: '/weishengsheng/:id',
       name: 'weishengsheng',
       component: () =>
         import(/* webpackChunkName: "diantisheng" */ './components/managers/lou/weishengsheng'),
@@ -594,7 +594,7 @@ let router = new Router({
     },
     // 经理岗的楼管岗的装修违建审批
     {
-      path: '/zhuangxiusheng',
+      path: '/zhuangxiusheng/:id',
       name: 'zhuangxiusheng',
       component: () =>
         import(/* webpackChunkName: "diantisheng" */ './components/managers/lou/zhuangxiusheng'),
@@ -616,7 +616,7 @@ let router = new Router({
     },
     // 经理岗的楼管岗的装修违建审批
     {
-      path: '/qitasheng',
+      path: '/qitasheng/:id',
       name: 'qitasheng',
       component: () =>
         import(/* webpackChunkName: "diantisheng" */ './components/managers/lou/qitasheng'),

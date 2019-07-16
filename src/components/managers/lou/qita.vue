@@ -1,63 +1,73 @@
+
 <template>
   <div class="workorder">
-    <!-- 经理岗的楼管岗的其他设施 -->
+    <!-- 经理岗的里的客服岗的来访日志 -->
     <header>
       <p></p>
       <div>
         <p @click="fanhui">
-          <img src="../../../assets/img/left0.png" alt>
+          <img src="../../../assets/img/left0.png" alt />
         </p>
         {{msg}}
       </div>
     </header>
     <!-- 中间内容 -->
-    <div style=" padding-top: 1.3rem;">
+    <div style=" padding-top:1.3rem;z-index:999">
       <van-dropdown-menu active-color="#eab617" :overlay="show">
-        <van-dropdown-item v-model="value1" @open="tongji" title-class="down" title="统计"/>
-        <van-dropdown-item v-model="value2" @open="fatongji" :options="option2"/>
+        <van-dropdown-item v-model="value1" @open="tongji" title-class="down" title="统计" />
+        <van-dropdown-item v-model="value2" @open="fatongji" :options="option2" />
       </van-dropdown-menu>
     </div>
+
     <section>
-      <div v-if="bool == 0" v-for="(index) in 3" :key="index">
-        <p class="timer">
-          <span>今天 13:45</span>
-        </p>
-        <!-- 审批的样式 -->
-        <div class="sheng">
-          <p>上报员工：丽丽</p>
-          <div v-for="(index) in 1" :key="index">
-            <p>是否故障：是</p>
-            <p>备注：无</p>
-            <p>
-              <strong>图片：</strong>
-              <span v-for="(index) in 3" :key="index"></span>
-            </p>
+      <van-list
+        v-if="bool == 0"
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <div v-for="(item,index) in list" :key="index">
+          <p class="timer">
+            <span>{{ item.created_at }}</span>
+          </p>
+          <div class="sheng" v-if="item.deteail.handle == 0">
+            <p>上报员工：{{ item.deteail.user.name }}</p>
+            <div v-for="(index) in 1" :key="index">
+              <p>是否故障：{{ item.deteail.state == 0 ? '是' : '否'  }}</p>
+              <p>备注：{{ item.deteail.remark }}</p>
+              <p>
+                <strong>图片：</strong>
+                <span v-for="(item,index) in item.deteail.images_format" :key="index">
+                  <img style="width:100%;height:100%" :src="item" alt="">
+                </span>
+              </p>
+            </div>
+            <p style="color:#eab617" @click="shenpi(item.id)">审批</p>
           </div>
-          <p @click="shenpi">已审批</p>
-        </div>
-        <p class="timer">
-          <span>今天 13:45</span>
-        </p>
-        <!-- 审批的样式 -->
-        <div class="sheng">
-          <p>上报员工：丽丽</p>
-          <div v-for="(index) in 1" :key="index">
-             <p>是否故障：是</p>
-            <p>备注：无</p>
-            <p>
-              <strong>图片：</strong>
-              <span v-for="(index) in 3" :key="index"></span>
-            </p>
+          <!-- 审批的样式 -->
+          <div class="sheng" v-else>
+            <p>上报员工：{{ item.deteail.user.name }}</p>
+            <div v-for="(index) in 1" :key="index">
+              <p>是否故障：{{ item.deteail.state == 0 ? '是' : '否'  }}</p>
+              <p>备注：{{ item.deteail.remark }}</p>
+              <p>
+                <strong>图片：</strong>
+                <span v-for="(item,index) in item.deteail.images_format" :key="index">
+                  <img style="width:100%;height:100%" :src="item" alt="">
+                </span>
+              </p>
+            </div>
+            <p @click="shenpi(item.id)">已审批</p>
           </div>
-          <p style="color:#eab617" @click="shenpi">审批</p>
         </div>
-      </div>
+      </van-list>
       <div v-if="bool == 1">
         <van-collapse v-model="activeNames" @change="change">
           <van-collapse-item :title="valuey" name="1">
-            <p class="cnetes">
-              <span>丽丽</span>
-              <span>515151</span>
+            <p class="cnetes" v-for="(item,index) in tongji1" :key="index">
+              <span>{{ item.user }}</span>
+              <span>{{ item.count }}</span>
             </p>
           </van-collapse-item>
         </van-collapse>
@@ -85,7 +95,7 @@ import { DatetimePicker } from "vant";
 export default {
   data() {
     return {
-      msg: "其他设施",
+      msg: "其他设备",
       value1: 0,
       show: false,
       value2: "a",
@@ -97,14 +107,58 @@ export default {
       ],
       bool: 0,
       activeNames: ["1"],
-      valuey: "12121212",
+      valuey: "其他巡查",
       minDate: new Date(2000, 1, 1),
       maxDate: new Date(),
       timer: false,
-      currentDate: ""
+      currentDate: "",
+      loading: false,
+      finished: false,
+      list: [],
+      count: 0,
+      lastpage: 2,
+      tongji1: "",
+      handle: 9
     };
   },
+  mounted() {
+    this.http
+      .get("/api/notice/search?type=other&handle=" + this.handle)
+      .then(res => {
+        console.log(res.data.push.last_page);
+        this.lastpage = res.data.push.last_page;
+        this.list = res.data.push.data;
+      });
+    this.http.get("/api/notice/count/detail?type=other").then(res => {
+      console.log(res.data.data);
+      this.tongji1 = res.data.data;
+    });
+  },
   methods: {
+    onLoad() {
+      var count = this.count;
+      count++;
+      this.count = count;
+      var list = this.list;
+      // 下拉刷新
+
+      // 异步更新数据
+        this.http
+          .get("/api/notice/search?type=other&page=" + this.count + "")
+          .then(res => {
+            console.log(res.data.push.data);
+            for (var i = 0; i < res.data.push.data.length; i++) {
+               this.list.push(res.data.push.data[i]);
+            }
+          });
+        // 加载状态结束
+        this.loading = false;
+        // 数据全部加载完成
+        if (this.count >= this.lastpage) {
+          console.log(this.count, this.lastpage);
+          this.finished = true;
+        }
+    },
     fanhui() {
       this.$router.go(-1);
     },
@@ -118,8 +172,10 @@ export default {
       this.bool = 0;
     },
     // 消息的审批
-    shenpi() {
-      this.$router.push("/qitasheng");
+    shenpi(id) {
+      console.log(id);
+      this.$router.push("/qitasheng/" + id);
+      // this.$router.push("/laifangshen/" + id);
     },
     // 时间的选择
     change() {
@@ -159,18 +215,34 @@ export default {
       console.log(a, b);
       if (a == "a") {
         this.bool = 0;
-        console.log("全部消息");
+        this.handle = 9;
+        this.http.get("/api/notice/search?type=other&handle=9").then(res => {
+          console.log(res.data.push.last_page);
+          this.lastpage = res.data.push.last_page;
+          this.list = res.data.push.data;
+        });
       } else if (a == "b") {
         this.bool = 0;
-        console.log("未审批");
+        this.handle = 0;
+        this.http.get("/api/notice/search?type=other&handle=0").then(res => {
+          console.log(res.data.push.last_page);
+          this.lastpage = res.data.push.last_page;
+          this.list = res.data.push.data;
+        });
       } else if (a == "c") {
         this.bool = 0;
-        console.log("已审批");
+        this.handle = 1;
+        this.http.get("/api/notice/search?type=other&handle=1").then(res => {
+          console.log(res.data.push.last_page);
+          this.lastpage = res.data.push.last_page;
+          this.list = res.data.push.data;
+        });
       }
     }
   }
 };
 </script>
+
 <style scoped>
 .workorder {
   height: 100%;
@@ -184,6 +256,13 @@ export default {
 .workorder >>> .van-picker__confirm {
   color: #eab617;
 }
+.workorder >>> .van-dropdown-item--down {
+  /* display: none */
+}
+.workorder >>> .van-collapse-item {
+  position: relative;
+  z-index: 11;
+}
 .workorder >>> .down::after {
   display: none;
 }
@@ -195,16 +274,13 @@ export default {
 .workorder >>> .van-dropdown-menu {
   /* position: fixed; */
   width: 100%;
-  height:1rem;
+  height: 1rem;
   /* top: 1.3rem; */
   /* background: red; */
   /* display: block */
 }
 .workorder >>> .van-icon-success {
   color: #eab617 !important;
-}
-.workorder >>> .van-dropdown-item--down {
-  display: none
 }
 header {
   height: 1.3rem;

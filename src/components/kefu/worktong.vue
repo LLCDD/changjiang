@@ -86,7 +86,10 @@ export default {
     }
   },
   mounted(){
-    this.http.get('/api/notice/count',{role:'kefu'}).then(res =>{
+    // this.http.get('/api/notice/count',{role:'kefu'}).then(res =>{
+    //   console.log(res)
+    // })
+    this.http.get('/api/message').then(res =>{
       console.log(res)
     })
   }

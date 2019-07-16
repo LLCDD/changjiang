@@ -5,7 +5,7 @@
       <p></p>
       <div>
         <p @click="fanhui">
-          <img src="../../../assets/img/left0.png" alt>
+          <img src="../../../assets/img/left0.png" alt />
         </p>
         {{msg}}
       </div>
@@ -13,49 +13,53 @@
     <!-- 中间内容 -->
     <div style=" padding-top: 1.3rem;">
       <van-dropdown-menu active-color="#eab617" :overlay="show">
-        <van-dropdown-item v-model="value1" @open="tongji" title-class="down" title="统计"/>
-        <van-dropdown-item v-model="value2" @open="fatongji" :options="option2"/>
+        <van-dropdown-item v-model="value1" @open="tongji" title-class="down" title="统计" />
+        <van-dropdown-item v-model="value2" @open="fatongji" :options="option2" />
       </van-dropdown-menu>
     </div>
     <section>
-      <div v-if="bool == 0" v-for="(index) in 3" :key="index">
+      <div v-if="bool == 0" v-for="(item,index) in list" :key="index">
         <p class="timer">
           <span>今天 13:45</span>
         </p>
-        <!-- 审批的样式 -->
-        <div class="sheng">
-          <p>上报员工：丽丽</p>
+        <div class="sheng" v-if="item.deteail.handle == 0">
+          <p>上报人员：{{ item.deteail.user.name }}</p>
+          <!-- <div v-for="(index) in 1" :key="index">
+              <p>回访业主：{{ item.deteail.xiaoqu.xiaoqu_name }}</p>
+              <p>物业费金额 ：{{ item.deteail.total_money }}元</p>
+          </div>-->
           <div v-for="(index) in 1" :key="index">
-            <p>任务类型：业主投诉</p>
-            <p>报修类型：水管</p>
-            <p>是否解决：是</p>
-            <p>花费明细：新水管50元，安装费50元</p>
-            <p>备注：无</p>
+            <p>任务类型：{{ item.type_format }}</p>
+            <p>报修类型：{{ item.type_format }}</p>
+            <p>是否解决：{{ item.deteail.state == 0 ? '否' : '是' }}</p>
+            <p>花费明细：{{ item.deteail.detail }}</p>
+            <p>备注：{{ item.deteail.remark }}</p>
             <p>
               <strong>图片：</strong>
-              <span v-for="(index) in 3" :key="index"></span>
+              <span v-for="(item,index) in item.deteail.images_format" :key="index">
+                <img style="width:100%;height:100%" :src="item" alt="">
+              </span>
             </p>
           </div>
-          <p @click="shenpi">已审批</p>
+          <p style="color:#eab617"  @click="shenpi(item.id)" >审批</p>
         </div>
-        <p class="timer">
-          <span>今天 13:45</span>
-        </p>
         <!-- 审批的样式 -->
-        <div class="sheng">
-          <p>上报员工：丽丽</p>
+        <div class="sheng" v-else>
+         <p>上报人员：{{ item.deteail.user.name }}</p>
           <div v-for="(index) in 1" :key="index">
-            <p>任务类型：业主投诉</p>
-            <p>报修类型：水管</p>
-            <p>是否解决：是</p>
-            <p>花费明细：新水管50元，安装费50元</p>
-            <p>备注：无</p>
+            <p>任务类型：{{ item.type_format }}</p>
+            <p>报修类型：{{ item.type_format }}</p>
+            <p>是否解决：{{ item.deteail.state == 0 ? '否' : '是' }}</p>
+            <p>花费明细：{{ item.deteail.detail }}</p>
+            <p>备注：{{ item.deteail.remark }}</p>
             <p>
               <strong>图片：</strong>
-              <span v-for="(index) in 3" :key="index"></span>
+              <span v-for="(item,index) in item.deteail.images_format" :key="index">
+                <img style="width:100%;height:100%" :src="item" alt="">
+              </span>
             </p>
           </div>
-          <p style="color:#eab617" @click="shenpi">审批</p>
+          <p @click="shenpi(item.id)">已审批</p>
         </div>
       </div>
       <div v-if="bool == 1">
@@ -83,6 +87,7 @@
     </van-popup>
   </div>
 </template>
+
 <script>
 import { DropdownMenu, DropdownItem } from "vant";
 import { Collapse, CollapseItem } from "vant";
@@ -103,14 +108,60 @@ export default {
       ],
       bool: 0,
       activeNames: ["1"],
-      valuey: "12121212",
+      valuey: "维修统计",
       minDate: new Date(2000, 1, 1),
       maxDate: new Date(),
       timer: false,
-      currentDate: ""
+      currentDate: "",
+      loading: false,
+      finished: false,
+      list: [],
+      count: 0,
+      lastpage: 2,
+      tongji1: "",
+      handle: 9
     };
   },
+  mounted() {
+    this.http
+      .get("/api/notice/search?type=fix&handle=" + this.handle)
+      .then(res => {
+        console.log(res.data.push.last_page);
+        this.lastpage = res.data.push.last_page;
+        this.list = res.data.push.data;
+      });
+    this.http.get("/api/notice/count/detail?type=fix").then(res => {
+      console.log(res.data.data);
+      this.tongji1 = res.data.data;
+    });
+  },
   methods: {
+    onLoad() {
+      var count = this.count;
+      count++;
+      this.count = count;
+      var list = this.list;
+      // 下拉刷新
+
+      // 异步更新数据
+        this.http
+          .get("/api/notice/search?type=fix&page=" + this.count + "")
+          .then(res => {
+            console.log(res.data.push.data);
+            for (var i = 0; i < res.data.push.data.length; i++) {
+             this.list.push(res.data.push.data[i]);
+            }
+            this.list = list;
+          });
+        // 加载状态结束
+        this.loading = false;
+        // 数据全部加载完成
+        if (this.count >= this.lastpage) {
+          console.log(this.count, this.lastpage);
+          this.finished = true;
+        }
+
+    },
     fanhui() {
       this.$router.go(-1);
     },
@@ -124,8 +175,8 @@ export default {
       this.bool = 0;
     },
     // 消息的审批
-    shenpi() {
-      this.$router.push("/shengong");
+    shenpi(id) {
+      this.$router.push("/shengong/" + id);
     },
     // 时间的选择
     change() {
@@ -165,13 +216,28 @@ export default {
       console.log(a, b);
       if (a == "a") {
         this.bool = 0;
-        console.log("全部消息");
+        this.handle = 9;
+        this.http.get("/api/notice/search?type=fix&handle=9").then(res => {
+          console.log(res.data.push.last_page);
+          this.lastpage = res.data.push.last_page;
+          this.list = res.data.push.data;
+        });
       } else if (a == "b") {
         this.bool = 0;
-        console.log("未审批");
+        this.handle = 0;
+        this.http.get("/api/notice/search?type=fix&handle=0").then(res => {
+          console.log(res.data.push.last_page);
+          this.lastpage = res.data.push.last_page;
+          this.list = res.data.push.data;
+        });
       } else if (a == "c") {
         this.bool = 0;
-        console.log("已审批");
+        this.handle = 1;
+        this.http.get("/api/notice/search?type=fix&handle=1").then(res => {
+          console.log(res.data.push.last_page);
+          this.lastpage = res.data.push.last_page;
+          this.list = res.data.push.data;
+        });
       }
     }
   }
@@ -193,8 +259,15 @@ export default {
 .workorder >>> .down::after {
   display: none;
 }
+.workorder >>> .van-collapse-item {
+  position: relative;
+  z-index: 11;
+}
+.workorder >>> .van-picker__cancel {
+  color: #eab617;
+}
 .workorder >>> .van-dropdown-item--down {
-  display: none
+  /* display: none */
 }
 /* .workorder >>> .van-dropdown-menu {
   position: fixed;
@@ -204,7 +277,7 @@ export default {
 .workorder >>> .van-dropdown-menu {
   /* position: fixed; */
   width: 100%;
-  height:1rem;
+  height: 1rem;
   /* top: 1.3rem; */
   /* background: red; */
   /* display: block */

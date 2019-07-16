@@ -5,36 +5,27 @@
       <p></p>
       <div>
         <p @click="fanhui">
-          <img src="../../../assets/img/left0.png" alt>
+          <img src="../../../assets/img/left0.png" alt />
         </p>
         {{msg}}
       </div>
     </header>
-    <!-- 中间内容
-    <div style=" padding-top: 1.3rem;">
-      <van-dropdown-menu active-color="#eab617" :overlay="show">
-        <van-dropdown-item v-model="value1" @open="tongji" title-class="down" title="统计"/>
-        <van-dropdown-item v-model="value2" :options="option2"/>
-      </van-dropdown-menu>
-    </div>-->
     <section class="section">
       <div>
         <p>回访人员：丽丽</p>
-        <div v-for="(index) in 2" :key="index">
-          <p>回访业主1：和谐小区3幢309室</p>
-          <p>物业费金额：600元</p>
-          <p>支付方式：支付宝</p>
-          <p>备注：无</p>
+        <div v-for="(index) in 1" :key="index">
+          <p>回访业主：{{ user.xiaoqu.xiaoqu_name }}</p>
+          <p>物业费金额： {{ user.total_money }} 元</p>
+          <p>支付方式：{{ user.pay_type }}</p>
+          <p>备注：{{ user.remark }}</p>
         </div>
       </div>
       <div class="tet">
-          <p>处理意见：</p>
-          <textarea :value="value" cols="30" rows="10" placeholder="请输入您的处理意见"></textarea>
+        <p>处理意见：</p>
+        <textarea v-model="value" cols="30" rows="10" placeholder="请输入您的处理意见"></textarea>
       </div>
     </section>
-    <div class="fa" v-if="value =='' ">
-        发送
-    </div>
+    <div class="fa" @click="fa" v-if="state == 1">发送</div>
   </div>
 </template>
 <script>
@@ -44,10 +35,33 @@ export default {
   data() {
     return {
       msg: "审批",
-      value:"世界i年底发的"
+      value: "",
+      user:{},
+      state:1
     };
   },
+  mounted() {
+    this.http.get("/api/notices/" + this.$route.params.id).then(res => {
+      console.log(res);
+      this.user = res.data.detail
+      this.value = res.data.push.handle_result
+      console.log(res.data.push.type_format)
+      if(res.data.push.handle_result == null){
+        this.state = 1
+      }else {
+        this.state = 0
+      }
+    });
+  },
   methods: {
+    // 提交处理意见
+    fa(){
+      this.http.post('/api/notices/'+ this.$route.params.id,{handle:1,handle_result:this.value}).then(res =>{
+        console.log(res)
+      }).catch(res =>{
+        this.$toasted.error(res.message).goAway(1000)
+      })
+    },
     fanhui() {
       this.$router.go(-1);
     },
@@ -131,11 +145,11 @@ header > div > p > img {
   width: 100%;
 }
 .section > div > div {
-    padding: 0 0.3rem;
-    padding-bottom: 0.2rem;
+  padding: 0 0.3rem;
+  padding-bottom: 0.2rem;
 }
 .section > div > div > p {
-    margin-bottom: 0.04rem;
+  margin-bottom: 0.04rem;
 }
 .section > div > :first-child {
   font-size: 0.34rem;
@@ -150,24 +164,24 @@ header > div > p > img {
   overflow: auto;
 }
 .section > .tet {
-    margin-top: 0.2rem;
-    height: 2rem;
+  margin-top: 0.2rem;
+  height: 2rem;
 }
 .section > .tet > textarea {
-    height: 1rem;
-    margin-left: 0.3rem;
-    width: 80%;
+  height: 1rem;
+  margin-left: 0.3rem;
+  width: 80%;
 }
 .fa {
-    height: 1rem;
-    width: 100%;
-    background: #eab617;
-    position: fixed;
-    bottom: 0;
-    text-align: center;
-    line-height: 1rem;
-    font-size: 0.34rem;
-    color: #fff
+  height: 1rem;
+  width: 100%;
+  background: #eab617;
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  line-height: 1rem;
+  font-size: 0.34rem;
+  color: #fff;
 }
 </style>
 

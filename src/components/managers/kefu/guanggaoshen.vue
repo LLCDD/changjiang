@@ -1,43 +1,48 @@
 <template>
   <div class="workorder">
-    <!-- 经理岗的里的客服岗的广告日志的审批 -->
+    <!-- 经理岗的里的客服岗的回访日志的审批 -->
     <header>
       <p></p>
       <div>
         <p @click="fanhui">
-          <img src="../../../assets/img/left0.png" alt>
+          <img src="../../../assets/img/left0.png" alt />
         </p>
         {{msg}}
       </div>
     </header>
-    <!-- 中间内容
-    <div style=" padding-top: 1.3rem;">
-      <van-dropdown-menu active-color="#eab617" :overlay="show">
-        <van-dropdown-item v-model="value1" @open="tongji" title-class="down" title="统计"/>
-        <van-dropdown-item v-model="value2" :options="option2"/>
-      </van-dropdown-menu>
-    </div>-->
+    
     <section class="section">
       <div>
-        <p>上报员工：丽丽</p>
+        <p>上报员工：{{ user.user.name }}</p>
         <div v-for="(index) in 1" :key="index">
-          <p>商家信息：好又多超市</p>
-            <p>商家电话：123456875</p>
-            <p>广告位置：电梯</p>
-            <p>广告金额：100元</p>
-            <p>开始时间：2019-1-1</p>
-            <p>结束时间：2019-1-1</p>
-            <p>支付方式：现金</p>
+          <p>商家信息：{{ user.shop_name }}</p>
+            <p>商家电话：{{ user.shop_tel }}</p>
+            <p>广告位置：{{ user.ad_position }} </p>
+            <p>广告金额：{{ user.ad_money }}元</p>
+            <p>开始时间：{{ user.start_at }}</p>
+            <p>结束时间：{{ user.updated_at }}</p>
+            <p>支付方式：{{ user.pay }}</p>
         </div>
       </div>
       <div class="tet">
           <p>处理意见：</p>
-          <textarea :value="value" cols="30" rows="10" placeholder="请输入您的处理意见"></textarea>
+          <textarea v-model="value" cols="30" rows="10" placeholder="请输入您的处理意见"></textarea>
       </div>
+      <!-- <div class="tet">
+        <p>处理意见：</p>
+        <textarea :value="value" cols="30" rows="10" placeholder="请输入您的处理意见"></textarea>
+      </div> -->
+      <!-- <div>
+        <p>回访人员：丽丽</p>
+        <div v-for="(index) in 1" :key="index">
+          <p>回访业主：{{ user.xiaoqu.xiaoqu_name }}</p>
+          <p>物业费金额： {{ user.total_money }} 元</p>
+          <p>支付方式：{{ user.pay_type }}</p>
+          <p>备注：{{ user.remark }}</p>
+        </div>
+      </div>-->
     </section>
-    <div class="fa" v-if="value =='' ">
-        发送
-    </div>
+    <div class="fa" @click="fa" v-if="state == 1">发送</div>
   </div>
 </template>
 <script>
@@ -47,10 +52,33 @@ export default {
   data() {
     return {
       msg: "审批",
-      value:"世界i年底发的"
+      value: "",
+      user:{},
+      state:1
     };
   },
+  mounted() {
+    this.http.get("/api/notices/" + this.$route.params.id).then(res => {
+      console.log(res);
+      this.user = res.data.detail
+      this.value = res.data.push.handle_result
+      console.log(res.data.push.type_format)
+      if(res.data.push.handle_result == null){
+        this.state = 1
+      }else {
+        this.state = 0
+      }
+    });
+  },
   methods: {
+    // 提交处理意见
+    fa(){
+      this.http.post('/api/notices/'+ this.$route.params.id,{handle:1,handle_result:this.value}).then(res =>{
+        console.log(res)
+      }).catch(res =>{
+        this.$toasted.error(res.message).goAway(1000)
+      })
+    },
     fanhui() {
       this.$router.go(-1);
     },
