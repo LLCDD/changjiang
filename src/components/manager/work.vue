@@ -17,11 +17,11 @@
           <!-- "fee" ： 回访日志 -->
           <div v-if="item.type == 'fee'">
             <p class="timer">
-              <span>今天 13:45</span>
+              <span>{{ item.created_at }}</span>
             </p>
             <div class="sheng">
               <p>{{ item.type_format }}</p>
-              <p>审批人 ：{{ item.deteail.user.name }}</p>
+              <p>审批人 ：{{ Object(item.deteail.user).name }}</p>
               <p>审批类型 ： {{ item.type_format }}</p>
               <p>处理意见 ：{{ item.deteail.remark }}</p>
             </div>
@@ -29,11 +29,11 @@
           <!-- "water" ： 供水巡查 -->
           <div v-if="item.type == 'water'">
             <p class="timer">
-              <span>今天 13:45</span>
+              <span>{{ item.created_at }}</span>
             </p>
             <div class="sheng1">
               <p>{{ item.type_format }}</p>
-              <p>上报人员 ：{{ item.deteail.user.name }}</p>
+              <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
               <p>是否故障 ： {{ item.type_format }}</p>
               <p>备注 ：{{ item.deteail.remark }}</p>
               <p>
@@ -50,11 +50,11 @@
           <!-- "cleaning" ：保洁考勤 -->
           <div v-if="item.type == 'cleaning'">
             <p class="timer">
-              <span>今天 13:45</span>
+              <span>{{ item.created_at }}</span>
             </p>
             <div class="sheng1">
               <p>{{ item.type_format }}</p>
-              <p>上报人员 ：{{ item.deteail.user.name }}</p>
+              <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
               <p>是否故障 ： {{ item.type_format }}</p>
               <p>备注 ：{{ item.deteail.remark }}</p>
               <p>
@@ -72,11 +72,11 @@
           <!-- "decorate" ： "装修违建巡查" -->
           <div v-if="item.type == 'decorate'">
             <p class="timer">
-              <span>今天 13:45</span>
+              <span>{{ item.created_at }}</span>
             </p>
             <div class="sheng1">
               <p>{{ item.type_format }}</p>
-              <p>上报人员 ：{{ item.deteail.user.name }}</p>
+              <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
               <p>是否故障 ： {{ item.type_format }}</p>
               <p>备注 ：{{ item.deteail.remark }}</p>
               <p>
@@ -94,11 +94,11 @@
           <!-- "lift" ： 电梯巡查 -->
           <div v-if="item.type == 'lift'">
             <p class="timer">
-              <span>今天 13:45</span>
+              <span>{{ item.created_at }}</span>
             </p>
             <div class="sheng1">
               <p>{{ item.type_format }}</p>
-              <p>上报人员 ：{{ item.deteail.user.name }}</p>
+              <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
               <p>是否故障 ： {{ item.type_format }}</p>
               <p>备注 ：{{ item.deteail.remark }}</p>
               <p>
@@ -115,11 +115,11 @@
           <!-- "fire" ：消防巡查 -->
           <div v-if="item.type == 'fire'">
             <p class="timer">
-              <span>今天 13:45</span>
+              <span>{{ item.created_at }}</span>
             </p>
             <div class="sheng1">
               <p>{{ item.type_format }}</p>
-              <p>上报人员 ：{{ item.deteail.user.name }}</p>
+              <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
               <p>是否故障 ： {{ item.type_format }}</p>
               <p>备注 ：{{ item.deteail.remark }}</p>
               <p>
@@ -136,11 +136,11 @@
           <!-- pipeline ： 官网巡查 -->
           <div v-if="item.type == 'pipeline'">
             <p class="timer">
-              <span>今天 13:45</span>
+              <span>{{ item.created_at }}</span>
             </p>
             <div class="sheng1">
               <p>{{ item.type_format }}</p>
-              <p>上报人员 ：{{ item.deteail.user.name }}</p>
+              <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
               <p>是否故障 ： {{ item.type_format }}</p>
               <p>备注 ：{{ item.deteail.remark }}</p>
               <p>
@@ -157,11 +157,11 @@
           <!-- other ：其他检查 -->
           <div v-if="item.type == 'other'">
             <p class="timer">
-              <span>今天 13:45</span>
+              <span>{{ item.created_at }}</span>
             </p>
             <div class="sheng1">
               <p>{{ item.type_format }}</p>
-              <p>上报人员 ：{{ item.deteail.user.name }}</p>
+              <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
               <p>是否故障 ： {{ item.type_format }}</p>
               <p>备注 ：{{ item.deteail.remark }}</p>
               <p>
@@ -179,7 +179,7 @@
           <!-- 卫生绿化巡查 -->
           <div v-if="item.type == 'green'">
             <p class="timer">
-              <span>今天 13:45</span>
+              <span>{{ item.created_at }}</span>
             </p>
             <div class="sheng1">
               <p>{{ item.type_format }}</p>
@@ -200,11 +200,11 @@
           <!-- 来访日志 -->
           <div v-if="item.type == 'visit'">
             <p class="timer">
-              <span>今天 13:45</span>
+              <span>{{ item.created_at }}</span>
             </p>
             <div class="sheng">
               <p>{{ item.type_format }}</p>
-              <p>审批人 ：{{ item.deteail.user.name }}</p>
+              <p>审批人 ：{{ Object(item.deteail.user).name }}</p>
               <p>审批类型 ： {{ item.type_format }}</p>
               <p>处理意见 ：{{ item.deteail.remark }}</p>
             </div>
@@ -212,7 +212,7 @@
           <!-- 停车费 -->
           <div v-if="item.type == 'park'">
             <p class="timer">
-              <span>今天 13:45</span>
+              <span>{{ item.created_at }}</span>
             </p>
             <div class="sheng">
               <p>{{ item.type_format }}</p>
@@ -224,7 +224,7 @@
           <!-- ad 广告  -->
           <div v-if="item.type == 'ad'">
             <p class="timer">
-              <span>今天 13:45</span>
+              <span>{{ item.created_at }}</span>
             </p>
             <div class="sheng">
               <p>{{ item.type_format }}</p>
@@ -238,12 +238,12 @@
           <div v-if="item.type == 'kefu_fix'">
             <!-- "kefu_fix" ： 客服报修 -->
             <p class="timer">
-              <span>今天 13:45</span>
+              <span>{{ item.created_at }}</span>
             </p>
             <!-- 客服报修 -->
             <div class="xiu">
               <p>{{ item.type_format }}</p>
-              <p>上报人员:{{ item.deteail.user.name }}</p>
+              <p>上报人员:{{ Object(item.deteail.user).name }}</p>
               <p>业主：和谐小区五单元308室</p>
               <p>手机号：15644566788</p>
               <p>报修类型：{{ item.deteail.remark }}</p>
@@ -258,12 +258,12 @@
           <div v-if="item.type == 'yezhu_fix'">
             <!-- "kefu_fix" ： 客服报修 -->
             <p class="timer">
-              <span>今天 13:45</span>
+              <span>{{ item.created_at }}</span>
             </p>
             <!-- 客服报修 -->
             <div class="xiu">
               <p>{{ item.type_format }}</p>
-              <p>上报人员:{{ item.deteail.user.name }}</p>
+              <p>上报人员:{{ Object(item.deteail.user).name }}</p>
               <p>业主：和谐小区五单元308室</p>
               <p>手机号：15644566788</p>
               <p>报修类型：{{ item.deteail.remark }}</p>

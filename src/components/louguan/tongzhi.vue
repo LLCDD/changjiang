@@ -5,58 +5,31 @@
       <p></p>
       <div>
         <p @click="fanhui">
-          <img src="../../assets/img/left0.png" alt>
+          <img src="../../assets/img/left0.png" alt />
         </p>
         {{msg}}
       </div>
     </header>
     <!-- 中间内容 -->
     <section>
-      <p class="timer">
-        <span>今天 13:45</span>
-      </p>
-      <!-- 审批的样式 -->
-      <div class="sheng">
-        <p>审批</p>
-        <p>审批人 ：张杰</p>
-        <p>审批类型 ：回访日志</p>
-        <p>处理意见 ：请及时处理好</p>
-      </div>
-      <p class="timer">
-        <span>今天 13:45</span>
-      </p>
-      <!-- 客服报修 -->
-      <div class="xiu">
-        <p>客服保修</p>
-        <p>上报人员: 丽丽</p>
-        <p>业主：和谐小区五单元308室</p>
-        <p>手机号：15644566788</p>
-        <p>报修类型：水电</p>
-        <p>备注：水管漏水</p>
-        <p>
-          <span>图片：</span>
-          <img src="../../assets/img/baojie.png" alt>
-          <img src="../../assets/img/baojie.png" alt>
-          <img src="../../assets/img/baojie.png" alt>
+      <div v-for="(item,index) in list" :key="index">
+        <p class="timer">
+          <span>{{ item.created_at }}</span>
         </p>
+        <!-- 客服报修 -->
+        <div class="xiu">
+          <p>{{ item.type_format }}</p>
+          <p>上报人员: {{ Object(item.deteail.user).name }}</p>
+          <p>备注：{{ item.deteail.remark }}</p>
+          <p>
+            <span>图片：</span>
+            <img v-for="item in item.deteail.images_format" :src="item" alt />
+            
+          </p>
+        </div>
       </div>
-      <p class="timer">
-        <span>今天 13:45</span>
-      </p>
-      <div class="yezhu">
-        <p>业主投诉</p>
-        <p>业主：和谐小区</p>
-        <p>手机号：18888888888</p>
-        <p>投诉会员ID：3456</p>
-        <p>投诉类型：水电</p>
-        <p>投诉内容：水管漏水</p>
-        <p>投诉时间：2019/2/19 10：56</p>
-        <p>
-          <span>图片：</span>
-          <img src="../../assets/img/baojie.png" alt>
-        </p>
-      </div>
-      <p class="timer">
+
+      <!-- <p class="timer">
         <span>今天 13:45</span>
       </p>
       <div class="louguan">
@@ -67,9 +40,9 @@
         <p>备注：设备不合适</p>
         <p>
           <span>图片：</span>
-          <img src="../../assets/img/baojie.png" alt>
+          <img src="../../assets/img/baojie.png" alt />
         </p>
-      </div>
+      </div> -->
     </section>
   </div>
 </template>
@@ -77,13 +50,25 @@
 export default {
   data() {
     return {
-      msg: "工作通知"
+      msg: "工作通知",
+      list: []
     };
   },
   methods: {
     fanhui() {
       this.$router.go(-1);
     }
+  },
+  mounted() {
+    this.http
+      .get("/api/message")
+      .then(res => {
+        console.log(res);
+        this.list = res.data.push;
+      })
+      .catch(res => {
+        this.$toasted.error(res.message).goAway(1000);
+      });
   }
 };
 </script>
@@ -99,7 +84,7 @@ header {
   width: 100%;
   position: fixed;
   top: 0;
-  z-index: 999
+  z-index: 999;
 }
 header > p {
   height: 0.4rem;
@@ -163,7 +148,7 @@ section {
 }
 .xiu {
   width: 6.2rem;
-  height: 4.26rem;
+  height: 3.26rem;
   background: #fff;
   border-radius: 0.1rem;
   margin: 0 auto;
@@ -251,8 +236,8 @@ section > :last-child {
   margin-bottom: 0.4rem;
 }
 section {
-    height: 90%;
-    overflow: auto
+  height: 90%;
+  overflow: auto;
 }
 </style>
 

@@ -82,6 +82,7 @@ export default {
       }
       try {
         // await等待一个异步返回的结果 如果没有await 会报user is undefined 获取不到
+        // /api/mobile_login
         let res = await this.http.post("/api/login", {
           mobile: this.phone,
           password:this.password,

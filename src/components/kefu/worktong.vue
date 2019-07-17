@@ -5,70 +5,309 @@
       <p></p>
       <div>
         <p @click="fanhui">
-          <img src="../../assets/img/left0.png" alt>
+          <img src="../../assets/img/left0.png" alt />
         </p>
         {{msg}}
       </div>
     </header>
     <!-- 中间内容 -->
     <section>
-      <p class="timer">
-        <span>今天 13:45</span>
-      </p>
-      <!-- 审批的样式 -->
-      <div class="sheng">
-        <p>审批</p>
-        <p>审批人 ：张杰</p>
-        <p>审批类型 ：回访日志</p>
-        <p>处理意见 ：请及时处理好</p>
-      </div>
-      <p class="timer">
-        <span>今天 13:45</span>
-      </p>
-      <!-- 客服报修 -->
-      <div class="xiu">
-        <p>客服保修</p>
-        <p>上报人员: 丽丽</p>
-        <p>业主：和谐小区五单元308室</p>
-        <p>手机号：15644566788</p>
-        <p>报修类型：水电</p>
-        <p>备注：水管漏水</p>
-        <p>
-          <span>图片：</span>
-          <img src="../../assets/img/baojie.png" alt>
-          <img src="../../assets/img/baojie.png" alt>
-          <img src="../../assets/img/baojie.png" alt>
-        </p>
-      </div>
-      <p class="timer">
-        <span>今天 13:45</span>
-      </p>
-      <div class="yezhu">
-        <p>业主投诉</p>
-        <p>业主：和谐小区</p>
-        <p>手机号：18888888888</p>
-        <p>投诉会员ID：3456</p>
-        <p>投诉类型：水电</p>
-        <p>投诉内容：水管漏水</p>
-        <p>投诉时间：2019/2/19 10：56</p>
-        <p>
-          <span>图片：</span>
-          <img src="../../assets/img/baojie.png" alt>
-        </p>
-      </div>
-      <p class="timer">
-        <span>今天 13:45</span>
-      </p>
-      <div class="louguan">
-        <p>楼管报修</p>
-        <p>上报员工：安安</p>
-        <p>报修小区：和谐小区四单元306室</p>
-        <p>报修类型：消防</p>
-        <p>备注：设备不合适</p>
-        <p>
-          <span>图片：</span>
-          <img src="../../assets/img/baojie.png" alt>
-        </p>
+      <div v-for="(item,index) in list" :key="index">
+        <div v-if="item.type == 'fee'">
+          <p class="timer">
+            <span>{{ item.created_at }}</span>
+          </p>
+          <div class="sheng">
+            <p>{{ item.type_format }}</p>
+            <p>审批人 ：{{ Object(item.deteail.user).name }}</p>
+            <p>审批类型 ： {{ item.type_format }}</p>
+            <p>处理意见 ：{{ item.deteail.remark }}</p>
+          </div>
+        </div>
+        <!-- 业主报修 -->
+        <div v-if="item.type == 'maintenance'">
+          <p class="timer">
+            <span>{{ item.created_at }}</span>
+          </p>
+          <div class="sheng">
+            <p>{{ item.type_format }}</p>
+            <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
+            <p>报修业主 ： {{ item.deteail.xiaoqu.xiaoqu_name }}</p>
+            <p>业主电话 ：{{ item.deteail.yezhu_tel }}</p>
+            <p>报修类型 ：{{ item.deteail.cate_name }}</p>
+            <p>备注 ：{{ item.deteail.remark }}</p>
+            <p style="margin-bottom:0.2rem">
+              <span style="float:left">图片：</span>
+              <img
+                style="width:1rem;height:1rem;float:left"
+                v-for="item in item.deteail.images_format"
+                :src="item"
+                alt
+              />
+            </p>
+          </div>
+        </div>
+        <!-- "water" ： 供水巡查 -->
+        <div v-if="item.type == 'water'">
+          <p class="timer">
+            <span>{{ item.created_at }}</span>
+          </p>
+          <div class="sheng1">
+            <p>{{ item.type_format }}</p>
+            <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
+            <p>是否故障 ： {{ item.type_format }}</p>
+            <p>备注 ：{{ item.deteail.remark }}</p>
+            <p>
+              <span style="float:left">图片：</span>
+              <img
+                style="width:1rem;height:1rem;float:left"
+                v-for="item in item.deteail.images_format"
+                :src="item"
+                alt
+              />
+            </p>
+          </div>
+        </div>
+        <!-- "cleaning" ：保洁考勤 -->
+        <div v-if="item.type == 'cleaning'">
+          <p class="timer">
+            <span>{{ item.created_at }}</span>
+          </p>
+          <div class="sheng1">
+            <p>{{ item.type_format }}</p>
+            <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
+            <p>是否故障 ： {{ item.type_format }}</p>
+            <p>备注 ：{{ item.deteail.remark }}</p>
+            <p>
+              <span style="float:left">图片：</span>
+              <img
+                style="width:1rem;height:1rem;float:left"
+                v-for="item in item.deteail.images_format"
+                :src="item"
+                alt
+              />
+            </p>
+          </div>
+        </div>
+
+        <!-- "decorate" ： "装修违建巡查" -->
+        <div v-if="item.type == 'decorate'">
+          <p class="timer">
+            <span>{{ item.created_at }}</span>
+          </p>
+          <div class="sheng1">
+            <p>{{ item.type_format }}</p>
+            <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
+            <p>是否故障 ： {{ item.type_format }}</p>
+            <p>备注 ：{{ item.deteail.remark }}</p>
+            <p>
+              <span style="float:left">图片：</span>
+              <img
+                style="width:1rem;height:1rem;float:left"
+                v-for="item in item.deteail.images_format"
+                :src="item"
+                alt
+              />
+            </p>
+          </div>
+        </div>
+
+        <!-- "lift" ： 电梯巡查 -->
+        <div v-if="item.type == 'lift'">
+          <p class="timer">
+            <span>{{ item.created_at }}</span>
+          </p>
+          <div class="sheng1">
+            <p>{{ item.type_format }}</p>
+            <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
+            <p>是否故障 ： {{ item.type_format }}</p>
+            <p>备注 ：{{ item.deteail.remark }}</p>
+            <p>
+              <span style="float:left">图片：</span>
+              <img
+                style="width:1rem;height:1rem;float:left"
+                v-for="item in item.deteail.images_format"
+                :src="item"
+                alt
+              />
+            </p>
+          </div>
+        </div>
+        <!-- "fire" ：消防巡查 -->
+        <div v-if="item.type == 'fire'">
+          <p class="timer">
+            <span>{{ item.created_at }}</span>
+          </p>
+          <div class="sheng1">
+            <p>{{ item.type_format }}</p>
+            <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
+            <p>是否故障 ： {{ item.type_format }}</p>
+            <p>备注 ：{{ item.deteail.remark }}</p>
+            <p>
+              <span style="float:left">图片：</span>
+              <img
+                style="width:1rem;height:1rem;float:left"
+                v-for="item in item.deteail.images_format"
+                :src="item"
+                alt
+              />
+            </p>
+          </div>
+        </div>
+        <!-- pipeline ： 官网巡查 -->
+        <div v-if="item.type == 'pipeline'">
+          <p class="timer">
+            <span>{{ item.created_at }}</span>
+          </p>
+          <div class="sheng1">
+            <p>{{ item.type_format }}</p>
+            <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
+            <p>是否故障 ： {{ item.type_format }}</p>
+            <p>备注 ：{{ item.deteail.remark }}</p>
+            <p>
+              <span style="float:left">图片：</span>
+              <img
+                style="width:1rem;height:1rem;float:left"
+                v-for="item in item.deteail.images_format"
+                :src="item"
+                alt
+              />
+            </p>
+          </div>
+        </div>
+        <!-- other ：其他检查 -->
+        <div v-if="item.type == 'other'">
+          <p class="timer">
+            <span>{{ item.created_at }}</span>
+          </p>
+          <div class="sheng1">
+            <p>{{ item.type_format }}</p>
+            <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
+            <p>是否故障 ： {{ item.type_format }}</p>
+            <p>备注 ：{{ item.deteail.remark }}</p>
+            <p>
+              <span style="float:left">图片：</span>
+              <img
+                style="width:1rem;height:1rem;float:left"
+                v-for="item in item.deteail.images_format"
+                :src="item"
+                alt
+              />
+            </p>
+          </div>
+        </div>
+
+        <!-- 卫生绿化巡查 -->
+        <div v-if="item.type == 'green'">
+          <p class="timer">
+            <span>{{ item.created_at }}</span>
+          </p>
+          <div class="sheng1">
+            <p>{{ item.type_format }}</p>
+            <p>上报人员 ：{{ item.deteail.user.name }}</p>
+            <p>是否故障 ： {{ item.type_format }}</p>
+            <p>备注 ：{{ item.deteail.remark }}</p>
+            <p>
+              <span style="float:left">图片：</span>
+              <img
+                style="width:1rem;height:1rem;float:left"
+                v-for="item in item.deteail.images_format"
+                :src="item"
+                alt
+              />
+            </p>
+          </div>
+        </div>
+        <!-- 来访日志 -->
+        <div v-if="item.type == 'visit'">
+          <p class="timer">
+            <span>{{ item.created_at }}</span>
+          </p>
+          <div class="sheng">
+            <p>{{ item.type_format }}</p>
+            <p>审批人 ：{{ Object(item.deteail.user).name }}</p>
+            <p>审批类型 ： {{ item.type_format }}</p>
+            <p>处理意见 ：{{ item.deteail.remark }}</p>
+          </div>
+        </div>
+        <!-- ad 广告  -->
+        <div v-if="item.type == 'ad'">
+          <p class="timer">
+            <span>{{ item.created_at }}</span>
+          </p>
+          <div class="sheng">
+            <p>{{ item.type_format }}</p>
+            <p>上报人员 ：{{ item.deteail.user.name }}</p>
+            <p>商家名称：{{ item.deteail.shop_name }}</p>
+            <p>商家电话 ：{{ item.deteail.shop_tel }}</p>
+            <p>广告位置：{{ item.deteail.ad_position }}</p>
+            <p>广告金额：{{ item.deteail.ad_money }}元</p>
+            <p>开始时间：{{ item.deteail.start_at }}</p>
+            <p>结束时间：{{ item.deteail.end_at }}</p>
+            <p>支付方式：{{ item.deteail.pay }}</p>
+          </div>
+        </div>
+
+        <!-- 客服报修 -->
+        <div v-if="item.type == 'kefu_fix'">
+          <!-- "kefu_fix" ： 客服报修 -->
+          <p class="timer">
+            <span>{{ item.created_at }}</span>
+          </p>
+          <!-- 客服报修 -->
+          <div class="xiu">
+            <p>{{ item.type_format }}</p>
+            <p>上报人员:{{ Object(item.deteail.user).name }}</p>
+            <p>业主：和谐小区五单元308室</p>
+            <p>手机号：15644566788</p>
+            <p>报修类型：{{ item.deteail.remark }}</p>
+            <p>备注：{{ item.deteail.detail }}</p>
+            <p>
+              <span>图片：</span>
+              <img v-for="item in item.deteail.images_format" :src="item" alt />
+            </p>
+          </div>
+        </div>
+        <!-- 业主报修 -->
+        <div v-if="item.type == 'yezhu_fix'">
+          <!-- "kefu_fix" ： 客服报修 -->
+          <p class="timer">
+            <span>{{ item.created_at }}</span>
+          </p>
+          <!-- 客服报修 -->
+          <div class="xiu">
+            <p>{{ item.type_format }}</p>
+            <p>上报人员:{{ Object(item.deteail.user).name }}</p>
+            <p>业主：和谐小区五单元308室</p>
+            <p>手机号：15644566788</p>
+            <p>报修类型：{{ item.deteail.remark }}</p>
+            <p>备注：{{ item.deteail.detail }}</p>
+            <p>
+              <span>图片：</span>
+              <img v-for="item in item.deteail.images_format" :src="item" alt />
+            </p>
+          </div>
+        </div>
+        <div v-if="item.type == 'park'">
+          <!-- "park" ： 停车费 -->
+          <p class="timer">
+            <span>{{ item.created_at }}</span>
+          </p>
+          <!-- 停车费 -->
+          <div class="xiu">
+            <p>{{ item.type_format }}</p>
+            <p>上报人员:{{ Object(item.deteail.user).name }}</p>
+            <p>车牌号：{{ item.deteail.car_id }}</p>
+            <p>停车时长：{{ item.deteail.park_time }}</p>
+            <p>支付金额：{{ item.deteail.money }}元</p>
+            <p>支付方式：{{ item.deteail.pay }}</p>
+            <p>备注：{{ item.deteail.remark }}</p>
+            <p>
+              <span>图片：</span>
+              <img v-for="item in item.deteail.images_format" :src="item" alt />
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   </div>
@@ -77,7 +316,8 @@
 export default {
   data() {
     return {
-      msg: "工作通知"
+      msg: "工作通知",
+      list: []
     };
   },
   methods: {
@@ -85,13 +325,16 @@ export default {
       this.$router.go(-1);
     }
   },
-  mounted(){
-    // this.http.get('/api/notice/count',{role:'kefu'}).then(res =>{
-    //   console.log(res)
-    // })
-    this.http.get('/api/message').then(res =>{
-      console.log(res)
-    })
+  mounted() {
+    this.http
+      .get("/api/message")
+      .then(res => {
+        console.log(res);
+        this.list = res.data.push;
+      })
+      .catch(res => {
+        this.$toasted.error(res.message).goAway(1000);
+      });
   }
 };
 </script>
@@ -107,7 +350,7 @@ header {
   width: 100%;
   position: fixed;
   top: 0;
-  z-index: 999
+  z-index: 999;
 }
 header > p {
   height: 0.4rem;
@@ -148,12 +391,13 @@ section {
   border-radius: 0.1rem;
 }
 .sheng {
-  height: 2.3rem;
+  min-height: 2.3rem;
   width: 6.2rem;
   background: #ffffff;
   border-radius: 0.1rem;
   margin: 0 auto;
   border: 1px solid #dddddd;
+  overflow: hidden;
 }
 .sheng > p {
   font-size: 0.26rem;
@@ -259,8 +503,8 @@ section > :last-child {
   margin-bottom: 0.4rem;
 }
 section {
-    height: 90%;
-    overflow: auto
+  height: 90%;
+  overflow: auto;
 }
 </style>
 

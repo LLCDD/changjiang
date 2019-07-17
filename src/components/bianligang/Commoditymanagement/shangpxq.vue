@@ -93,7 +93,8 @@ export default {
       goods_desc: "",
       show: false,
       columns: ["是", "否"],
-      msg1: "请选择"
+      msg1: "请选择",
+      count:0
     };
   },
   mounted() {
@@ -105,13 +106,13 @@ export default {
       this.goods_number = res.data.goods.goods_number;
       this.shop_price = res.data.goods.shop_price;
       this.give_integral = res.data.goods.give_integral;
-      if(res.data.goods.is_best == 0){
-        this.msg1 = "是"
-      }else {
-        this.msg1 = "否"
+      if (res.data.goods.is_best == 0) {
+        this.msg1 = "是";
+      } else {
+        this.msg1 = "否";
       }
       // this.image = res.data.goods.image
-      this.goods_desc = res.data.goods.goods_desc
+      this.goods_desc = res.data.goods.goods_desc;
     });
   },
   methods: {
@@ -132,11 +133,11 @@ export default {
       this.$router.go(-1);
     },
     // 图片的修改
-    fa(index){
-      console.log(index)
-      var arr = this.image
-      arr.splice(index, 1)
-      this.image = arr
+    fa(index) {
+      console.log(index);
+      var arr = this.image;
+      arr.splice(index, 1);
+      this.image = arr;
       // console.log(arr)
     },
     // 待发货
@@ -157,20 +158,19 @@ export default {
     },
     // 最后的添加
     tianjia() {
-      if(this.msg1 == '请选择'){
-        this.msg1 = ""
+      if (this.msg1 == "请选择") {
+        this.count = 1;
+      } else if (this.msg1 == "是") {
+        this.count = 0;
+      } else {
+        this.count = 1;
       }
-      // else if(this.msg1 == "是"){
-      //   this.msg1 = 0
-      // }else {
-      //   this.msg1 = 1
-      // }
       this.http
         .post("/api/goods", {
           goods_name: this.goods_name,
           goods_number: this.goods_number,
           shop_price: this.shop_price,
-          is_best: this.msg1,
+          is_best: this.count,
           image: this.image,
           give_integral: this.give_integral,
           goods_desc: this.goods_desc
@@ -191,6 +191,12 @@ export default {
   height: 100%;
   width: 100%;
   background: #eeeeee;
+}
+.MoreSettings >>> .van-picker__cancel {
+  color: #eab617;
+}
+.MoreSettings >>> .van-picker__confirm {
+  color: #eab617;
 }
 .MoreSettings >>> .van-uploader__upload {
   height: 1rem;

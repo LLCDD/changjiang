@@ -13,7 +13,7 @@
     <div class="senter">
       <p>
         <span>报修业主：</span>
-        <input v-model="name" type="text" placeholder="请输入业主信息" />
+        <input @click="yehzu" v-model="name" type="text" placeholder="请输入业主信息" />
       </p>
       <p>
         <span>业主电话：</span>
@@ -62,14 +62,14 @@ export default {
       msg1: "请选择",
       columns1: [],
       // 报修id
-      id: "",
+      id: this.$store.state.yezhuid.id,
       url: [],
       // 报修业主
-      name: "",
+      name: this.$store.state.yezhuid.yezhu_name,
       // 业主电话
-      phone: "",
+      phone: this.$store.state.yezhuid.yuliu_tel1,
       // 保修的备注
-      text: ""
+      text: "",
     };
   },
   mounted() {
@@ -84,6 +84,10 @@ export default {
     });
   },
   methods: {
+     // 取筛选业主
+    yehzu(){
+      this.$router.push('/yezhucha')
+    },
     // 返回按钮
     fanhui() {
       this.$router.go(-1);

@@ -108,6 +108,17 @@ let router = new Router({
         show: true
       }
     },
+    // 业主的查询 yezhucha
+    {
+      path: '/yezhucha',
+      name: 'yezhucha',
+      component: () =>
+        import(/* webpackChunkName: "guizeka" */ './components/yezhucha/yezhucha'),
+      meta: {
+        requiresAuth: false,
+        show: true
+      }
+    },
     // 工程岗的维修日志
     {
       path: '/gweixiu',

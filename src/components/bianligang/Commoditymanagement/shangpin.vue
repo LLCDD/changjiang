@@ -132,7 +132,7 @@ export default {
     },
     change(e){
       console.log(e)
-       this.http.get("/api/goods",{page:e}).then(res => {
+       this.http.get("/api/goods?page="+ e +"").then(res => {
         console.log(res);
         this.list = res.data.goods.data;
         this.count = res.data.goods.last_page

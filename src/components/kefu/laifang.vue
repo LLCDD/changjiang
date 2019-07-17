@@ -21,7 +21,7 @@
       </p>
       <p>
         <span>被访业主：</span>
-        <input v-model="beiname" type="text" placeholder="请输入业主信息" />
+        <input @click="yehzu" v-model="beiname" type="text" placeholder="请输入业主信息" />
       </p>
       <p class="last">
         <span>备注：</span>
@@ -52,10 +52,12 @@ export default {
       show: false,
       msg1: "请选择",
       img: [],
+      // 被访业主的名字
+      beiname:this.$store.state.yezhuid.yezhu_name,
       // 访客姓名
       name: "",
-      // 被访业主
-      beiname: "",
+      // 被访业主的id
+      beiid: this.$store.state.yezhuid.id,
       // 电话
       phone: "",
       // 内容
@@ -63,6 +65,10 @@ export default {
     };
   },
   methods: {
+    // 取筛选业主
+    yehzu() {
+      this.$router.push("/yezhucha");
+    },
     // 返回按钮
     fanhui() {
       this.$router.go(-1);
@@ -90,18 +96,21 @@ export default {
       this.img = arr;
     },
     tijiao() {
-      this.http.post("/api/visit", {
-        yezhu_id: this.beiname,
-        visitor_name: this.name,
-        visitor_tel:this.phone,
-        remark:this.text,
-        imgs:this.img
-      }).then(res =>{
-        this.$toasted.success(res.message).goAway(1000)
-        this.$router.replace({name:'login'})
-      }).catch(res =>{
-        this.$toasted.error(res.message).goAway(1000)
-      });
+      this.http
+        .post("/api/visit", {
+          yezhu_id: this.beiid,
+          visitor_name: this.name,
+          visitor_tel: this.phone,
+          remark: this.text,
+          imgs: this.img
+        })
+        .then(res => {
+          this.$toasted.success(res.message).goAway(1000);
+          this.$router.replace({ name: "login" });
+        })
+        .catch(res => {
+          this.$toasted.error(res.message).goAway(1000);
+        });
     }
   }
 };

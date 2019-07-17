@@ -12,7 +12,7 @@
     </header>
     <section class="section">
       <div>
-        <p>回访人员：丽丽</p>
+        <p>回访人员：{{ item.deteail.user.name }}</p>
         <div v-for="(index) in 1" :key="index">
           <p>回访业主：{{ user.xiaoqu.xiaoqu_name }}</p>
           <p>物业费金额： {{ user.total_money }} 元</p>

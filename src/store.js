@@ -12,7 +12,9 @@ export default new Vuex.Store({
     // 头部内容
     header: "鑫峰视觉",
     headerTab: false,
-    footerTab: false
+    footerTab: false,
+    // 业主的id
+    yezhuid:{}
   },
   mutations: {
     setUser(state, payload) {
@@ -44,6 +46,9 @@ export default new Vuex.Store({
     // 底部的显示和隐藏
     footerTab(a, b) {
       a.footerTab = b
+    },
+    yezhuid(a , b){
+      a.yezhuid = b
     }
   },
   actions: {

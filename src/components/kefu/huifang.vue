@@ -13,7 +13,7 @@
     <div class="senter">
       <p>
         <span>回访业主：</span>
-        <input v-model="yezhu_id" type="text" placeholder="请输入业主信息" />
+        <input @click="yehzu" v-model="yezhu_name" type="text" placeholder="请输入业主信息" />
       </p>
       <p>
         <span>物业费金额：</span>
@@ -60,13 +60,18 @@ export default {
       // 备注
       remark:"",
       // 业主id
-      yezhu_id:"",
+      yezhu_id:this.$store.state.yezhuid.id,
       // 缴费金额
-      total_money:""
+      total_money:"",
+      yezhu_name:this.$store.state.yezhuid.yezhu_name,
 
     };
   },
   methods: {
+    // 取筛选业主
+    yehzu(){
+      this.$router.push('/yezhucha')
+    },
     // 返回按钮
     fanhui() {
         this.$router.go(-1);

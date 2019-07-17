@@ -13,7 +13,7 @@
     
     <section class="section">
       <div>
-        <p>登记员工：丽丽</p>
+        <p>登记员工：{{ item.deteail.user.name }}</p>
         <div v-for="(index) in 1" :key="index">
           <p>访客姓名：{{ user.visitor_name }}</p>
           <p>访客电话：{{ user.visitor_tel }}</p>

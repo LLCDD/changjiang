@@ -12,7 +12,7 @@
     </header>
     <div class="phone">
       <span>业主电话：</span>
-      <input v-model="phone" type="text" placeholder="请输入业主号码" />
+      <input @click="yehzu" v-model="phone" type="text" placeholder="请输入业主号码" />
     </div>
     <div class="nr">
       <span>内容：</span>
@@ -29,11 +29,14 @@ export default {
       msg: "祝福提醒",
       checked: true,
       checked1: false,
-      phone: "",
+      phone: this.$store.state.yezhuid.yuliu_tel1,
       text: ""
     };
   },
   methods: {
+    yehzu() {
+      this.$router.push("/yezhucha");
+    },
     // 返回按钮
     fanhui() {
       this.$router.go(-1);

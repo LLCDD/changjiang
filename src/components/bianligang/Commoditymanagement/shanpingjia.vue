@@ -74,7 +74,8 @@ export default {
       goods_desc:'',
       show:false,
       columns:['是','否'],
-      msg1:"请选择"
+      msg1:"请选择",
+      count:1
     };
   },
   mounted(){
@@ -115,6 +116,11 @@ export default {
     },
     // 最后的添加
     tianjia(){
+      if(this.msg1 == '是'){
+        this.count = 1
+      }else {
+        this.count = 0
+      }
       this.http.post('/api/goods',{
         goods_name:this.goods_name,
         goods_number:this.goods_number,
@@ -122,7 +128,8 @@ export default {
         is_best:this.is_best,
         image:this.image,
         give_integral:this.give_integral,
-        goods_desc:this.goods_desc
+        goods_desc:this.goods_desc,
+        is_best:this.count
       }).then(res =>{
         console.log(res)
        this.$router.go(-1);
@@ -138,6 +145,12 @@ export default {
   height: 100%;
   width: 100%;
   background: #eeeeee;
+}
+.MoreSettings >>> .van-picker__cancel {
+  color: #eab617;
+}
+.MoreSettings >>> .van-picker__confirm {
+  color: #eab617;
 }
 .MoreSettings >>> .van-uploader__upload {
     height: 1rem;
