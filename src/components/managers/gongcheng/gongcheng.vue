@@ -37,15 +37,15 @@
             <p>
               <strong>图片：</strong>
               <span v-for="(item,index) in item.deteail.images_format" :key="index">
-                <img style="width:100%;height:100%" :src="item" alt="">
+                <img style="width:100%;height:100%" :src="item" alt />
               </span>
             </p>
           </div>
-          <p style="color:#eab617"  @click="shenpi(item.id)" >审批</p>
+          <p style="color:#eab617" @click="shenpi(item.id)">审批</p>
         </div>
         <!-- 审批的样式 -->
         <div class="sheng" v-else>
-         <p>上报人员：{{ item.deteail.user.name }}</p>
+          <p>上报人员：{{ item.deteail.user.name }}</p>
           <div v-for="(index) in 1" :key="index">
             <p>任务类型：{{ item.type_format }}</p>
             <p>报修类型：{{ item.type_format }}</p>
@@ -55,19 +55,27 @@
             <p>
               <strong>图片：</strong>
               <span v-for="(item,index) in item.deteail.images_format" :key="index">
-                <img style="width:100%;height:100%" :src="item" alt="">
+                <img style="width:100%;height:100%" :src="item" alt />
               </span>
             </p>
           </div>
           <p @click="shenpi(item.id)">已审批</p>
         </div>
       </div>
+      <van-pagination
+        v-if="bool == 0"
+        style="margin-top:0.4rem"
+        @change="change1"
+        v-model="currentPage"
+        :page-count="lastpage-1"
+        mode="simple"
+      />
       <div v-if="bool == 1">
         <van-collapse v-model="activeNames" @change="change">
           <van-collapse-item :title="valuey" name="1">
-            <p class="cnetes">
-              <span>丽丽</span>
-              <span>515151</span>
+            <p class="cnetes" v-for="(item,index) in tongji1" :key="index">
+              <span>{{ item.user }}</span>
+              <span>{{ item.count }}</span>
             </p>
           </van-collapse-item>
         </van-collapse>
@@ -119,7 +127,8 @@ export default {
       count: 0,
       lastpage: 2,
       tongji1: "",
-      handle: 9
+      handle: 9,
+      currentPage: 0
     };
   },
   mounted() {
@@ -136,31 +145,10 @@ export default {
     });
   },
   methods: {
-    onLoad() {
-      var count = this.count;
-      count++;
-      this.count = count;
-      var list = this.list;
-      // 下拉刷新
-
-      // 异步更新数据
-        this.http
-          .get("/api/notice/search?type=fix&page=" + this.count + "")
-          .then(res => {
-            console.log(res.data.push.data);
-            for (var i = 0; i < res.data.push.data.length; i++) {
-             this.list.push(res.data.push.data[i]);
-            }
-            this.list = list;
-          });
-        // 加载状态结束
-        this.loading = false;
-        // 数据全部加载完成
-        if (this.count >= this.lastpage) {
-          console.log(this.count, this.lastpage);
-          this.finished = true;
-        }
-
+    change1(e) {
+      this.http.get("/api/notice/search?type=fix&page=" + e + "").then(res => {
+        this.list = res.data.push.data;
+      });
     },
     fanhui() {
       this.$router.go(-1);

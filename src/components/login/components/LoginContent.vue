@@ -85,7 +85,7 @@ export default {
         let res = await this.http.post("/api/login", {
           mobile: this.phone,
           password:this.password,
-          did:""
+          did:"",
           // smscode: this.password
         });
         if (res.code == 200) {

@@ -1,5 +1,5 @@
 <template>
-  <van-list class="workorder">
+  <div class="workorder">
     <!-- 经理岗的工作通知 -->
     <header>
       <p></p>
@@ -12,66 +12,8 @@
     </header>
     <!-- 中间内容 -->
     <section>
-      <!-- <p class="timer">
-        <span>今天 13:45</span>
-      </p>
-      审批的样式
-      <div class="sheng">
-        <p>审批</p>
-        <p>审批人 ：张杰</p>
-        <p>审批类型 ：回访日志</p>
-        <p>处理意见 ：请及时处理好</p>
-      </div>
-      <p class="timer">
-        <span>今天 13:45</span>
-      </p>
-      客服报修
-      <div class="xiu">
-        <p>客服保修</p>
-        <p>上报人员: 丽丽</p>
-        <p>业主：和谐小区五单元308室</p>
-        <p>手机号：15644566788</p>
-        <p>报修类型：水电</p>
-        <p>备注：水管漏水</p>
-        <p>
-          <span>图片：</span>
-          <img src="../../assets/img/baojie.png" alt>
-          <img src="../../assets/img/baojie.png" alt>
-          <img src="../../assets/img/baojie.png" alt>
-        </p>
-      </div>
-      <p class="timer">
-        <span>今天 13:45</span>
-      </p>
-      <div class="yezhu">
-        <p>业主投诉</p>
-        <p>业主：和谐小区</p>
-        <p>手机号：18888888888</p>
-        <p>投诉会员ID：3456</p>
-        <p>投诉类型：水电</p>
-        <p>投诉内容：水管漏水</p>
-        <p>投诉时间：2019/2/19 10：56</p>
-        <p>
-          <span>图片：</span>
-          <img src="../../assets/img/baojie.png" alt>
-        </p>
-      </div>
-      <p class="timer">
-        <span>今天 13:45</span>
-      </p>
-      <div class="louguan">
-        <p>楼管报修</p>
-        <p>上报员工：安安</p>
-        <p>报修小区：和谐小区四单元306室</p>
-        <p>报修类型：消防</p>
-        <p>备注：设备不合适</p>
-        <p>
-          <span>图片：</span>
-          <img src="../../assets/img/baojie.png" alt>
-        </p>
-      </div>-->
-      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-        <div v-for="item in list">
+      <div>
+        <div v-for="(item,index) in list" :key="index">
           <!-- "fee" ： 回访日志 -->
           <div v-if="item.type == 'fee'">
             <p class="timer">
@@ -333,9 +275,15 @@
             </div>
           </div>
         </div>
-      </van-list>
+      </div>
+      <van-pagination
+        @change="change"
+        v-model="currentPage"
+        :page-count="lastpage-1"
+        mode="simple"
+      />
     </section>
-  </van-list>
+  </div>
 </template>
 <script>
 import { clearTimeout } from "timers";
@@ -346,39 +294,22 @@ export default {
       list: [],
       loading: false,
       finished: false,
-      count: 0,
-      lastpage: 2
+      count: 1,
+      lastpage: 2,
+      currentPage: 1
     };
-  },
-  watch:{
-    list(a,b){
-      console.log(a,b)
-    }
   },
   methods: {
     fanhui() {
       this.$router.go(-1);
     },
-    onLoad() {
-      var count = this.count;
-      count++;
-      this.count = count;
-      var list = this.list;
-      // 异步更新数据
-
-      this.http.get("/api/notices?page=" + this.count).then(res => {
-        for (var i = 0; i < res.data.push.data.length; i++) {
-          this.list.push(res.data.push.data[i]);
-        }
-        // this.list = list;
-        console.log(this.list);
+    change(e) {
+      console.log(e);
+      this.http.get("/api/notices?page=" + e).then(res => {
+        console.log(res);
+        this.list = [];
+        this.list = res.data.push.data;
       });
-
-      this.loading = false;
-      if (this.count > this.lastpage) {
-        console.log(this.count, this.lastpage);
-        this.finished = true;
-      }
     }
   },
   mounted() {
@@ -573,7 +504,7 @@ section {
   margin-right: 0.2rem;
 }
 section > :last-child {
-  margin-bottom: 0.4rem;
+  margin-top: 0.4rem;
 }
 section {
   height: 90%;

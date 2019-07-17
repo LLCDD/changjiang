@@ -19,13 +19,7 @@
     </div>
 
     <section>
-      <van-list
-        v-if="bool == 0"
-        v-model="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-      >
+      <div v-if="bool == 0">
         <div v-for="(item,index) in list" :key="index">
           <p class="timer">
             <span>{{ item.created_at }}</span>
@@ -52,7 +46,7 @@
             <p @click="shenpi(item.id)">已审批</p>
           </div>
         </div>
-      </van-list>
+      </div>
       <div v-if="bool == 1">
         <van-collapse v-model="activeNames" @change="change">
           <van-collapse-item :title="valuey" name="1">
@@ -63,6 +57,14 @@
           </van-collapse-item>
         </van-collapse>
       </div>
+      <van-pagination
+       v-if="bool == 0"
+        style="margin-top:0.4rem"
+        @change="change1"
+        v-model="currentPage"
+        :page-count="lastpage-1"
+        mode="simple"
+      />
     </section>
     <!-- 时间的选择 -->
     <van-popup v-model="timer" position="bottom">
@@ -106,50 +108,30 @@ export default {
       loading: false,
       finished: false,
       list: [],
-      count: 0,
+      currentPage: 0,
       lastpage: 2,
       tongji1: "",
-      handle:9
+      handle: 9
     };
   },
   mounted() {
-    this.http.get("/api/notice/search?type=fee&handle="+this.handle).then(res => {
-      console.log(res.data.push.last_page);
-      this.lastpage = res.data.push.last_page;
-      this.list = res.data.push.data;
-    });
+    this.http
+      .get("/api/notice/search?type=fee&handle=" + this.handle)
+      .then(res => {
+        console.log(res.data.push.last_page);
+        this.lastpage = res.data.push.last_page;
+        this.list = res.data.push.data;
+      });
     this.http.get("/api/notice/count/detail?type=fee").then(res => {
       console.log(res.data.data);
       this.tongji1 = res.data.data;
     });
   },
   methods: {
-    onLoad() {
-      var count = this.count;
-      count++;
-      this.count = count;
-      var list = this.list;
-      // 下拉刷新
-
-      // 异步更新数据
-
-        this.http
-          .get("/api/notice/search?type=fee&page=" + this.count + "")
-          .then(res => {
-            console.log(res.data.push.data);
-            for (var i = 0; i < res.data.push.data.length; i++) {
-              this.list.push(res.data.push.data[i]);
-            }
-            // this.list = list;
-          });
-        // 加载状态结束
-        this.loading = false;
-        // 数据全部加载完成
-        if (this.count >= this.lastpage) {
-          console.log(this.count, this.lastpage);
-          this.finished = true;
-        }
-
+    change1(e) {
+      this.http.get("/api/notice/search?type=fee&page=" + e + "").then(res => {
+        this.list = res.data.push.data;
+      });
     },
     fanhui() {
       this.$router.go(-1);
@@ -157,7 +139,6 @@ export default {
     // 页面的统计
     tongji() {
       this.bool = 1;
-      console.log("23434");
     },
     // 审批
     fatongji() {
@@ -205,7 +186,7 @@ export default {
       console.log(a, b);
       if (a == "a") {
         this.bool = 0;
-        this.handle = 9
+        this.handle = 9;
         this.http.get("/api/notice/search?type=fee&handle=9").then(res => {
           console.log(res.data.push.last_page);
           this.lastpage = res.data.push.last_page;
@@ -213,16 +194,16 @@ export default {
         });
       } else if (a == "b") {
         this.bool = 0;
-        this.handle = 0
-         this.http.get("/api/notice/search?type=fee&handle=0").then(res => {
+        this.handle = 0;
+        this.http.get("/api/notice/search?type=fee&handle=0").then(res => {
           console.log(res.data.push.last_page);
           this.lastpage = res.data.push.last_page;
           this.list = res.data.push.data;
         });
       } else if (a == "c") {
         this.bool = 0;
-        this.handle = 1
-         this.http.get("/api/notice/search?type=fee&handle=1").then(res => {
+        this.handle = 1;
+        this.http.get("/api/notice/search?type=fee&handle=1").then(res => {
           console.log(res.data.push.last_page);
           this.lastpage = res.data.push.last_page;
           this.list = res.data.push.data;

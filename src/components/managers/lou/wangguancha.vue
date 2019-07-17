@@ -20,12 +20,8 @@
     </div>
 
     <section>
-      <van-list
+      <div
         v-if="bool == 0"
-        v-model="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
       >
         <div v-for="(item,index) in list" :key="index">
           <p class="timer">
@@ -63,7 +59,7 @@
             <p @click="shenpi(item.id)">已审批</p>
           </div>
         </div>
-      </van-list>
+      </div>
       <div v-if="bool == 1">
         <van-collapse v-model="activeNames" @change="change">
           <van-collapse-item :title="valuey" name="1">
@@ -74,6 +70,14 @@
           </van-collapse-item>
         </van-collapse>
       </div>
+      <van-pagination
+        v-if="bool == 0"
+        style="margin-top:0.4rem"
+        @change="change1"
+        v-model="currentPage"
+        :page-count="lastpage-1"
+        mode="simple"
+      />
     </section>
     <!-- 时间的选择 -->
     <van-popup v-model="timer" position="bottom">
@@ -117,10 +121,11 @@ export default {
       loading: false,
       finished: false,
       list: [],
-      count: 0,
+      count: 1,
       lastpage: 2,
       tongji1: "",
-      handle: 9
+      handle: 9,
+      currentPage:0
     };
   },
   mounted() {
@@ -137,29 +142,13 @@ export default {
     });
   },
   methods: {
-    onLoad() {
-      var count = this.count;
-      count++;
-      this.count = count;
-      var list = this.list;
-      // 下拉刷新
-
-      // 异步更新数据
-        this.http
-          .get("/api/notice/search?type=pipeline&page=" + this.count + "")
+    change1(e){
+      this.http
+          .get("/api/notice/search?type=pipeline&page=" + e + "")
           .then(res => {
             console.log(res.data.push.data);
-            for (var i = 0; i < res.data.push.data.length; i++) {
-               this.list.push(res.data.push.data[i]);
-            }
+            this.list = res.data.push.data
           });
-        // 加载状态结束
-        this.loading = false;
-        // 数据全部加载完成
-        if (this.count >= this.lastpage) {
-          console.log(this.count, this.lastpage);
-          this.finished = true;
-        }
     },
     fanhui() {
       this.$router.go(-1);

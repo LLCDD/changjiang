@@ -29,35 +29,35 @@
         <div v-for="(item,index) in list" :key="index">
           <!-- <p class="timer">
             <span>{{ item.created_at }}</span>
-          </p> -->
+          </p>-->
           <p class="timer">
-          <span>今天 13:45</span>
-        </p>
-        <!-- 审批的样式 -->
-        <div class="sheng">
-          <p>登记员工：丽丽</p>
-          <div v-for="(index) in 1" :key="index">
-            <p>车牌号：豫S73058</p>
-            <p>停车时长：3小时</p>
-            <p>支付金额：15元</p>
-            <p>备注：停车</p>
+            <span>今天 13:45</span>
+          </p>
+          <!-- 审批的样式 -->
+          <div class="sheng">
+            <p>登记员工：丽丽</p>
+            <div v-for="(index) in 1" :key="index">
+              <p>车牌号：豫S73058</p>
+              <p>停车时长：3小时</p>
+              <p>支付金额：15元</p>
+              <p>备注：停车</p>
+            </div>
+            <p @click="shenpi">已审批</p>
           </div>
-          <p @click="shenpi">已审批</p>
-        </div>
-        <p class="timer">
-          <span>今天 13:45</span>
-        </p>
-        <!-- 审批的样式 -->
-        <div class="sheng">
-          <p>回访人员：丽丽</p>
-          <div v-for="(index) in 1" :key="index">
-            <p>车牌号：豫S73058</p>
-            <p>停车时长：3小时</p>
-            <p>支付金额：15元</p>
-            <p>备注：停车</p>
+          <p class="timer">
+            <span>今天 13:45</span>
+          </p>
+          <!-- 审批的样式 -->
+          <div class="sheng">
+            <p>回访人员：丽丽</p>
+            <div v-for="(index) in 1" :key="index">
+              <p>车牌号：豫S73058</p>
+              <p>停车时长：3小时</p>
+              <p>支付金额：15元</p>
+              <p>备注：停车</p>
+            </div>
+            <p style="color:#eab617" @click="shenpi">审批</p>
           </div>
-          <p style="color:#eab617" @click="shenpi">审批</p>
-        </div>
           <!-- 审批的样式 -->
           <!-- <div class="sheng" v-if="item.deteail.handle == 0">
             <p>回访人员：{{ item.deteail.user.name }}</p>
@@ -66,7 +66,7 @@
               <p>物业费金额 ：{{ item.deteail.total_money }}元</p>
             </div>
             <p @click="shenpi(item.id)" style="color:#eab617">审批</p>
-          </div> -->
+          </div>-->
           <!-- <p class="timer">
             <span>今天 13:45</span>
           </p>-->
@@ -78,7 +78,7 @@
               <p>物业费金额 ：{{ item.deteail.total_money }}元</p>
             </div>
             <p @click="shenpi(item.id)">已审批</p>
-          </div> -->
+          </div>-->
         </div>
       </van-list>
       <div v-if="bool == 1">
@@ -91,6 +91,14 @@
           </van-collapse-item>
         </van-collapse>
       </div>
+      <van-pagination
+        v-if="bool == 0"
+        style="margin-top:0.4rem"
+        @change="change1"
+        v-model="currentPage"
+        :page-count="lastpage-1"
+        mode="simple"
+      />
     </section>
     <!-- 时间的选择 -->
     <van-popup v-model="timer" position="bottom">
@@ -137,21 +145,31 @@ export default {
       count: 0,
       lastpage: 2,
       tongji1: "",
-      handle:9
+      handle: 9,
+      currentPage:0
     };
   },
   mounted() {
-    this.http.get("/api/notice/search?type=park&handle="+this.handle).then(res => {
-      console.log(res.data.push.last_page);
-      this.lastpage = res.data.push.last_page;
-      this.list = res.data.push.data;
-    });
+    this.http
+      .get("/api/notice/search?type=park&handle=" + this.handle)
+      .then(res => {
+        console.log(res.data.push.last_page);
+        this.lastpage = res.data.push.last_page;
+        this.list = res.data.push.data;
+      });
     this.http.get("/api/notice/count/detail?type=park").then(res => {
       console.log(res.data.data);
       this.tongji1 = res.data.data;
     });
   },
   methods: {
+    change1(e) {
+      this.http
+        .get("/api/notice/search?type=park&page=" + e + "")
+        .then(res => {
+          this.list = res.data.push.data;
+        });
+    },
     onLoad() {
       var count = this.count;
       count++;
@@ -161,23 +179,22 @@ export default {
 
       // 异步更新数据
 
-        this.http
-          .get("/api/notice/search?type=park&page=" + this.count + "")
-          .then(res => {
-            console.log(res.data.push.data);
-            for (var i = 0; i < res.data.push.data.length; i++) {
-              this.list.push(res.data.push.data[i]);
-            }
-            // this.list = list;
-          });
-        // 加载状态结束
-        this.loading = false;
-        // 数据全部加载完成
-        if (this.count >= this.lastpage) {
-          console.log(this.count, this.lastpage);
-          this.finished = true;
-        }
-
+      this.http
+        .get("/api/notice/search?type=park&page=" + this.count + "")
+        .then(res => {
+          console.log(res.data.push.data);
+          for (var i = 0; i < res.data.push.data.length; i++) {
+            this.list.push(res.data.push.data[i]);
+          }
+          // this.list = list;
+        });
+      // 加载状态结束
+      this.loading = false;
+      // 数据全部加载完成
+      if (this.count >= this.lastpage) {
+        console.log(this.count, this.lastpage);
+        this.finished = true;
+      }
     },
     fanhui() {
       this.$router.go(-1);
@@ -233,7 +250,7 @@ export default {
       console.log(a, b);
       if (a == "a") {
         this.bool = 0;
-        this.handle = 9
+        this.handle = 9;
         this.http.get("/api/notice/search?type=park&handle=9").then(res => {
           console.log(res.data.push.last_page);
           this.lastpage = res.data.push.last_page;
@@ -241,16 +258,16 @@ export default {
         });
       } else if (a == "b") {
         this.bool = 0;
-        this.handle = 0
-         this.http.get("/api/notice/search?type=park&handle=0").then(res => {
+        this.handle = 0;
+        this.http.get("/api/notice/search?type=park&handle=0").then(res => {
           console.log(res.data.push.last_page);
           this.lastpage = res.data.push.last_page;
           this.list = res.data.push.data;
         });
       } else if (a == "c") {
         this.bool = 0;
-        this.handle = 1
-         this.http.get("/api/notice/search?type=park&handle=1").then(res => {
+        this.handle = 1;
+        this.http.get("/api/notice/search?type=park&handle=1").then(res => {
           console.log(res.data.push.last_page);
           this.lastpage = res.data.push.last_page;
           this.list = res.data.push.data;
@@ -271,10 +288,10 @@ export default {
   overflow: hidden;
 }
 .workorder >>> .van-picker__cancel {
-  color: #eab617
+  color: #eab617;
 }
 .workorder >>> .van-picker__confirm {
-  color: #eab617
+  color: #eab617;
 }
 .workorder >>> .down::after {
   display: none;
@@ -294,7 +311,7 @@ export default {
 .workorder >>> .van-dropdown-menu {
   /* position: fixed; */
   width: 100%;
-  height:1rem;
+  height: 1rem;
   /* top: 1.3rem; */
   /* background: red; */
   /* display: block */
@@ -385,7 +402,7 @@ section {
 }
 /* 统计的样式开始 */
 .workorder >>> .van-collapse-item__content {
-  padding: 0
+  padding: 0;
 }
 .cnetes {
   height: 1.12rem;
@@ -396,7 +413,6 @@ section {
   color: #000;
   font-size: 0.3rem;
 }
-
 </style>
 
 
