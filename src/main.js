@@ -28,8 +28,19 @@ Vue.use(ElementUI)
 
 import 'vant/lib/index.css';
 
+// import VueSocketio from 'vue-socket.io';
+// import socketio from 'socket.io-client';
+// Vue.use(VueSocketio, socketio('http://122.114.181.95:2120')); 
+// Vue.use(VueSocketio,socketio('http://122.114.181.95:2120'), store);
+import VueSocketIO from 'vue-socket.io'
+
+Vue.use(new VueSocketIO({
+    debug: true,
+    connection: 'http://122.114.181.95:2120', 
+}))
 Vue.use(VueAwesomeSwiper)
 Vue.use(MintUI)
+
 Vue.use(Vant);
 Vue.prototype.http = http
 // 注册全局过滤器
@@ -40,6 +51,8 @@ Vue.use(Toasted, {
   position: 'bottom-center',
   singleton: true
 })
+
+
 // 给所有路由加上当页面加载的时候滚动条置顶
 router.afterEach((to, from, next) => {
   window.scrollTo(0, 0)
@@ -71,7 +84,6 @@ function plusReady() {
   // 设置一个全局plusready状态
   store.state.isplusReady = true
   store.state.storageEngine = plus.storage
-
   // 监听返回按键
   let now = false
   let time = null
@@ -97,6 +109,7 @@ function plusReady() {
       router.go(-1)
     }
   })
+  
 
   if (process.env.NODE_ENV === 'production') {
     //初始化登录信息
@@ -106,7 +119,7 @@ function plusReady() {
       router,
       store,
       created() {
-        // wsStart()
+        console.log(socket)
       },
       render: h => h(App)
     }).$mount('#app')
@@ -131,7 +144,7 @@ if (
     router,
     store,
     created() {
-      // ()wsStart
+    
     },
     render: h => h(App)
   }).$mount('#app')

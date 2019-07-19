@@ -92,6 +92,7 @@ export default {
         if (res.code == 200) {
           console.log(res);
           localStorage.setItem("token", res.data.Authorization);
+          localStorage.setItem('id',res.data.id)
           localStorage.setItem("role",res.data.role[0])
           this.$toasted.success("登录成功").goAway(1500);
           this.$router.replace({ name: "index" });

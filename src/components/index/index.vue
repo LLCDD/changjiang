@@ -7,7 +7,7 @@
       <p></p>
       <div>
         <p>
-          <img @click="cela" src="../../assets/img/set.png" alt>
+          <img @click="cela" src="../../assets/img/set.png" alt />
         </p>
         <p>{{ msg }}</p>
       </div>
@@ -22,28 +22,28 @@
       <div class="guanli" v-if="bool">
         <div>
           <p @click="dingding">
-            <img src="../../assets/img/ding.png" alt>
+            <img src="../../assets/img/ding.png" alt />
           </p>
           <span>考勤打卡</span>
         </div>
         <div @click="Workorder">
           <p>
-            <img src="../../assets/img/work.png" alt>
+            <img src="../../assets/img/work.png" alt />
           </p>
           <span>工作通知</span>
         </div>
       </div>
       <!-- 便利岗 -->
-      <div class="guanli" v-if="!bool" style="margin-bottom:20px" >
+      <div class="guanli" v-if="!bool" style="margin-bottom:20px">
         <div @click="pin">
           <p>
-            <img src="../../assets/img/guanli.png" alt>
+            <img src="../../assets/img/guanli.png" alt />
           </p>
           <span>商品管理</span>
         </div>
         <div @click="tongzhidian">
           <p>
-            <img src="../../assets/img/tongzhi.png" alt>
+            <img src="../../assets/img/tongzhi.png" alt />
           </p>
           <span>订单通知</span>
         </div>
@@ -56,19 +56,19 @@
       <div v-if="biaoshi == 'manager'">
         <div class="weixiu" @click="kefugang">
           <p>
-            <img src="../../assets/img/kefu.png" alt>
+            <img src="../../assets/img/kefu.png" alt />
           </p>
           <span>客服岗</span>
         </div>
         <div class="weixiu" @click="louguangang">
           <p>
-            <img src="../../assets/img/louguan.png" alt>
+            <img src="../../assets/img/louguan.png" alt />
           </p>
           <span>楼管岗</span>
         </div>
         <div class="weixiu" @click="gongchenggang">
           <p>
-            <img src="../../assets/img/gongcheng.png" alt>
+            <img src="../../assets/img/gongcheng.png" alt />
           </p>
           <span>工程岗</span>
         </div>
@@ -78,7 +78,7 @@
       <div v-if="biaoshi == 'engineer'">
         <div class="weixiu" @click="xuirizhi">
           <p>
-            <img src="../../assets/img/xiuday.png" alt>
+            <img src="../../assets/img/xiuday.png" alt />
           </p>
           <span>维修日志</span>
         </div>
@@ -88,37 +88,37 @@
       <div v-if="biaoshi == 'kefu'">
         <div class="weixiu" @click="huifang">
           <p>
-            <img src="../../assets/img/hunfang.png" alt>
+            <img src="../../assets/img/hunfang.png" alt />
           </p>
           <span>回访日志</span>
         </div>
         <div class="weixiu" @click="yezhuxiu">
           <p>
-            <img src="../../assets/img/yezhu.png" alt>
+            <img src="../../assets/img/yezhu.png" alt />
           </p>
           <span>业主保修</span>
         </div>
         <div class="weixiu" @click="laifang">
           <p>
-            <img src="../../assets/img/laifang.png" alt>
+            <img src="../../assets/img/laifang.png" alt />
           </p>
           <span>来访日志</span>
         </div>
         <div class="weixiu" @click="stopmoney">
           <p>
-            <img src="../../assets/img/tingche.png" alt>
+            <img src="../../assets/img/tingche.png" alt />
           </p>
           <span>停车费</span>
         </div>
         <div class="weixiu" @click="guangao">
           <p>
-            <img src="../../assets/img/guanggao.png" alt>
+            <img src="../../assets/img/guanggao.png" alt />
           </p>
           <span>广告费</span>
         </div>
         <div class="weixiu" @click="zhufu">
           <p>
-            <img src="../../assets/img/zhufu.png" alt>
+            <img src="../../assets/img/zhufu.png" alt />
           </p>
           <span>祝福提醒</span>
         </div>
@@ -128,49 +128,49 @@
       <div v-if="biaoshi == 'security'">
         <div class="weixiu" @click="baojie">
           <p>
-            <img src="../../assets/img/baojie.png" alt>
+            <img src="../../assets/img/baojie.png" alt />
           </p>
           <span>保洁考勤</span>
         </div>
         <div class="weixiu" @click="xiaofang">
           <p>
-            <img src="../../assets/img/xiaofang.png" alt>
+            <img src="../../assets/img/xiaofang.png" alt />
           </p>
           <span>消防巡查</span>
         </div>
         <div class="weixiu" @click="gongshui">
           <p>
-            <img src="../../assets/img/gongshui.png" alt>
+            <img src="../../assets/img/gongshui.png" alt />
           </p>
           <span>供水巡查</span>
         </div>
         <div class="weixiu" @click="dianti">
           <p>
-            <img src="../../assets/img/dianti.png" alt>
+            <img src="../../assets/img/dianti.png" alt />
           </p>
           <span>电梯巡查</span>
         </div>
         <div class="weixiu" @click="guangwang">
           <p>
-            <img src="../../assets/img/guangwang.png" alt>
+            <img src="../../assets/img/guangwang.png" alt />
           </p>
           <span>网管巡查</span>
         </div>
         <div class="weixiu" @click="weisheng">
           <p>
-            <img src="../../assets/img/lvhua.png" alt>
+            <img src="../../assets/img/lvhua.png" alt />
           </p>
           <span>卫生绿化</span>
         </div>
         <div class="weixiu" @click="zhuangxiu">
           <p>
-            <img src="../../assets/img/weijian.png" alt>
+            <img src="../../assets/img/weijian.png" alt />
           </p>
           <span>装修违建</span>
         </div>
         <div class="weixiu" @click="qita">
           <p>
-            <img src="../../assets/img/other.png" alt>
+            <img src="../../assets/img/other.png" alt />
           </p>
           <span>其他设施</span>
         </div>
@@ -181,22 +181,22 @@
       <div class="left">
         <div class="top">
           <p>
-            <img style="height:1.5rem;width:1.5rem;border-radius: 50%;" :src="avatar" alt="">
+            <img style="height:1.5rem;width:1.5rem;border-radius: 50%;" :src="avatar" alt />
           </p>
           <p>{{ name }}</p>
         </div>
         <div class="section">
           <!-- 跳转个人信息页面 -->
           <p @click="information">
-            <img src="../../assets/img/geren.png" alt>
+            <img src="../../assets/img/geren.png" alt />
             <span>个人信息</span>
           </p>
           <p @click="MoreSettings">
-            <img src="../../assets/img/shezhi.png" alt>
+            <img src="../../assets/img/shezhi.png" alt />
             <span>更多设置</span>
           </p>
           <p @click="tui">
-            <img src="../../assets/img/tuichu.png" alt>
+            <img src="../../assets/img/tuichu.png" alt />
             <span>退出登录</span>
           </p>
         </div>
@@ -224,50 +224,117 @@ export default {
     return {
       msg: "经理岗",
       //   通过改变一个变量来改变工作岗位
-      biaoshi: localStorage.getItem('role'),
+      biaoshi: localStorage.getItem("role"),
       bool: true,
       // 控制侧边栏的显示和隐藏
       popupVisible: false,
       // 底部的退出
       popupVisible1: false,
       // 用户的头像
-      avatar:"",
+      avatar: "",
       // 用户的名称
-      name:""
+      name: ""
     };
   },
+  sockets: {
+    connecting() {
+      console.log("正在链接");
+    },
+    connect() {
+      console.log(localStorage.getItem("id"))
+      this.$socket.emit("login", localStorage.getItem("id"));
+      console.log("连接成功");
+      alert("连接成功")
+    },
+    disconnect() {
+      console.log("断开连接");
+    },
+    new_msg(msg) {
+      console.log(msg);
+      var format_msg = msg.split("|");
+      // alert(format_msg);
+      console.log(format_msg.length);
+      var options = { cover: false };
+      var str = ": 欢迎使用Html5 Plus创建本地消息！";
+      plus.push.createMessage(str, "LocalMSG", options);
+      // plus.push.createMessage(format_msg[1] + format_msg[2], "LocalMSG", false);
+      // plus.push.createMessage(format_msg[1] + format_msg[2], "LocalMSG", false);
+    },
+    error(msg){
+      console.log(msg)
+    }
+  },
+  // sockets: {
+  //   connecting() {
+  //     console.log("正在链接");
+  //   },
+  //   connect() {
+  //     console.log("：连接成功");
+  //   },
+  //   disconnect(){
+  //     console.log("断开连接");
+  //   },
+  //   new_msg(data){
+  //     console.log(data)
+  //   }
+  //   // update_online_count(data){
+  //   //   console.log(data)
+  //   // }
+
+  //   // disconnect：断开连接
+  //   // connect_failed：连接失败
+  //   // error：错误发生，并且无法被其他事件类型所处理
+  //   // message：同服务器端message事件
+  //   // anything：同服务器端anything事件
+  //   // reconnect_failed：重连失败
+  //   // reconnect：成功重连
+  //   // reconnecting：正在重连
+  //   // connect() {
+  //   //   this.$socket.emit("login", '3'); //监听connect事件
+  //   // },
+  //   // message(data) {
+  //   //   //监听message事件，方法是后台定义和提供的
+  //   //   console.log(data);
+  //   // },
+  //   // disconnect(){
+  //   //   console.log(1)
+  //   // }
+  // },
   mounted() {
     // 通过后台返回的值来判断要显示的用户权限
-    if (this.biaoshi == 'manager') {
+    if (this.biaoshi == "manager") {
       this.bool = true;
       this.msg = "经理岗";
-    } else if (this.biaoshi == 'engineer') {
-       this.bool = true;
+    } else if (this.biaoshi == "engineer") {
+      this.bool = true;
       this.msg = "工程岗";
-    } else if (this.biaoshi == 'kefu') {
+    } else if (this.biaoshi == "kefu") {
       this.msg = "客服岗";
-       this.bool = true;
-    } else if (this.biaoshi == 'security') {
+      this.bool = true;
+    } else if (this.biaoshi == "security") {
       this.msg = "楼管岗";
-       this.bool = true;
-    } else if (this.biaoshi == 'salesclerk') {
+      this.bool = true;
+    } else if (this.biaoshi == "salesclerk") {
       this.bool = false;
       this.msg = "便利岗";
     }
-    this.http.get('/api/me').then(res =>{
-      console.log(res)
-      localStorage.setItem('username',res.data.me.name)
-      this.avatar = res.data.me.avatar_format
-      this.name = res.data.me.name
-      // if(res.data.me.avatar){
-      //   this.avatar = res.data.me.avatar
-      // }else {
-      //   this.avatar = res.data.me.avatar_format
-      //   this.name = res.data.me.name
-      // }
-    }).catch(res => {
-      this.$toasted.error(res.message).goAway(1000)
-    })
+    this.http
+      .get("/api/me")
+      .then(res => {
+        console.log(res);
+        localStorage.setItem("username", res.data.me.name);
+        this.avatar = res.data.me.avatar_format;
+        this.name = res.data.me.name;
+        // if(res.data.me.avatar){
+        //   this.avatar = res.data.me.avatar
+        // }else {
+        //   this.avatar = res.data.me.avatar_format
+        //   this.name = res.data.me.name
+        // }
+      })
+      .catch(res => {
+        this.$toasted.error(res.message).goAway(1000);
+      });
   },
   methods: {
     // methods 里面是自己的自定义的事件
@@ -303,18 +370,18 @@ export default {
     },
     // 通过判断biaoshi的变化来  判断工程岗位跳转的路径
     Workorder() {
-      if (this.biaoshi == 'engineer') {
+      if (this.biaoshi == "engineer") {
         // 工程岗的工作通知
         this.$router.push("/workorder");
-      } else if (this.biaoshi == 'kefu') {
-            // 客服岗的工作通知
+      } else if (this.biaoshi == "kefu") {
+        // 客服岗的工作通知
         this.$router.push("/worktong");
-      } else if(this.biaoshi == 'security'){
+      } else if (this.biaoshi == "security") {
         // 楼管岗的工作通知
-        this.$router.push('/workzhi')
-      }else if(this.biaoshi == 'manager'){
+        this.$router.push("/workzhi");
+      } else if (this.biaoshi == "manager") {
         // 经理岗的工作通知
-        this.$router.push('/jinglitongzhi')
+        this.$router.push("/jinglitongzhi");
       }
     },
     // 工程岗的维修日志
@@ -343,63 +410,63 @@ export default {
       this.$router.push("/guangao");
     },
     // 客服岗的回访日志
-    huifang(){
-      this.$router.push('/huifang')
+    huifang() {
+      this.$router.push("/huifang");
     },
     // ----------------------------楼管岗开始
     // 楼管岗的保洁考勤
-    baojie(){
-      this.$router.push('/baojie')
+    baojie() {
+      this.$router.push("/baojie");
     },
     // 楼管岗的消防巡查
-    xiaofang(){
-      this.$router.push('/xiaofang')
+    xiaofang() {
+      this.$router.push("/xiaofang");
     },
     // 楼管岗的供水巡查
-    gongshui(){
-      this.$router.push('/gongshui')
+    gongshui() {
+      this.$router.push("/gongshui");
     },
     // 楼管岗的电梯巡查
-    dianti(){
-      this.$router.push('/dianti')
+    dianti() {
+      this.$router.push("/dianti");
     },
     // 楼管岗的官网巡查
-    guangwang(){
-      this.$router.push('/guangwang')
+    guangwang() {
+      this.$router.push("/guangwang");
     },
     // 楼管岗的卫生绿化
-    weisheng(){
-      this.$router.push('/weisheng')
+    weisheng() {
+      this.$router.push("/weisheng");
     },
     // 楼管岗的装修违建
-    zhuangxiu(){
-      this.$router.push('/zhuangxiu')
+    zhuangxiu() {
+      this.$router.push("/zhuangxiu");
     },
     // 楼管岗的其他设施
-    qita(){
-      this.$router.push('/qita')
+    qita() {
+      this.$router.push("/qita");
     },
     // 经理岗的开始
     // 1.经理岗的客服岗
-    kefugang(){
-      this.$router.push('/managerkefu')
+    kefugang() {
+      this.$router.push("/managerkefu");
     },
     // 2.经理岗的楼管岗
-    louguangang(){
-      this.$router.push('/managerlouguan')
+    louguangang() {
+      this.$router.push("/managerlouguan");
     },
     // 3.工程岗的日志
-    gongchenggang(){
-      this.$router.push('/managergongcheng')
+    gongchenggang() {
+      this.$router.push("/managergongcheng");
     },
     // 4.便利岗的开始
     // 4.1 便利岗的订单通知
-    tongzhidian(){
-      this.$router.push('/dingdantong')
+    tongzhidian() {
+      this.$router.push("/dingdantong");
     },
     // 便利岗的商品管理
-    pin(){
-      this.$router.push('/guanshang')
+    pin() {
+      this.$router.push("/guanshang");
     }
   }
 };

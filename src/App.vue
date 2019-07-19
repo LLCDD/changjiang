@@ -2,12 +2,13 @@
   <div id="app">
     <div class="outter">
       <!--通用头部-->
+
       <!-- <header class="app-header" :class="{'header-hide':!$store.state.headerStatus}">
         <wx-header :pageName="pageName"></wx-header>
       </header>-->
       <header id="header" v-if="this.$route.meta.header">
         <span @click="fanhui" v-if="this.$route.meta.fan == 1">
-          <img src="./assets/images/return.png" alt>
+          <img src="./assets/images/return.png" alt />
         </span>
         {{ this.$route.meta.title }}
       </header>
@@ -18,11 +19,12 @@
           enter-active-class="animated fadeInLeft"
           leave-active-class="animated fadeOutRight"
         >
-        <!-- <router-view/> -->
-        <router-view style=" position: absolute"></router-view>
+          <!-- <router-view/> -->
+          <router-view style=" position: absolute"></router-view>
         </transition>
       </section>
       <!--底部导航 路由 -->
+      <!-- <p style="height:2rem" @click="tui">23423432432</p> -->
       <footer class="app-footer" v-if="this.$route.meta.footer">
         <wx-nav></wx-nav>
       </footer>
@@ -34,6 +36,8 @@ import mixin from "./mixin"; // 混合被单独放在 mixin.js 中管理
 window.mixin = mixin; // 将 混合/mixin 暴露在窗口对象中，某些组件需要时，直接提取 window.mixin
 import WxHeader from "@/components/common/wx-header";
 import WxNav from "@/components/common/wx-nav";
+import { Collapse } from "vant";
+import { setInterval } from "timers";
 
 export default {
   name: "app",
@@ -46,8 +50,39 @@ export default {
       pageName: "",
       routerAnimate: false,
       enterAnimate: "", //页面进入动效
-      leaveAnimate: "" //页面离开动效
+      leaveAnimate: "", //页面离开动效
+      id: ""
     };
+  },
+  mounted() {},
+  sockets: {
+    connecting() {
+      console.log("正在链接");
+    },
+    connect() {
+      console.log(localStorage.getItem("id"))
+      localStorage.getItem("id")
+      this.$socket.emit("login", 3);
+      console.log("连接成功");
+      alert("连接成功")
+    },
+    disconnect() {
+      console.log("断开连接");
+    },
+    new_msg(msg) {
+      console.log(msg);
+      var format_msg = msg.split("|");
+      // alert(format_msg);
+      console.log(format_msg.length);
+      var options = { cover: false };
+      var str = ": 欢迎使用Html5 Plus创建本地消息！";
+      plus.push.createMessage(str, "LocalMSG", options);
+      // plus.push.createMessage(format_msg[1] + format_msg[2], "LocalMSG", false);
+      // plus.push.createMessage(format_msg[1] + format_msg[2], "LocalMSG", false);
+    },
+    error(msg){
+      console.log(JSON.stringify(msg))
+    }
   },
   created() {},
   methods: {
@@ -71,6 +106,15 @@ export default {
       //   toDepth > fromDepth ? "animated fadeInRight" : "animated fadeInLeft";
       // this.leaveAnimate =
       //   toDepth > fromDepth ? "animated fadeOutLeft" : "animated fadeOutRight";
+    }
+  },
+  methods: {
+    tui() {
+      // setInterval(() => {
+      //   var options = { cover: false };
+      //   var str = ": 欢迎使用Html5 Plus创建本地消息！";
+      //   plus.push.createMessage(str, "LocalMSG", options);
+      // }, 50);
     }
   },
   updated() {

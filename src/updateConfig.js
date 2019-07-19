@@ -1,3 +1,3 @@
 export default {
-    update_url: "http://appup.baodekeji.com/api/update"
+    update_url: "http://oa.cjwy168.com/"
 }
