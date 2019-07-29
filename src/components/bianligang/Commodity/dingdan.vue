@@ -133,7 +133,7 @@ export default {
         console.log("代发货");
         this.state = "代发货";
         this.http
-          .get("/api/goods", { shipping_status: 0, page:e })
+          .get("/api/goods?page="+ e+"&shipping_status=0")
           .then(res => {
             console.log(res);
             this.list = res.data.goods;
@@ -143,7 +143,7 @@ export default {
         this.state = "已发货";
         console.log("已发货");
         this.http
-          .get("/api/goods", { shipping_status: 2, page:e })
+          .get("/api/goods?page="+ e+"&shipping_status=2")
           .then(res => {
             console.log(res);
             this.list = res.data.goods;
@@ -152,7 +152,7 @@ export default {
       } else {
         console.log("退款申请");
         this.state = "退款申请";
-        this.http.get("/api/back", { page:e  }).then(res => {
+        this.http.get("/api/back?page="+ e).then(res => {
           console.log(res);
           this.list = res.data.order;
           this.count = res.data.order.last_page;

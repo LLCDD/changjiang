@@ -218,8 +218,29 @@
 
 <script>
 import { Popup } from "mint-ui";
-
+var socket = io('http://122.114.181.95:2120');
+socket.on("connect", function() {
+  socket.emit("login", localStorage.getItem('id'));
+  console.log("链接成功");
+});
+socket.on("new_msg", function(msg) {
+  console.log(msg);
+  let format_msg = msg.split("|");
+  plus.push.createMessage(format_msg[1] + format_msg[2], "LocalMSG", false);
+    plus.push.addEventListener( "click", function( msg ) {
+        /*
+       根据需要填写
+           */
+       console.log(JSON.stringify(msg))
+    }, false );
+    // 监听在线消息事件
+    plus.push.addEventListener( "receive", function( msg ) {
+      console.log(JSON.stringify(msg))
+      
+    }, false );
+});
 export default {
+  name: "index",
   data() {
     return {
       msg: "经理岗",
@@ -236,34 +257,7 @@ export default {
       name: ""
     };
   },
-  sockets: {
-    connecting() {
-      console.log("正在链接");
-    },
-    connect() {
-      console.log(localStorage.getItem("id"))
-      this.$socket.emit("login", localStorage.getItem("id"));
-      console.log("连接成功");
-      alert("连接成功")
-    },
-    disconnect() {
-      console.log("断开连接");
-    },
-    new_msg(msg) {
-      console.log(msg);
-      var format_msg = msg.split("|");
-      // alert(format_msg);
-      console.log(format_msg.length);
-      var options = { cover: false };
-      var str = ": 欢迎使用Html5 Plus创建本地消息！";
-      plus.push.createMessage(str, "LocalMSG", options);
-      // plus.push.createMessage(format_msg[1] + format_msg[2], "LocalMSG", false);
-      // plus.push.createMessage(format_msg[1] + format_msg[2], "LocalMSG", false);
-    },
-    error(msg){
-      console.log(msg)
-    }
-  },
+
   // sockets: {
   //   connecting() {
   //     console.log("正在链接");
@@ -301,6 +295,7 @@ export default {
   //   // }
   // },
   mounted() {
+    localStorage.setItem('tongji',1)
     // 通过后台返回的值来判断要显示的用户权限
     if (this.biaoshi == "manager") {
       this.bool = true;

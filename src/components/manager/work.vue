@@ -21,9 +21,9 @@
             </p>
             <div class="sheng">
               <p>{{ item.type_format }}</p>
-              <p>审批人 ：{{ Object(item.deteail.user).name }}</p>
+              <p>审批人 ：{{ Object(item.deteail).user.name }}</p>
               <p>审批类型 ： {{ item.type_format }}</p>
-              <p>处理意见 ：{{ item.deteail.remark }}</p>
+              <p>处理意见 ：{{ Object(item.deteail).remark }}</p>
             </div>
           </div>
           <!-- "water" ： 供水巡查 -->
@@ -33,14 +33,14 @@
             </p>
             <div class="sheng1">
               <p>{{ item.type_format }}</p>
-              <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
+              <p>上报人员 ：{{ Object(item.deteail).user.name }}</p>
               <p>是否故障 ： {{ item.type_format }}</p>
-              <p>备注 ：{{ item.deteail.remark }}</p>
+              <p>备注 ：{{ Object(item.deteail).remark }}</p>
               <p>
                 <span style="float:left">图片：</span>
                 <img
                   style="width:1rem;height:1rem;float:left"
-                  v-for="item in item.deteail.images_format"
+                  v-for="item in  Object(item.deteail).images_format"
                   :src="item"
                   alt
                 />
@@ -54,14 +54,15 @@
             </p>
             <div class="sheng1">
               <p>{{ item.type_format }}</p>
-              <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
-              <p>是否故障 ： {{ item.type_format }}</p>
-              <p>备注 ：{{ item.deteail.remark }}</p>
+
+              <p v-if="item.deteail">上报人员 ：{{ Object(item.deteail.user).name }}</p>
+              <!-- <p>反馈人员 ： {{ item.type_format }}</p> -->
+              <p>备注 ：{{ Object(item.deteail).remark }}</p>
               <p>
                 <span style="float:left">图片：</span>
                 <img
                   style="width:1rem;height:1rem;float:left"
-                  v-for="item in item.deteail.images_format"
+                  v-for="item in  Object(item.deteail).images_format"
                   :src="item"
                   alt
                 />
@@ -76,14 +77,14 @@
             </p>
             <div class="sheng1">
               <p>{{ item.type_format }}</p>
-              <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
+              <p>上报人员 ：{{ Object(item.deteail).user.name }}</p>
               <p>是否故障 ： {{ item.type_format }}</p>
-              <p>备注 ：{{ item.deteail.remark }}</p>
+              <p>备注 ：{{ Object(item.deteail).remark }}</p>
               <p>
                 <span style="float:left">图片：</span>
                 <img
                   style="width:1rem;height:1rem;float:left"
-                  v-for="item in item.deteail.images_format"
+                  v-for="item in  Object(item.deteail).images_format"
                   :src="item"
                   alt
                 />
@@ -98,14 +99,14 @@
             </p>
             <div class="sheng1">
               <p>{{ item.type_format }}</p>
-              <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
+              <!-- <p>上报人员 ：{{ Object(item.deteail).user.name }}</p> -->
               <p>是否故障 ： {{ item.type_format }}</p>
-              <p>备注 ：{{ item.deteail.remark }}</p>
+              <p>备注 ：{{ Object(item.deteail).remark }}</p>
               <p>
                 <span style="float:left">图片：</span>
                 <img
                   style="width:1rem;height:1rem;float:left"
-                  v-for="item in item.deteail.images_format"
+                  v-for="item in  Object(item.deteail).images_format"
                   :src="item"
                   alt
                 />
@@ -119,14 +120,14 @@
             </p>
             <div class="sheng1">
               <p>{{ item.type_format }}</p>
-              <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
+              <!-- <p>上报人员 ：{{ Object(item.deteail).user.name }}</p> -->
               <p>是否故障 ： {{ item.type_format }}</p>
-              <p>备注 ：{{ item.deteail.remark }}</p>
+              <p>备注 ：{{ Object(item.deteail).remark }}</p>
               <p>
                 <span style="float:left">图片：</span>
                 <img
                   style="width:1rem;height:1rem;float:left"
-                  v-for="item in item.deteail.images_format"
+                  v-for="item in  Object(item.deteail).images_format"
                   :src="item"
                   alt
                 />
@@ -140,14 +141,14 @@
             </p>
             <div class="sheng1">
               <p>{{ item.type_format }}</p>
-              <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
+              <!-- <p>上报人员 ：{{ Object(item.deteail.user).name }}</p> -->
               <p>是否故障 ： {{ item.type_format }}</p>
-              <p>备注 ：{{ item.deteail.remark }}</p>
+              <p>备注 ：{{ Object(item.deteail).remark }}</p>
               <p>
                 <span style="float:left">图片：</span>
                 <img
                   style="width:1rem;height:1rem;float:left"
-                  v-for="item in item.deteail.images_format"
+                  v-for="item in  Object(item.deteail).images_format"
                   :src="item"
                   alt
                 />
@@ -161,14 +162,14 @@
             </p>
             <div class="sheng1">
               <p>{{ item.type_format }}</p>
-              <p>上报人员 ：{{ Object(item.deteail.user).name }}</p>
+              <!-- <p>上报人员 ：{{ Object(item.deteail.user).name }}</p> -->
               <p>是否故障 ： {{ item.type_format }}</p>
-              <p>备注 ：{{ item.deteail.remark }}</p>
+              <p>备注 ：{{ Object(item.deteail).remark }}</p>
               <p>
                 <span style="float:left">图片：</span>
                 <img
                   style="width:1rem;height:1rem;float:left"
-                  v-for="item in item.deteail.images_format"
+                  v-for="item in  Object(item.deteail).images_format"
                   :src="item"
                   alt
                 />
@@ -183,14 +184,14 @@
             </p>
             <div class="sheng1">
               <p>{{ item.type_format }}</p>
-              <p>上报人员 ：{{ item.deteail.user.name }}</p>
+              <!-- <p>上报人员 ：{{ item.deteail.user.name }}</p> -->
               <p>是否故障 ： {{ item.type_format }}</p>
-              <p>备注 ：{{ item.deteail.remark }}</p>
+              <p>备注 ：{{ Object(item.deteail).remark }}</p>
               <p>
                 <span style="float:left">图片：</span>
                 <img
                   style="width:1rem;height:1rem;float:left"
-                  v-for="item in item.deteail.images_format"
+                  v-for="item in  Object(item.deteail).images_format"
                   :src="item"
                   alt
                 />
@@ -206,7 +207,7 @@
               <p>{{ item.type_format }}</p>
               <p>审批人 ：{{ Object(item.deteail.user).name }}</p>
               <p>审批类型 ： {{ item.type_format }}</p>
-              <p>处理意见 ：{{ item.deteail.remark }}</p>
+              <p>处理意见 ：{{ Object(item.deteail).remark }}</p>
             </div>
           </div>
           <!-- 停车费 -->
@@ -218,7 +219,7 @@
               <p>{{ item.type_format }}</p>
               <p>审批人 ：{{ item.deteail.user.name }}</p>
               <p>审批类型 ： {{ item.type_format }}</p>
-              <p>处理意见 ：{{ item.deteail.remark }}</p>
+              <p>处理意见 ：{{ Object(item.deteail).remark }}</p>
             </div>
           </div>
           <!-- ad 广告  -->
@@ -230,7 +231,7 @@
               <p>{{ item.type_format }}</p>
               <p>审批人 ：{{ item.deteail.user.name }}</p>
               <p>审批类型 ： {{ item.type_format }}</p>
-              <p>处理意见 ：{{ item.deteail.remark }}</p>
+              <p>处理意见 ：{{ Object(item.deteail).remark }}</p>
             </div>
           </div>
 
@@ -246,7 +247,7 @@
               <p>上报人员:{{ Object(item.deteail.user).name }}</p>
               <p>业主：和谐小区五单元308室</p>
               <p>手机号：15644566788</p>
-              <p>报修类型：{{ item.deteail.remark }}</p>
+              <p>报修类型：{{ Object(item.deteail).remark }}</p>
               <p>备注：{{ item.deteail.detail }}</p>
               <p>
                 <span>图片：</span>
@@ -263,10 +264,10 @@
             <!-- 客服报修 -->
             <div class="xiu">
               <p>{{ item.type_format }}</p>
-              <p>上报人员:{{ Object(item.deteail.user).name }}</p>
+              <p>上报人员:{{ Object(item.deteail).user.name }}</p>
               <p>业主：和谐小区五单元308室</p>
               <p>手机号：15644566788</p>
-              <p>报修类型：{{ item.deteail.remark }}</p>
+              <p>报修类型：{{ Object(item.deteail).remark }}</p>
               <p>备注：{{ item.deteail.detail }}</p>
               <p>
                 <span>图片：</span>

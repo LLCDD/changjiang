@@ -19,68 +19,39 @@
     </div>
 
     <section>
-      <van-list
-        v-if="bool == 0"
-        v-model="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-      >
+
         <div v-for="(item,index) in list" :key="index">
           <!-- <p class="timer">
             <span>{{ item.created_at }}</span>
           </p>-->
           <p class="timer">
-            <span>今天 13:45</span>
+            <span> {{ item.created_at }} </span>
           </p>
           <!-- 审批的样式 -->
-          <div class="sheng">
-            <p>登记员工：丽丽</p>
+          <div class="sheng" v-if="item.deteail.handle == 0">
+            <p>登记员工： {{ item.deteail.user.name }} </p>
             <div v-for="(index) in 1" :key="index">
-              <p>车牌号：豫S73058</p>
-              <p>停车时长：3小时</p>
-              <p>支付金额：15元</p>
-              <p>备注：停车</p>
+              <p>车牌号：{{ item.deteail.car_id }}</p>
+              <p>停车时长：{{ item.deteail.park_time }}</p>
+              <p>支付金额：{{ item.deteail.pay }}元</p>
+              <p>备注：{{ item.deteail.remark }}</p>
             </div>
-            <p @click="shenpi">已审批</p>
-          </div>
-          <p class="timer">
-            <span>今天 13:45</span>
-          </p>
-          <!-- 审批的样式 -->
-          <div class="sheng">
-            <p>回访人员：丽丽</p>
-            <div v-for="(index) in 1" :key="index">
-              <p>车牌号：豫S73058</p>
-              <p>停车时长：3小时</p>
-              <p>支付金额：15元</p>
-              <p>备注：停车</p>
-            </div>
-            <p style="color:#eab617" @click="shenpi">审批</p>
+            <p style="color:#eab617" @click="shenpi(item.id)">审批</p>
+            
           </div>
           <!-- 审批的样式 -->
-          <!-- <div class="sheng" v-if="item.deteail.handle == 0">
-            <p>回访人员：{{ item.deteail.user.name }}</p>
+          <div class="sheng" v-else>
+           <p>登记员工： {{ item.deteail.user.name }} </p>
             <div v-for="(index) in 1" :key="index">
-              <p>回访业主：{{ item.deteail.xiaoqu.xiaoqu_name }}</p>
-              <p>物业费金额 ：{{ item.deteail.total_money }}元</p>
-            </div>
-            <p @click="shenpi(item.id)" style="color:#eab617">审批</p>
-          </div>-->
-          <!-- <p class="timer">
-            <span>今天 13:45</span>
-          </p>-->
-          <!-- 审批的样式 -->
-          <!-- <div class="sheng" v-else>
-            <p>回访人员：{{ item.deteail.user.name }}</p>
-            <div v-for="(index) in 1" :key="index">
-              <p>回访业主：{{ item.deteail.xiaoqu.xiaoqu_name }}</p>
-              <p>物业费金额 ：{{ item.deteail.total_money }}元</p>
+              <p>车牌号：{{ item.deteail.car_id }}</p>
+              <p>停车时长：{{ item.deteail.park_time }}</p>
+              <p>支付金额：{{ item.deteail.pay }}元</p>
+              <p>备注：{{ item.deteail.remark }}</p>
             </div>
             <p @click="shenpi(item.id)">已审批</p>
-          </div>-->
+          </div>
         </div>
-      </van-list>
+
       <div v-if="bool == 1">
         <van-collapse v-model="activeNames" @change="change">
           <van-collapse-item :title="valuey" name="1">
@@ -134,7 +105,7 @@ export default {
       ],
       bool: 0,
       activeNames: ["1"],
-      valuey: "回访统计",
+      valuey: "停车日志",
       minDate: new Date(2000, 1, 1),
       maxDate: new Date(),
       timer: false,
@@ -210,7 +181,7 @@ export default {
     },
     // 消息的审批
     shenpi(id) {
-      this.$router.push("/shenpi/" + id);
+      this.$router.push("/stoppi/" + id);
     },
     // 时间的选择
     change() {

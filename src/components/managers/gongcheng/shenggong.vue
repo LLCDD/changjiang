@@ -84,6 +84,7 @@ export default {
         })
         .then(res => {
           console.log(res);
+          this.$toasted.success(res.message).goAway(1000)
         })
         .catch(res => {
           this.$toasted.error(res.message).goAway(1000);

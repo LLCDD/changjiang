@@ -62,6 +62,8 @@ export default {
     fa(){
       this.http.post('/api/notices/'+ this.$route.params.id,{handle:1,handle_result:this.value}).then(res =>{
         console.log(res)
+        this.$toasted.success(res.message).goAway(1000)
+        this.$router.go(-1);
       }).catch(res =>{
         this.$toasted.error(res.message).goAway(1000)
       })

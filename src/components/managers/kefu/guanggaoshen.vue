@@ -10,28 +10,28 @@
         {{msg}}
       </div>
     </header>
-    
+
     <section class="section">
       <div>
         <p>上报员工：{{ user.user.name }}</p>
         <div v-for="(index) in 1" :key="index">
           <p>商家信息：{{ user.shop_name }}</p>
-            <p>商家电话：{{ user.shop_tel }}</p>
-            <p>广告位置：{{ user.ad_position }} </p>
-            <p>广告金额：{{ user.ad_money }}元</p>
-            <p>开始时间：{{ user.start_at }}</p>
-            <p>结束时间：{{ user.updated_at }}</p>
-            <p>支付方式：{{ user.pay }}</p>
+          <p>商家电话：{{ user.shop_tel }}</p>
+          <p>广告位置：{{ user.ad_position }}</p>
+          <p>广告金额：{{ user.ad_money }}元</p>
+          <p>开始时间：{{ user.start_at }}</p>
+          <p>结束时间：{{ user.updated_at }}</p>
+          <p>支付方式：{{ user.pay }}</p>
         </div>
       </div>
       <div class="tet">
-          <p>处理意见：</p>
-          <textarea v-model="value" cols="30" rows="10" placeholder="请输入您的处理意见"></textarea>
+        <p>处理意见：</p>
+        <textarea v-model="value" cols="30" rows="10" placeholder="请输入您的处理意见"></textarea>
       </div>
       <!-- <div class="tet">
         <p>处理意见：</p>
         <textarea :value="value" cols="30" rows="10" placeholder="请输入您的处理意见"></textarea>
-      </div> -->
+      </div>-->
       <!-- <div>
         <p>回访人员：丽丽</p>
         <div v-for="(index) in 1" :key="index">
@@ -53,31 +53,39 @@ export default {
     return {
       msg: "审批",
       value: "",
-      user:{},
-      state:1
+      user: {},
+      state: 1
     };
   },
   mounted() {
     this.http.get("/api/notices/" + this.$route.params.id).then(res => {
       console.log(res);
-      this.user = res.data.detail
-      this.value = res.data.push.handle_result
-      console.log(res.data.push.type_format)
-      if(res.data.push.handle_result == null){
-        this.state = 1
-      }else {
-        this.state = 0
+      this.user = res.data.detail;
+      this.value = res.data.push.handle_result;
+      console.log(res.data.push.type_format);
+      if (res.data.push.handle_result == null) {
+        this.state = 1;
+      } else {
+        this.state = 0;
       }
     });
   },
   methods: {
     // 提交处理意见
-    fa(){
-      this.http.post('/api/notices/'+ this.$route.params.id,{handle:1,handle_result:this.value}).then(res =>{
-        console.log(res)
-      }).catch(res =>{
-        this.$toasted.error(res.message).goAway(1000)
-      })
+    fa() {
+      this.http
+        .post("/api/notices/" + this.$route.params.id, {
+          handle: 1,
+          handle_result: this.value
+        })
+        .then(res => {
+          this.$toasted.success(res.message).goAway(1000);
+          this.$router.go(-1);
+          console.log(res);
+        })
+        .catch(res => {
+          this.$toasted.error(res.message).goAway(1000);
+        });
     },
     fanhui() {
       this.$router.go(-1);
@@ -162,11 +170,11 @@ header > div > p > img {
   width: 100%;
 }
 .section > div > div {
-    padding: 0 0.3rem;
-    padding-bottom: 0.2rem;
+  padding: 0 0.3rem;
+  padding-bottom: 0.2rem;
 }
 .section > div > div > p {
-    margin-bottom: 0.04rem;
+  margin-bottom: 0.04rem;
 }
 .section > div > :first-child {
   font-size: 0.34rem;
@@ -181,24 +189,24 @@ header > div > p > img {
   overflow: auto;
 }
 .section > .tet {
-    margin-top: 0.2rem;
-    height: 2rem;
+  margin-top: 0.2rem;
+  height: 2rem;
 }
 .section > .tet > textarea {
-    height: 1rem;
-    margin-left: 0.3rem;
-    width: 80%;
+  height: 1rem;
+  margin-left: 0.3rem;
+  width: 80%;
 }
 .fa {
-    height: 1rem;
-    width: 100%;
-    background: #eab617;
-    position: fixed;
-    bottom: 0;
-    text-align: center;
-    line-height: 1rem;
-    font-size: 0.34rem;
-    color: #fff
+  height: 1rem;
+  width: 100%;
+  background: #eab617;
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  line-height: 1rem;
+  font-size: 0.34rem;
+  color: #fff;
 }
 </style>
 

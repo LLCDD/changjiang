@@ -106,7 +106,7 @@ export default {
         })
         .then(res => {
           this.$toasted.success(res.message).goAway(1000);
-          this.$router.replace({ name: "login" });
+          // this.$router.replace({ name: "login" });
         })
         .catch(res => {
           this.$toasted.error(res.message).goAway(1000);

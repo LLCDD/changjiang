@@ -12,7 +12,7 @@
     </header>
     <section class="section">
       <div>
-        <p>回访人员：{{ item.deteail.user.name }}</p>
+        <p>回访人员：{{ user.user.name }}</p>
         <div v-for="(index) in 1" :key="index">
           <p>回访业主：{{ user.xiaoqu.xiaoqu_name }}</p>
           <p>物业费金额： {{ user.total_money }} 元</p>
@@ -36,31 +36,39 @@ export default {
     return {
       msg: "审批",
       value: "",
-      user:{},
-      state:1
+      user: {},
+      state: 1
     };
   },
   mounted() {
     this.http.get("/api/notices/" + this.$route.params.id).then(res => {
       console.log(res);
-      this.user = res.data.detail
-      this.value = res.data.push.handle_result
-      console.log(res.data.push.type_format)
-      if(res.data.push.handle_result == null){
-        this.state = 1
-      }else {
-        this.state = 0
+      this.user = res.data.detail;
+      this.value = res.data.push.handle_result;
+      console.log(res.data.push.type_format);
+      if (res.data.push.handle_result == null) {
+        this.state = 1;
+      } else {
+        this.state = 0;
       }
     });
   },
   methods: {
     // 提交处理意见
-    fa(){
-      this.http.post('/api/notices/'+ this.$route.params.id,{handle:1,handle_result:this.value}).then(res =>{
-        console.log(res)
-      }).catch(res =>{
-        this.$toasted.error(res.message).goAway(1000)
-      })
+    fa() {
+      this.http
+        .post("/api/notices/" + this.$route.params.id, {
+          handle: 1,
+          handle_result: this.value
+        })
+        .then(res => {
+          console.log(res);
+          this.$toasted.success(res.message).goAway(1000);
+          this.$router.go(-1);
+        })
+        .catch(res => {
+          this.$toasted.error(res.message).goAway(1000);
+        });
     },
     fanhui() {
       this.$router.go(-1);

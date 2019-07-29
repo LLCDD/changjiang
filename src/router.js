@@ -407,7 +407,7 @@ let router = new Router({
     },
     // 经理岗客服来访日志的审批
     {
-      path: '/stoppi',
+      path: '/stoppi/:id',
       name: 'stoppi',
       component: () =>
         import(/* webpackChunkName: "stoppi" */ './components/managers/kefu/stoppi'),

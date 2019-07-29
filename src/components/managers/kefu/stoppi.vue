@@ -5,7 +5,7 @@
       <p></p>
       <div>
         <p @click="fanhui">
-          <img src="../../../assets/img/left0.png" alt>
+          <img src="../../../assets/img/left0.png" alt />
         </p>
         {{msg}}
       </div>
@@ -19,21 +19,21 @@
     </div>-->
     <section class="section">
       <div>
-        <p>登记员工：{{ item.deteail.user.name }}</p>
+        <p>登记员工：</p>
         <div v-for="(index) in 1" :key="index">
-          <p>车牌号：豫S73058</p>
-          <p>停车时长：3小时</p>
-          <p>支付金额：15元</p>
-          <p>支付方式：支付宝</p>
-          <p>备注：停车</p>
+          <p>车牌号：{{ user.car_id }}</p>
+          <p>停车时长：{{ user.park_time }}</p>
+          <p>支付金额：{{ user.money }}元</p>
+          <p>支付方式：{{ user.pay }}</p>
+          <p>备注：{{ user.remark }}</p>
         </div>
       </div>
       <div class="tet">
         <p>处理意见：</p>
-        <textarea :v-model="value" cols="30" rows="10" placeholder="请输入您的处理意见"></textarea>
+        <textarea v-model="value" cols="30" rows="10" placeholder="请输入您的处理意见"></textarea>
       </div>
     </section>
-    <div class="fa" v-if="value =='' ">发送</div>
+    <div class="fa" @click="fa" v-if="state == 1">发送</div>
   </div>
 </template>
 <script>
@@ -43,15 +43,42 @@ export default {
   data() {
     return {
       msg: "审批",
-      value: "世界i年底发的"
+      msg: "审批",
+      value: "",
+      user: {},
+      state: 1
     };
   },
-  mounted(){
-    this.http.get('/api/notices/'+this.$route.params.id).then(res =>{
-      console.log(res)
-    })
+  mounted() {
+    this.http.get("/api/notices/" + this.$route.params.id).then(res => {
+      console.log(res);
+      this.user = res.data.detail;
+      this.value = res.data.push.handle_result;
+      console.log(res.data.push.type_format);
+      if (res.data.push.handle_result == null) {
+        this.state = 1;
+      } else {
+        this.state = 0;
+      }
+    });
   },
   methods: {
+    fa() {
+      this.http
+        .post("/api/notices/" + this.$route.params.id, {
+          handle: 1,
+          handle_result: this.value
+        })
+        .then(res => {
+          console.log(res);
+          // this.$router.go(-1);
+          this.$toasted.success(res.message).goAway(1000);
+          this.$router.go(-1);
+        })
+        .catch(res => {
+          this.$toasted.error(res.message).goAway(1000);
+        });
+    },
     fanhui() {
       this.$router.go(-1);
     },

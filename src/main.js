@@ -119,7 +119,6 @@ function plusReady() {
       router,
       store,
       created() {
-        console.log(socket)
       },
       render: h => h(App)
     }).$mount('#app')
@@ -144,7 +143,7 @@ if (
     router,
     store,
     created() {
-    
+      
     },
     render: h => h(App)
   }).$mount('#app')

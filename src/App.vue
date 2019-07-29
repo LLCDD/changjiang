@@ -54,36 +54,10 @@ export default {
       id: ""
     };
   },
-  mounted() {},
-  sockets: {
-    connecting() {
-      console.log("正在链接");
-    },
-    connect() {
-      console.log(localStorage.getItem("id"))
-      localStorage.getItem("id")
-      this.$socket.emit("login", 3);
-      console.log("连接成功");
-      alert("连接成功")
-    },
-    disconnect() {
-      console.log("断开连接");
-    },
-    new_msg(msg) {
-      console.log(msg);
-      var format_msg = msg.split("|");
-      // alert(format_msg);
-      console.log(format_msg.length);
-      var options = { cover: false };
-      var str = ": 欢迎使用Html5 Plus创建本地消息！";
-      plus.push.createMessage(str, "LocalMSG", options);
-      // plus.push.createMessage(format_msg[1] + format_msg[2], "LocalMSG", false);
-      // plus.push.createMessage(format_msg[1] + format_msg[2], "LocalMSG", false);
-    },
-    error(msg){
-      console.log(JSON.stringify(msg))
-    }
+  mounted() {
+    
   },
+
   created() {},
   methods: {
     fanhui() {

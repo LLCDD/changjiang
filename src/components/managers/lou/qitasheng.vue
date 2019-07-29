@@ -15,13 +15,13 @@
         <p>上报员工：{{ user.user.name }}</p>
         <div v-for="(index) in 1" :key="index">
           <p>缺勤员工：{{ user.relate }}</p>
-            <p>备注：{{ user.remark }}</p>
-            <p>
-                <strong>图片：</strong>
-                <span v-for="(item,index) in user.images_format" :key="index">
-                  <img style="width:100%;height:100%" :src="item" alt="">
-                </span>
-            </p>
+          <p>备注：{{ user.remark }}</p>
+          <p>
+            <strong>图片：</strong>
+            <span v-for="(item,index) in user.images_format" :key="index">
+              <img style="width:100%;height:100%" :src="item" alt />
+            </span>
+          </p>
         </div>
       </div>
       <div class="tet">
@@ -40,31 +40,38 @@ export default {
     return {
       msg: "审批",
       value: "",
-      user:{},
-      state:1
+      user: {},
+      state: 1
     };
   },
   mounted() {
     this.http.get("/api/notices/" + this.$route.params.id).then(res => {
       console.log(res);
-      this.user = res.data.detail
-      this.value = res.data.push.handle_result
-      console.log(res.data.push.type_format)
-      if(res.data.push.handle_result == null){
-        this.state = 1
-      }else {
-        this.state = 0
+      this.user = res.data.detail;
+      this.value = res.data.push.handle_result;
+      console.log(res.data.push.type_format);
+      if (res.data.push.handle_result == null) {
+        this.state = 1;
+      } else {
+        this.state = 0;
       }
     });
   },
   methods: {
     // 提交处理意见
-    fa(){
-      this.http.post('/api/notices/'+ this.$route.params.id,{handle:1,handle_result:this.value}).then(res =>{
-        console.log(res)
-      }).catch(res =>{
-        this.$toasted.error(res.message).goAway(1000)
-      })
+    fa() {
+      this.http
+        .post("/api/notices/" + this.$route.params.id, {
+          handle: 1,
+          handle_result: this.value
+        })
+        .then(res => {
+          this.$toasted.success(res.message).goAway(1000);
+          this.$router.go(-1);
+        })
+        .catch(res => {
+          this.$toasted.error(res.message).goAway(1000);
+        });
     },
     fanhui() {
       this.$router.go(-1);
@@ -110,7 +117,7 @@ export default {
 .workorder >>> .van-dropdown-menu {
   /* position: fixed; */
   width: 100%;
-  height:1rem;
+  height: 1rem;
   /* top: 1.3rem; */
   /* background: red; */
   /* display: block */
@@ -157,21 +164,21 @@ header > div > p > img {
   width: 100%;
 }
 .section > div > div {
-    padding: 0 0.3rem;
-    padding-bottom: 0.2rem;
+  padding: 0 0.3rem;
+  padding-bottom: 0.2rem;
 }
 .section > div > div > p {
-    margin-bottom: 0.04rem;
+  margin-bottom: 0.04rem;
 }
 .section > div > div > p > strong {
-    float: left
+  float: left;
 }
 .section > div > div > p > span {
-    display: inline-block;
-    height: 0.6rem;
-    width: 0.6rem;
-    background: red;
-    margin-right: 0.1rem
+  display: inline-block;
+  height: 0.6rem;
+  width: 0.6rem;
+  background: red;
+  margin-right: 0.1rem;
 }
 .section > div > :first-child {
   font-size: 0.34rem;
@@ -186,24 +193,24 @@ header > div > p > img {
   overflow: auto;
 }
 .section > .tet {
-    margin-top: 0.2rem;
-    height: 2rem;
+  margin-top: 0.2rem;
+  height: 2rem;
 }
 .section > .tet > textarea {
-    height: 1rem;
-    margin-left: 0.3rem;
-    width: 80%;
+  height: 1rem;
+  margin-left: 0.3rem;
+  width: 80%;
 }
 .fa {
-    height: 1rem;
-    width: 100%;
-    background: #eab617;
-    position: fixed;
-    bottom: 0;
-    text-align: center;
-    line-height: 1rem;
-    font-size: 0.34rem;
-    color: #fff
+  height: 1rem;
+  width: 100%;
+  background: #eab617;
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  line-height: 1rem;
+  font-size: 0.34rem;
+  color: #fff;
 }
 </style>
 

@@ -33,11 +33,11 @@
     <div class="section" v-if="show == 0" @click="daok">
       <p>
         <span></span>
-        <span>上班时间: {{ shang }}</span>
+        <span>上午: {{ shang.am_sign_in_date }} - {{ shang.am_sign_out }}</span>
       </p>
       <p>
         <span></span>
-        <span>上班时间: {{ xia }}</span>
+        <span>下午: {{ shang.pm_sign_in }} - {{ shang.pm_sign_out }}</span>
       </p>
       <div class="last">
         <p>上班时间</p>
@@ -61,7 +61,7 @@
         <p></p>
         <div>
           <p>{{ time }}</p>
-          <p>下班打卡成功</p>
+          <p>打卡成功</p>
         </div>
         <p @click="start1">我知道了</p>
       </div>
@@ -71,11 +71,11 @@
     <div class="section" v-if="show == 1" @click="dawu">
       <p>
         <span></span>
-        <span>上班时间: {{ shang }}</span>
+        <span>上午: {{ shang.am_sign_in_date }} - {{ shang.am_sign_out }}</span>
       </p>
       <p>
         <span></span>
-        <span>上班时间: {{ xia }}</span>
+        <span>下午: {{ shang.pm_sign_in }} - {{ shang.pm_sign_out }}</span>
       </p>
       <div class="last1">
         <p style="font-size:0.28rem">现在不可打卡</p>
@@ -88,7 +88,7 @@
       <div class="yichangka">
         <!-- 异常打卡的取消事件 -->
         <img @click="yichangcolse" src="../../assets/img/close.png" alt />
-        <h3> {{ hms }} </h3>
+        <h3>{{ hms }}</h3>
         <p>还没到下班时间</p>
         <p>你确定要打卡吗?</p>
         <p @click="yihchangko">确定打卡</p>
@@ -118,9 +118,9 @@ export default {
       msg: "考勤打卡",
       name: localStorage.getItem("username"),
       time: "2019.04.20",
-      shang: "8:30",
       xia: "17:30",
       //   打卡状态的判断
+      shang: 0,
       show: 0,
       //   判断是上班还是下班
       shangban: 0,
@@ -138,17 +138,19 @@ export default {
       // 维度
       latitude: "",
       // 地址
-      dizhi: ""
+      dizhi: "",
+      // 图片的上传
+      imgurl: ""
     };
   },
   mounted() {
     this.http.get("/api/sign").then(res => {
       console.log(res);
       this.$toasted.success(res.data.msg).goAway(1000);
-      this.shang = res.data.sign_in_date;
-      this.xia = res.data.sign_out_date;
-      console.log(res.data.title)
-      if (res.data.title == "上班打卡") {
+      this.shang = res.data;
+      // this.shang = res.data.sign_in_date;
+      // this.xia = res.data.sign_out_date;
+      if (res.data.title.indexOf("上班") > 0) {
         this.show = 0;
         this.shangban = 1;
       } else {
@@ -193,12 +195,7 @@ export default {
       function(p) {
         _this.longitude = p.coords.latitude;
         _this.latitude = p.coords.longitude;
-        _this.weizhi =
-          p.address.province +
-          p.address.city +
-          p.address.district +
-          p.address.street +
-          p.address.streetNum;
+        _this.weizhi = p.addresses;
         // alert('维度:' + p.coords.latitude + '经度:' + p.coords.longitude + '地址:' + p.address.province);
       },
       function(e) {
@@ -212,9 +209,9 @@ export default {
       this.http.get("/api/sign").then(res => {
         console.log(res);
         this.$toasted.success(res.data.msg).goAway(1000);
-        this.shang = res.data.sign_in_date;
-        this.xia = res.data.sign_out_date;
-        if ((res.data.title = "上班打卡")) {
+        this.shang = res.data;
+        console.log(res.data.title.indexOf("上班"));
+        if (res.data.title.indexOf("上班") > 0) {
           this.show = 0;
           this.shangban = 1;
         } else {
@@ -223,42 +220,121 @@ export default {
         }
       });
     },
+    showPics(url, name) {
+      var _this = this;
+      //根据路径读取到文件
+      plus.io.resolveLocalFileSystemURL(url, function(entry) {
+        entry.file(function(file) {
+          var fileReader = new plus.io.FileReader();
+          fileReader.readAsDataURL(file);
+          //  alert(fileReader)
+          //  alert(this)
+          fileReader.onloadend = function(e) {
+            //  alert(e)
+            var picUrl = e.target.result.toString();
+            // alert(picUrl)
+            _this.imgurl = picUrl;
+
+            if (_this.shangban == 1) {
+              console.log("上班时间");
+              _this.http
+                .post("/api/sign", {
+                  image: picUrl,
+                  address: "" + _this.weizhi,
+                  longitude: _this.longitude,
+                  latitude: _this.latitude
+                })
+                .then(res => {
+                  _this.showf = true;
+                  _this.once();
+                  console.log(res);
+                });
+            } else {
+              _this.http
+                .post("/api/sign", {
+                  image: picUrl,
+                  address: "" + _this.weizhi,
+                  longitude: _this.longitude,
+                  latitude: _this.latitude
+                })
+                .then(res => {
+                  // localStorage.setItem("tongji", 1);
+                  _this.showf1 = true;
+                  console.log(res);
+                  _this.once();
+                });
+
+              console.log("下班时间");
+            }
+          };
+        });
+        _this.show = false;
+      });
+    },
+    //压缩图片
+    compressImage(url, filename) {
+      var _this = this;
+      var name = "_doc/upload/" + filename;
+      plus.zip.compressImage(
+        {
+          src: url, //src: (String 类型 )压缩转换原始图片的路径
+          dst: name, //压缩转换目标图片的路径
+          quality: 40, //quality: (Number 类型 )压缩图片的质量.取值范围为1-100
+          overwrite: true //overwrite: (Boolean 类型 )覆盖生成新文件
+        },
+        function(zip) {
+          //页面显示图片
+          _this.showPics(zip.target, name);
+        },
+        function(error) {
+          plus.nativeUI.toast("压缩图片失败，请稍候再试");
+        }
+      );
+    },
+
+    //调用手机摄像头并拍照
+    getImage() {
+      var _this = this;
+      var cmr = plus.camera.getCamera();
+      cmr.captureImage(
+        function(p) {
+          plus.io.resolveLocalFileSystemURL(
+            p,
+            function(entry) {
+              _this.compressImage(entry.toLocalURL(), entry.name);
+            },
+            function(e) {
+              plus.nativeUI.toast("读取拍照文件错误：" + e.message);
+            }
+          );
+        },
+        function(e) {},
+        {
+          filter: "image"
+        }
+      );
+    },
+    //从相册选择照片
+    galleryImgs() {
+      var _this = this;
+      plus.gallery.pick(
+        function(e) {
+          var name = e.substr(e.lastIndexOf("/") + 1);
+          _this.compressImage(e, name);
+        },
+        function(e) {},
+        {
+          filter: "image"
+        }
+      );
+    },
     //   返回的事件
     fanhui() {
       this.$router.go(-1);
     },
     //   正常的上班事件
     daok() {
-      if (this.shangban == 1) {
-        // console.log("上班时间");
-        this.http
-          .post("/api/sign", {
-            image: "",
-            address: "" + this.weizhi,
-            longitude: this.longitude,
-            latitude: this.latitude
-          })
-          .then(res => {
-            this.showf = true;
-            this.once()
-            console.log(res);
-          });
-      } else {
-        this.http
-          .post("/api/sign", {
-            image: "",
-            address: "" + this.weizhi,
-            longitude: this.longitude,
-            latitude: this.latitude
-          })
-          .then(res => {
-            this.showf1 = true;
-            console.log(res);
-            this.once()
-          });
-        this.showf1 = true;
-        console.log("下班时间");
-      }
+      this.getImage();
     },
     // 上班打卡成功
     start() {
@@ -278,23 +354,25 @@ export default {
     },
     // 异常打卡的确定事件
     yihchangko() {
+      var _this = this;
       this.showy = false;
+      this.getImage();
       // 下面是 异常打卡的逻辑处理
       // 。。。。。。。
-       this.http
-          .post("/api/sign", {
-            image: "",
-            address: "" + this.weizhi,
-            longitude: this.longitude,
-            latitude: this.latitude
-          })
-          .then(res => {
-            this.showf1 = true;
-            console.log(res);
-            this.once()
-          });
-        this.showf1 = true;
-        console.log("下班时间");
+      // _this.http
+      //   .post("/api/sign", {
+      //     image: _this.imgurl,
+      //     address: "" + _this.weizhi,
+      //     longitude: _this.longitude,
+      //     latitude: _this.latitude
+      //   })
+      //   .then(res => {
+          
+      //     console.log(res);
+      //     _this.once();
+      //   });
+        // _this.showf1 = true;
+      console.log("下班时间");
     },
     // 去统计的页面
     tongji() {

@@ -1,12 +1,12 @@
 <template>
   <div class="content">
     <div class="landing">
-      <img class="img" src="../../../assets/images/mytext.png" alt>
-      <input type="text" placeholder="请输入账号" v-model="phone">
+      <img class="img" src="../../../assets/images/mytext.png" alt />
+      <input type="text" placeholder="请输入账号" v-model="phone" />
     </div>
     <div class="landing">
-      <img class="img" src="../../../assets/images/pass.png" alt>
-      <input type="text" placeholder="请输入验证码" v-model="password">
+      <img class="img" src="../../../assets/images/pass.png" alt />
+      <input type="text" placeholder="请输入验证码" v-model="password" />
       <button :class="{ 'a' : a == 1}" class="code" @click="countdown">{{ code }}</button>
     </div>
     <div class="login" @click="login">登录</div>
@@ -69,7 +69,7 @@ export default {
         } catch (error) {
           this.$toasted.error(error.message, { icon: "error" }).goAway(2000);
         }
-      }else {
+      } else {
         this.$toasted.error("验证码已经发送").goAway(1000);
       }
     },
@@ -85,15 +85,15 @@ export default {
         // /api/mobile_login
         let res = await this.http.post("/api/login", {
           mobile: this.phone,
-          password:this.password,
-          did:"",
+          password: this.password,
+          did: ""
           // smscode: this.password
         });
         if (res.code == 200) {
           console.log(res);
           localStorage.setItem("token", res.data.Authorization);
-          localStorage.setItem('id',res.data.id)
-          localStorage.setItem("role",res.data.role[0])
+          localStorage.setItem("id", res.data.id);
+          localStorage.setItem("role", res.data.role[0]);
           this.$toasted.success("登录成功").goAway(1500);
           this.$router.replace({ name: "index" });
           // 通过后台给的数值来判断要显示的工作岗位
