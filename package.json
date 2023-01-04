@@ -28,8 +28,8 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.5",
-    "@vue/cli-service": "^3.0.5",
+    "@vue/cli-plugin-babel": "^3.9.2",
+    "@vue/cli-service": "^5.0.8",
     "better-scroll": "^1.14.1",
     "node-sass": "^4.9.4",
     "sass-loader": "^7.1.0",
